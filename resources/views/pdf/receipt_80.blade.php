@@ -25,6 +25,7 @@
         }
         .barcode img { 
             height: 32px; 
+            max-width: 70%;
             display: inline-block; 
         }
         .section { margin: 4px 0; }
