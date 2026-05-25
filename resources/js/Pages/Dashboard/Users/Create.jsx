@@ -63,35 +63,31 @@ export default function Create() {
             </div>
 
             <form onSubmit={submit}>
-                <div className="max-w-2xl space-y-6">
-                    {/* Account Info */}
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-                        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">
-                            Informasi Akun
-                        </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="md:col-span-2">
-                                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                                    Avatar
-                                </label>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-14 h-14 rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden flex items-center justify-center text-slate-600 font-semibold">
-                                        {avatarPreview ? (
-                                            <img
-                                                src={avatarPreview}
-                                                alt="Preview"
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <span>
-                                                {data.name
-                                                    ? data.name
-                                                          .charAt(0)
-                                                          .toUpperCase()
-                                                    : "?"}
-                                            </span>
-                                        )}
-                                    </div>
+                <div className="grid grid-cols-1 lg:grid-cols-10 gap-6 items-start">
+                    {/* Left Column (30%) */}
+                    <div className="lg:col-span-3 space-y-6">
+                        {/* Avatar */}
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5">
+                            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">
+                                Avatar
+                            </label>
+                            <div className="flex flex-col items-center gap-4">
+                                <div className="w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden flex items-center justify-center text-slate-500 font-bold text-xl border-2 border-slate-200 dark:border-slate-700 shadow-inner">
+                                    {avatarPreview ? (
+                                        <img
+                                            src={avatarPreview}
+                                            alt="Preview"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <span>
+                                            {data.name
+                                                ? data.name.charAt(0).toUpperCase()
+                                                : "?"}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="w-full">
                                     <Input
                                         type="file"
                                         accept="image/*"
@@ -105,107 +101,120 @@ export default function Create() {
                                             }
                                         }}
                                         errors={errors.avatar}
+                                        className="w-full text-xs"
                                     />
                                 </div>
                             </div>
-                            <Input
-                                type="text"
-                                label="Nama Lengkap"
-                                placeholder="Masukkan nama"
-                                value={data.name}
-                                onChange={(e) =>
-                                    setData("name", e.target.value)
-                                }
-                                errors={errors.name}
-                            />
-                            <Input
-                                type="email"
-                                label="Email"
-                                placeholder="email@example.com"
-                                value={data.email}
-                                onChange={(e) =>
-                                    setData("email", e.target.value)
-                                }
-                                errors={errors.email}
-                            />
-                            <Input
-                                type="password"
-                                label="Kata Sandi"
-                                placeholder="Minimal 8 karakter"
-                                value={data.password}
-                                onChange={(e) =>
-                                    setData("password", e.target.value)
-                                }
-                                errors={errors.password}
-                            />
-                            <Input
-                                type="password"
-                                label="Konfirmasi Kata Sandi"
-                                placeholder="Ulangi kata sandi"
-                                value={data.password_confirmation}
-                                onChange={(e) =>
-                                    setData(
-                                        "password_confirmation",
-                                        e.target.value
-                                    )
-                                }
-                                errors={errors.password_confirmation}
-                            />
+                        </div>
+
+                        {/* Roles */}
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5">
+                            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+                                <IconShield size={16} />
+                                Akses Group
+                            </h3>
+                            <div className="space-y-2">
+                                {roles.map((role, i) => (
+                                    <label
+                                        key={i}
+                                        className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl border cursor-pointer transition-all ${
+                                            data.selectedRoles.includes(role.name)
+                                                ? "border-primary-500 bg-primary-50 dark:bg-primary-950/20"
+                                                : "border-slate-200 dark:border-slate-800 hover:border-primary-300"
+                                        }`}
+                                    >
+                                        <Checkbox
+                                            value={role.name}
+                                            onChange={setSelectedRoles}
+                                            checked={data.selectedRoles.includes(
+                                                role.name
+                                            )}
+                                        />
+                                        <span className="text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">
+                                            {role.name}
+                                        </span>
+                                    </label>
+                                ))}
+                            </div>
+                            {errors.selectedRoles && (
+                                <p className="text-xs text-danger-500 mt-3">
+                                    {errors.selectedRoles}
+                                </p>
+                            )}
                         </div>
                     </div>
 
-                    {/* Roles */}
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-                        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
-                            <IconShield size={16} />
-                            Akses Group
-                        </h3>
-                        <div className="flex flex-wrap gap-4">
-                            {roles.map((role, i) => (
-                                <label
-                                    key={i}
-                                    className={`flex items-center gap-2.5 px-4 py-3 rounded-xl border cursor-pointer transition-all ${
-                                        data.selectedRoles.includes(role.name)
-                                            ? "border-primary-500 bg-primary-50 dark:bg-primary-950/50"
-                                            : "border-slate-200 dark:border-slate-700 hover:border-primary-300"
-                                    }`}
-                                >
-                                    <Checkbox
-                                        value={role.name}
-                                        onChange={setSelectedRoles}
-                                        checked={data.selectedRoles.includes(
-                                            role.name
-                                        )}
-                                    />
-                                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300 capitalize">
-                                        {role.name}
-                                    </span>
-                                </label>
-                            ))}
+                    {/* Right Column (70%) */}
+                    <div className="lg:col-span-7 space-y-6">
+                        {/* Account Info */}
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
+                            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4">
+                                Informasi Akun
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <Input
+                                    type="text"
+                                    label="Nama Lengkap"
+                                    placeholder="Masukkan nama"
+                                    value={data.name}
+                                    onChange={(e) =>
+                                        setData("name", e.target.value)
+                                    }
+                                    errors={errors.name}
+                                />
+                                <Input
+                                    type="email"
+                                    label="Email"
+                                    placeholder="email@example.com"
+                                    value={data.email}
+                                    onChange={(e) =>
+                                        setData("email", e.target.value)
+                                    }
+                                    errors={errors.email}
+                                />
+                                <Input
+                                    type="password"
+                                    label="Kata Sandi"
+                                    placeholder="Minimal 8 karakter"
+                                    value={data.password}
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
+                                    errors={errors.password}
+                                />
+                                <Input
+                                    type="password"
+                                    label="Konfirmasi Kata Sandi"
+                                    placeholder="Ulangi kata sandi"
+                                    value={data.password_confirmation}
+                                    onChange={(e) =>
+                                        setData(
+                                            "password_confirmation",
+                                            e.target.value
+                                        )
+                                    }
+                                    errors={errors.password_confirmation}
+                                />
+                            </div>
                         </div>
-                        {errors.selectedRoles && (
-                            <p className="text-xs text-danger-500 mt-3">
-                                {errors.selectedRoles}
-                            </p>
-                        )}
-                    </div>
 
-                    {/* Submit */}
-                    <div className="flex justify-end gap-3">
-                        <Link
-                            href={route("users.index")}
-                            className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-colors"
-                        >
-                            Batal
-                        </Link>
-                        <button
-                            type="submit"
-                            disabled={processing}
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-medium transition-colors disabled:opacity-50"
-                        >
-                            <IconDeviceFloppy size={18} />
-                            {processing ? "Menyimpan..." : "Simpan"}
-                        </button>
+                        {/* Submit */}
+                        <div className="flex justify-end gap-3">
+                            <Link
+                                href={route("users.index")}
+                                className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-colors"
+                            >
+                                Batal
+                            </Link>
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-medium transition-colors disabled:opacity-50"
+                            >
+                                <IconDeviceFloppy size={18} />
+                                {processing ? "Menyimpan..." : "Simpan"}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </form>

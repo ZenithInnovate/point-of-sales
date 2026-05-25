@@ -110,7 +110,6 @@ Repo ini ditujukan untuk developer yang ingin menjalankan, memelihara, atau meng
 ## Quick Start
 
 ```bash
-git clone https://github.com/aryadwiputra/point-of-sales.git
 cd point-of-sales
 cp .env.example .env
 composer install

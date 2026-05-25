@@ -144,14 +144,6 @@ export default function Welcome() {
                                     Mulai Sekarang
                                     <IconArrowRight size={20} />
                                 </Link>
-                                <a
-                                    href="https://github.com/aryadwiputra/point-of-sales"
-                                    target="_blank"
-                                    className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl hover:border-primary-300 dark:hover:border-primary-700 transition-all flex items-center justify-center gap-2"
-                                >
-                                    <IconBrandGithub size={20} />
-                                    View Repository
-                                </a>
                             </div>
                         </div>
 
@@ -330,24 +322,6 @@ export default function Welcome() {
                                 Clone repository dan jalankan dalam hitungan
                                 menit
                             </p>
-                        </div>
-
-                        <div className="bg-slate-900 dark:bg-slate-800 rounded-2xl p-6 overflow-hidden">
-                            <pre className="text-sm text-slate-300 font-mono overflow-x-auto">
-                                {`git clone https://github.com/aryadwiputra/point-of-sales
-cd point-of-sales
-composer install
-npm install
-cp .env.example .env
-php artisan key:generate
-
-# Setup database di .env
-
-php artisan migrate --seed
-php artisan storage:link
-npm run dev
-php artisan serve`}
-                            </pre>
                         </div>
                     </div>
                 </section>
