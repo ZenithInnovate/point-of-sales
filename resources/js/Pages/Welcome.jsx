@@ -57,7 +57,7 @@ export default function Welcome() {
 
     return (
         <>
-            <Head title="Aplikasi Kasir - Point of Sale Modern" />
+            <Head title="Aplikasi Kasir - AkarPOS Modern" />
 
             <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
                 {/* Navbar */}
@@ -123,7 +123,7 @@ export default function Welcome() {
                             </div>
 
                             <h1 className="text-5xl md:text-6xl font-extrabold text-slate-900 dark:text-white leading-tight">
-                                Sistem Point of Sale
+                                Sistem AkarPOS
                                 <span className="block mt-2 bg-gradient-to-r from-primary-500 to-primary-600 bg-clip-text text-transparent">
                                     Modern & Mudah Digunakan
                                 </span>

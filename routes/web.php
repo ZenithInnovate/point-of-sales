@@ -34,7 +34,7 @@ use Inertia\Inertia;
 
 // redirect to dashboard
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return redirect()->route('login');
 });
 
 // Route::get('/', function () {

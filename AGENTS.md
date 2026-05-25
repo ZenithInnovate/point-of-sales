@@ -1,4 +1,4 @@
-# AGENTS.md — Point of Sales
+# AGENTS.md — AkarPOS
 
 ## Stack
 

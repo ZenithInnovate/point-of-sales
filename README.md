@@ -1,8 +1,8 @@
-# Point of Sales
+# AkarPOS
 
 Sistem kasir berbasis Laravel + Inertia + React untuk transaksi penjualan, customer management, inventory audit, sales return, cashier shift, receivables, payables, dan observability operasional.
 
-![POS Preview](public/media/revamp-pos.png "Point of Sales Preview")
+![POS Preview](public/media/revamp-pos.png "AkarPOS Preview")
 
 ## Daftar Isi
 

@@ -50,7 +50,7 @@ export default function Register({ botGuard }) {
                             Bergabung Bersama Kami
                         </h2>
                         <p className="text-lg opacity-90">
-                            Mulai kelola bisnis Anda dengan sistem Point of Sale
+                            Mulai kelola bisnis Anda dengan sistem AkarPOS
                             yang modern, cepat, dan mudah digunakan.
                         </p>
                         <div className="mt-8 space-y-3">

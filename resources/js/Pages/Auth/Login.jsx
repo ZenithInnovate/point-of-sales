@@ -232,7 +232,7 @@ export default function Login({ status, canResetPassword, canRegister, botGuard 
                             Kelola Bisnis Anda dengan Mudah
                         </h2>
                         <p className="text-lg opacity-90">
-                            Sistem Point of Sale modern yang membantu Anda
+                            Sistem AkarPOS modern yang membantu Anda
                             mengelola transaksi, inventori, dan laporan keuangan
                             dengan efisien.
                         </p>

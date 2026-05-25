@@ -2,7 +2,7 @@
 
 ## Objective
 
-Dokumen ini merangkum roadmap penguatan keamanan sistem Point of Sale sebelum pengembangan fitur dilanjutkan lebih jauh. Fokus utamanya bukan menambah fitur bisnis baru, tetapi memastikan fondasi keamanan aplikasi cukup kuat untuk dipakai pada operasional toko nyata, terutama untuk:
+Dokumen ini merangkum roadmap penguatan keamanan sistem AkarPOS sebelum pengembangan fitur dilanjutkan lebih jauh. Fokus utamanya bukan menambah fitur bisnis baru, tetapi memastikan fondasi keamanan aplikasi cukup kuat untuk dipakai pada operasional toko nyata, terutama untuk:
 
 - autentikasi dan registrasi,
 - kontrol akses dashboard,
