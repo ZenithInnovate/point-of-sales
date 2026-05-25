@@ -113,7 +113,7 @@
             float: right;
         }
 
-        .barcode-img {
+        .barcode-img, .barcode-container svg {
             height: 35pt;
             /* Sedikit lebih besar agar mudah di-scan */
             width: 100%;
@@ -246,7 +246,7 @@
 
                     <td style="text-align: right; width: 150pt;">
                         <div class="barcode-container">
-                            <img src="{{ $barcode }}" class="barcode-img" alt="barcode">
+                            {!! $barcode !!}
                             <div class="invoice-number">{{ $transaction->invoice }}</div>
                         </div>
                     </td>

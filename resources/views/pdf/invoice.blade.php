@@ -155,8 +155,9 @@
             text-align: center
         }
 
-        .barcode img {
-            height: 28px
+        .barcode img, .barcode svg {
+            height: 28px;
+            width: auto;
         }
     </style>
 
@@ -333,7 +334,7 @@
 
     <div class="footer">
         <div class="barcode" style="margin-top: 15px">
-            <img src="{{ $barcode }}" alt="barcode">
+            {!! $barcode !!}
             <div style="font-size:10px;color:#475569;margin-top: 5px;">{{ $transaction->invoice }}</div>
         </div>
         <div style="font-size:11px;color:#94a3b8; text-align:center; margin-top: 20px;">

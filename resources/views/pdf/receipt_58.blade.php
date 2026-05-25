@@ -12,7 +12,7 @@
         body { font-family: 'Inter','Helvetica','Arial',sans-serif; width: 58mm; margin: 0; padding: 6px; font-size: 11px; line-height: 1.4; }
         .center { text-align: center; }
         .bold { font-weight: 700; }
-        .barcode img { height: 24px; }
+        .barcode img, .barcode svg { height: 24px; width: auto; }
         .section { margin: 5px 0; }
     </style>
 </head>
@@ -144,7 +144,7 @@
 
     <div class="center section" style="margin-bottom:0;">
         <div class="barcode">
-            <img src="{{ $barcode }}" alt="barcode">
+            {!! $barcode !!}
         </div>
         <div style="font-size:10px;">{{ $transaction->invoice }}</div>
         <div>Terima kasih!</div>

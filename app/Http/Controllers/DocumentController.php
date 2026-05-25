@@ -6,7 +6,7 @@ use App\Models\Payable;
 use App\Models\Receivable;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Picqer\Barcode\BarcodeGeneratorPNG;
+use Picqer\Barcode\BarcodeGeneratorSVG;
 
 class DocumentController extends Controller
 {
@@ -52,10 +52,12 @@ class DocumentController extends Controller
 
     private function barcode(string $code): string
     {
-        $generator = new BarcodeGeneratorPNG;
-        $data = $generator->getBarcode($code, $generator::TYPE_CODE_128);
-
-        return 'data:image/png;base64,'.base64_encode($data);
+        $generator = new BarcodeGeneratorSVG;
+        $svg = $generator->getBarcode($code, $generator::TYPE_CODE_128, 2, 30);
+        // Remove XML declaration and doctype to keep only the <svg> element for inline rendering
+        $svg = preg_replace('/<\?xml.*\?>/i', '', $svg);
+        $svg = preg_replace('/<!DOCTYPE.*?>/i', '', $svg);
+        return trim($svg);
     }
 
     public function invoice(string $invoice)

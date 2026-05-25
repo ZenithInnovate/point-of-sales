@@ -29,7 +29,7 @@
         th { color:#64748b; text-transform: uppercase; letter-spacing:0.4px; font-size:11px; border-bottom:1px solid #e2e8f0; }
         tr + tr td { border-top:1px solid #e2e8f0; }
         .footer { margin-top:14px; display:flex; justify-content: space-between; align-items:center; gap:10px; }
-        .barcode img { height: 42px; }
+        .barcode img, .barcode svg { height: 42px; width: auto; }
     </style>
 </head>
 <body>
@@ -107,7 +107,7 @@
         <div class="footer">
             <div class="muted" style="font-size:11px;">Dicetak pada {{ now()->format('d M Y') }}</div>
             <div class="barcode" style="text-align:right;">
-                <img src="{{ $barcode }}" alt="barcode">
+                {!! $barcode !!}
                 <div style="font-size:10px; text-align:right;">{{ $payable->document_number }}</div>
             </div>
         </div>
