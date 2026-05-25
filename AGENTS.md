@@ -70,7 +70,7 @@ vendor/bin/pint                      # PHP formatter (Laravel Pint)
 ## Database & Seeding
 
 - Default seeders create roles, permissions, 2 users (admin + cashier), and sample data
-- Admin: `arya@gmail.com` / `password`
+- Admin: `admin@gmail.com` / `password`
 - Cashir: `cashier@gmail.com` / `password`
 - Indonesia region data loaded via `laravolt/indonesia` package
 

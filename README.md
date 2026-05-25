@@ -137,7 +137,7 @@ Dokumentasi detail konfigurasi: `docs/configuration.md`
 
 ## Default Login
 
-- Admin: `arya@gmail.com` / `password`
+- Admin: `admin@gmail.com` / `password`
 - Kasir: `cashier@gmail.com` / `password`
 
 Catatan:
@@ -263,5 +263,4 @@ php artisan storage:link
 
 ## Authors
 
-- [Arya Dwi Putra](https://www.github.com/aryadwiputra)
 - Menggunakan resource awal dari https://github.com/Raf-Taufiqurrahman/RILT-Starter dengan penyesuaian untuk aplikasi POS

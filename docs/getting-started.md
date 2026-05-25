@@ -38,7 +38,7 @@ php artisan serve
 
 ## Default Login
 
-- Admin: `arya@gmail.com` / `password`
+- Admin: `admin@gmail.com` / `password`
 - Kasir: `cashier@gmail.com` / `password`
 
 ## Seed Data

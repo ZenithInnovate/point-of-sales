@@ -363,8 +363,7 @@ export default function Welcome() {
                             </span>
                         </div>
                         <p className="text-sm text-slate-500">
-                            © {new Date().getFullYear()} Dibuat oleh Arya Dwi
-                            Putra
+                            © {new Date().getFullYear()} Dibuat oleh AkarDev.com
                         </p>
                     </div>
                 </footer>
