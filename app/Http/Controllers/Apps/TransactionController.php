@@ -285,18 +285,16 @@ class TransactionController extends Controller
             ->first();
 
         if (! $cart) {
-            return response()->json([
-                'success' => false,
+            return back()->withErrors([
                 'message' => 'Cart item not found',
-            ], 404);
+            ]);
         }
 
         // Check stock availability
         if ($cart->product->stock < $request->qty) {
-            return response()->json([
-                'success' => false,
+            return back()->withErrors([
                 'message' => 'Stok tidak mencukupi. Tersedia: '.$cart->product->stock,
-            ], 422);
+            ]);
         }
 
         // Update quantity and price
@@ -326,10 +324,9 @@ class TransactionController extends Controller
             ->get();
 
         if ($activeCarts->isEmpty()) {
-            return response()->json([
-                'success' => false,
+            return back()->withErrors([
                 'message' => 'Keranjang kosong, tidak ada yang bisa ditahan',
-            ], 422);
+            ]);
         }
 
         // Generate unique hold ID
@@ -364,10 +361,9 @@ class TransactionController extends Controller
             ->count();
 
         if ($activeCarts > 0) {
-            return response()->json([
-                'success' => false,
+            return back()->withErrors([
                 'message' => 'Selesaikan atau tahan transaksi aktif terlebih dahulu',
-            ], 422);
+            ]);
         }
 
         // Get held carts
@@ -376,10 +372,9 @@ class TransactionController extends Controller
             ->get();
 
         if ($heldCarts->isEmpty()) {
-            return response()->json([
-                'success' => false,
+            return back()->withErrors([
                 'message' => 'Transaksi ditahan tidak ditemukan',
-            ], 404);
+            ]);
         }
 
         // Resume by clearing hold info
