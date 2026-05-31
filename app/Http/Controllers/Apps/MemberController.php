@@ -30,25 +30,25 @@ class MemberController extends Controller
         $tier = trim((string) $request->string('tier')->value());
 
         $baseQuery = Customer::query()
-            ->where(function ($query) {
+            ->where(function ($query): void {
                 $query
                     ->where('is_loyalty_member', true)
                     ->orWhereNotNull('member_code');
             })
-            ->when($search !== '', function ($query) use ($search) {
-                $query->where(function ($customerQuery) use ($search) {
+            ->when($search !== '', function ($query) use ($search): void {
+                $query->where(function ($customerQuery) use ($search): void {
                     $customerQuery
                         ->where('name', 'like', "%{$search}%")
                         ->orWhere('member_code', 'like', "%{$search}%");
                 });
             })
-            ->when($tier !== '', function ($query) use ($tier) {
+            ->when($tier !== '', function ($query) use ($tier): void {
                 $query->where('loyalty_tier', $tier);
             })
-            ->when($status === 'active', function ($query) {
+            ->when($status === 'active', function ($query): void {
                 $query->where('is_loyalty_member', true);
             })
-            ->when($status === 'inactive', function ($query) {
+            ->when($status === 'inactive', function ($query): void {
                 $query
                     ->where('is_loyalty_member', false)
                     ->whereNotNull('member_code');
@@ -60,7 +60,7 @@ class MemberController extends Controller
             ->withQueryString();
 
         $summaryQuery = Customer::query()
-            ->where(function ($query) {
+            ->where(function ($query): void {
                 $query
                     ->where('is_loyalty_member', true)
                     ->orWhereNotNull('member_code');
@@ -137,7 +137,7 @@ class MemberController extends Controller
             ->latest()
             ->limit(15)
             ->get()
-            ->map(fn ($history) => [
+            ->map(fn ($history): array => [
                 'id' => $history->id,
                 'type' => $history->type,
                 'points_delta' => (int) $history->points_delta,
@@ -151,7 +151,7 @@ class MemberController extends Controller
             ->latest()
             ->limit(10)
             ->get()
-            ->map(fn (CustomerVoucher $voucher) => $this->loyaltyService->serializeVoucher($voucher) + [
+            ->map(fn (CustomerVoucher $voucher): array => $this->loyaltyService->serializeVoucher($voucher) + [
                 'is_active' => (bool) $voucher->is_active,
                 'is_used' => (bool) $voucher->is_used,
             ]);
@@ -276,7 +276,7 @@ class MemberController extends Controller
             ->orderByDesc('created_at')
             ->limit(5)
             ->get()
-            ->map(fn ($transaction) => [
+            ->map(fn ($transaction): array => [
                 'id' => $transaction->id,
                 'invoice' => $transaction->invoice,
                 'total' => $transaction->grand_total,

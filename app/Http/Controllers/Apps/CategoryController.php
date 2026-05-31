@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index()
     {
         // get categories
-        $categories = Category::when(request()->search, function ($categories) {
+        $categories = Category::when(request()->search, function ($categories): void {
             $categories = $categories->where('name', 'like', '%'.request()->search.'%');
         })->latest()->paginate(5);
 
@@ -138,7 +138,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
 
         // remove image
-        Storage::disk('public')->delete('category/'.basename($category->image));
+        Storage::disk('public')->delete('category/'.basename((string) $category->image));
 
         // delete
         $category->delete();

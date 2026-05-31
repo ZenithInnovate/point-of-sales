@@ -11,16 +11,15 @@ use Symfony\Component\HttpFoundation\Response;
 class TenantIdentification
 {
     /**
-     * The tenant manager service.
-     */
-    protected TenantManager $tenantManager;
-
-    /**
      * Create a new middleware instance.
      */
-    public function __construct(TenantManager $tenantManager)
+    public function __construct(
+        /**
+         * The tenant manager service.
+         */
+        protected TenantManager $tenantManager
+    )
     {
-        $this->tenantManager = $tenantManager;
     }
 
     /**
@@ -76,10 +75,8 @@ class TenantIdentification
                 if (!$request->is('license*')) {
                     return redirect()->route('license.validation');
                 }
-            } else {
-                if ($request->is('license*')) {
-                    return redirect()->route('login');
-                }
+            } elseif ($request->is('license*')) {
+                return redirect()->route('login');
             }
         }
 

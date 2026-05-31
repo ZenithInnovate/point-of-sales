@@ -30,8 +30,8 @@ class AuditLogController extends Controller
             ->when($filters['event'], fn (Builder $query, $event) => $query->where('event', $event))
             ->when($filters['date_from'], fn (Builder $query, $date) => $query->whereDate('created_at', '>=', $date))
             ->when($filters['date_to'], fn (Builder $query, $date) => $query->whereDate('created_at', '<=', $date))
-            ->when($filters['search'], function (Builder $query, $search) {
-                $query->where(function (Builder $builder) use ($search) {
+            ->when($filters['search'], function (Builder $query, $search): void {
+                $query->where(function (Builder $builder) use ($search): void {
                     $builder
                         ->where('target_label', 'like', '%'.$search.'%')
                         ->orWhere('description', 'like', '%'.$search.'%');
@@ -41,7 +41,7 @@ class AuditLogController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        $auditLogs->through(fn (AuditLog $log) => $this->transformSummary($log));
+        $auditLogs->through(fn (AuditLog $log): array => $this->transformSummary($log));
 
         return Inertia::render('Dashboard/AuditLogs/Index', [
             'auditLogs' => $auditLogs,

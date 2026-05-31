@@ -33,23 +33,20 @@ class TenantCreateCommand extends Command
     protected $description = 'Membuat tenant baru (mendaftarkan domain, membuat database, migrasi, dan seed data).';
 
     /**
-     * The tenant manager instance.
-     */
-    protected TenantManager $tenantManager;
-
-    /**
      * Create a new command instance.
      */
-    public function __construct(TenantManager $tenantManager)
+    public function __construct(/**
+     * The tenant manager instance.
+     */
+    protected TenantManager $tenantManager)
     {
         parent::__construct();
-        $this->tenantManager = $tenantManager;
     }
 
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         $id = Str::slug($this->argument('id'));
         $domain = $this->argument('domain');
@@ -60,7 +57,7 @@ class TenantCreateCommand extends Command
         $dbPort = $this->option('db-port') ?: config('database.connections.landlord.port');
         $dbDatabase = $this->option('db-database') ?: 'pos_tenant_' . str_replace('-', '_', $id);
         $dbUsername = $this->option('db-username') ?: config('database.connections.landlord.username');
-        $dbPassword = $this->option('db-password') !== null ? $this->option('db-password') : config('database.connections.landlord.password');
+        $dbPassword = $this->option('db-password') ?? config('database.connections.landlord.password');
 
         $this->info("Menyiapkan pendaftaran tenant...");
         $this->line("ID: {$id}");
@@ -132,7 +129,7 @@ class TenantCreateCommand extends Command
             // Panggil DB seed khusus untuk koneksi tenant mysql
             $this->call('db:seed', [
                 '--database' => 'mysql',
-                '--class' => 'Database\\Seeders\\DatabaseSeeder',
+                '--class' => \Database\Seeders\DatabaseSeeder::class,
                 '--force' => true,
             ]);
 

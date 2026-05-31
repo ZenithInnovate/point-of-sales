@@ -80,7 +80,7 @@ class AuditLogTest extends TestCase
         $this->actingAs($user)
             ->get(route('audit-logs.index'))
             ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page
+            ->assertInertia(fn (Assert $page): \Inertia\Testing\AssertableInertia => $page
                 ->component('Dashboard/AuditLogs/Index')
                 ->where('auditLogs.data.0.event', 'product.created')
                 ->where('auditLogs.data.0.target_label', 'Produk A'));

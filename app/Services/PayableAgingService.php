@@ -15,15 +15,15 @@ class PayableAgingService
 
         $buckets = ['current', '0-30', '31-60', '61-90', '90+'];
 
-        return collect($buckets)->map(function ($bucket) use ($payables) {
-            $filtered = $payables->filter(fn ($p) => $p->aging_bucket === $bucket);
+        return collect($buckets)->map(function ($bucket) use ($payables): array {
+            $filtered = $payables->filter(fn ($p): bool => $p->aging_bucket === $bucket);
 
             return [
                 'bucket' => $bucket,
                 'count' => $filtered->count(),
                 'total' => $filtered->sum('total'),
                 'paid' => $filtered->sum('paid'),
-                'remaining' => $filtered->sum(fn ($p) => max(0, $p->total - $p->paid)),
+                'remaining' => $filtered->sum(fn ($p): float|int => max(0, $p->total - $p->paid)),
             ];
         });
     }
@@ -39,14 +39,14 @@ class PayableAgingService
             ->orderByRaw('COALESCE(total_payable, 0) DESC')
             ->limit($limit)
             ->get()
-            ->map(fn ($s) => [
+            ->map(fn ($s): array => [
                 'id' => $s->id,
                 'name' => $s->name,
                 'total_payable' => $s->total_payable ?? 0,
                 'total_paid' => $s->total_paid ?? 0,
                 'remaining' => max(0, ($s->total_payable ?? 0) - ($s->total_paid ?? 0)),
             ])
-            ->filter(fn ($s) => $s['remaining'] > 0)
+            ->filter(fn ($s): bool => $s['remaining'] > 0)
             ->values();
     }
 
@@ -58,7 +58,7 @@ class PayableAgingService
             ->with('supplier:id,name')
             ->orderBy('due_date')
             ->get()
-            ->map(fn ($p) => [
+            ->map(fn ($p): array => [
                 'id' => $p->id,
                 'document_number' => $p->document_number,
                 'supplier_name' => $p->supplier?->name,

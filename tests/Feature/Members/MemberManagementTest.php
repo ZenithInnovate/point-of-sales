@@ -64,7 +64,7 @@ class MemberManagementTest extends TestCase
         $this->actingAs($user)
             ->get(route('members.index', ['search' => 'MEM-1001', 'status' => 'active']))
             ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page
+            ->assertInertia(fn (Assert $page): \Inertia\Testing\AssertableInertia => $page
                 ->component('Dashboard/Members/Index')
                 ->where('filters.search', 'MEM-1001')
                 ->where('filters.status', 'active')
@@ -188,7 +188,7 @@ class MemberManagementTest extends TestCase
     private function seedRegionHierarchy(): void
     {
         if (! Schema::hasTable('provinces')) {
-            Schema::create('provinces', function ($table) {
+            Schema::create('provinces', function ($table): void {
                 $table->id();
                 $table->string('code')->unique();
                 $table->string('name');
@@ -196,7 +196,7 @@ class MemberManagementTest extends TestCase
         }
 
         if (! Schema::hasTable('cities')) {
-            Schema::create('cities', function ($table) {
+            Schema::create('cities', function ($table): void {
                 $table->id();
                 $table->string('code')->unique();
                 $table->string('name');
@@ -205,7 +205,7 @@ class MemberManagementTest extends TestCase
         }
 
         if (! Schema::hasTable('districts')) {
-            Schema::create('districts', function ($table) {
+            Schema::create('districts', function ($table): void {
                 $table->id();
                 $table->string('code')->unique();
                 $table->string('name');
@@ -214,7 +214,7 @@ class MemberManagementTest extends TestCase
         }
 
         if (! Schema::hasTable('villages')) {
-            Schema::create('villages', function ($table) {
+            Schema::create('villages', function ($table): void {
                 $table->id();
                 $table->string('code')->unique();
                 $table->string('name');

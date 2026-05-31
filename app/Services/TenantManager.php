@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Models\Tenant;
@@ -80,7 +82,7 @@ class TenantManager
             if (app()->bound(PermissionRegistrar::class)) {
                 app(PermissionRegistrar::class)->forgetCachedPermissions();
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // Silence if cache registrar is not ready or failed
         }
     }

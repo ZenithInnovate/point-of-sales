@@ -16,15 +16,15 @@ class ReceivableService
 
         $buckets = ['current', '0-30', '31-60', '61-90', '90+'];
 
-        return collect($buckets)->map(function ($bucket) use ($receivables) {
-            $filtered = $receivables->filter(fn ($r) => $r->aging_bucket === $bucket);
+        return collect($buckets)->map(function ($bucket) use ($receivables): array {
+            $filtered = $receivables->filter(fn ($r): bool => $r->aging_bucket === $bucket);
 
             return [
                 'bucket' => $bucket,
                 'count' => $filtered->count(),
                 'total' => $filtered->sum('total'),
                 'paid' => $filtered->sum('paid'),
-                'remaining' => $filtered->sum(fn ($r) => max(0, $r->total - $r->paid)),
+                'remaining' => $filtered->sum(fn ($r): float|int => max(0, $r->total - $r->paid)),
             ];
         });
     }
@@ -38,15 +38,11 @@ class ReceivableService
             ->orderBy('due_date')
             ->get();
 
-        $receivables->transform(function ($item) {
-            $item->aging_bucket = $item->aging_bucket;
-
-            return $item;
-        });
+        $receivables->transform(fn($item) => $item);
 
         $totalOutstanding = $receivables
             ->where('status', '!=', 'paid')
-            ->sum(fn ($r) => max(0, $r->total - $r->total_paid));
+            ->sum(fn ($r): float|int => max(0, $r->total - $r->total_paid));
 
         $totalPaid = $receivables->sum('total_paid');
 
@@ -88,14 +84,14 @@ class ReceivableService
             ->orderByRaw('COALESCE(total_receivable, 0) DESC')
             ->limit($limit)
             ->get()
-            ->map(fn ($c) => [
+            ->map(fn ($c): array => [
                 'id' => $c->id,
                 'name' => $c->name,
                 'total_receivable' => $c->total_receivable ?? 0,
                 'total_paid' => $c->total_paid ?? 0,
                 'remaining' => max(0, ($c->total_receivable ?? 0) - ($c->total_paid ?? 0)),
             ])
-            ->filter(fn ($c) => $c['remaining'] > 0)
+            ->filter(fn ($c): bool => $c['remaining'] > 0)
             ->values();
     }
 }

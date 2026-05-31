@@ -41,7 +41,7 @@ class AdvancedSalesInsightsTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertInertia(fn (Assert $page) => $page
+            ->assertInertia(fn (Assert $page): \Inertia\Testing\AssertableInertia => $page
                 ->component('Dashboard/Reports/Insights')
                 ->has('summary')
                 ->has('salesByHour')
@@ -71,7 +71,7 @@ class AdvancedSalesInsightsTest extends TestCase
 
         $topProduct = $this->createProduct($category, 'Top Product', 'TOP-001', 12_000, 20_000, 10);
         $revenueProduct = $this->createProduct($category, 'Revenue Product', 'REV-001', 30_000, 50_000, 8);
-        $unsoldProduct = $this->createProduct($category, 'Unsold Product', 'UNS-001', 15_000, 25_000, 6);
+        $this->createProduct($category, 'Unsold Product', 'UNS-001', 15_000, 25_000, 6);
 
         $this->createTransactionWithDetails($cashier, $customer, Carbon::parse('2026-05-05 09:10:00'), [
             ['product' => $topProduct, 'qty' => 5, 'line_total' => 100_000],
@@ -79,7 +79,7 @@ class AdvancedSalesInsightsTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->get(route('reports.insights.index'));
-        $response->assertInertia(function (Assert $page) {
+        $response->assertInertia(function (Assert $page): void {
             $props = $page->toArray()['props'];
 
             $this->assertSame('Top Product', $props['topSellingProducts'][0]['product_title']);
@@ -119,7 +119,7 @@ class AdvancedSalesInsightsTest extends TestCase
             'cashier_id' => $cashierB->id,
         ]));
 
-        $response->assertInertia(function (Assert $page) {
+        $response->assertInertia(function (Assert $page): void {
             $props = $page->toArray()['props'];
 
             $this->assertCount(1, $props['salesByDay']);
@@ -155,7 +155,7 @@ class AdvancedSalesInsightsTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->get(route('reports.insights.index'));
-        $response->assertInertia(function (Assert $page) {
+        $response->assertInertia(function (Assert $page): void {
             $props = $page->toArray()['props'];
             $bucket09 = collect($props['salesByHour'])->firstWhere('hour', 9);
             $bucket17 = collect($props['salesByHour'])->firstWhere('hour', 17);
@@ -199,7 +199,7 @@ class AdvancedSalesInsightsTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->get(route('reports.insights.index'));
-        $response->assertInertia(function (Assert $page) {
+        $response->assertInertia(function (Assert $page): void {
             $props = $page->toArray()['props'];
 
             $this->assertSame(2, $props['repeatCustomerMetrics']['summary']['active_customers']);
@@ -242,7 +242,7 @@ class AdvancedSalesInsightsTest extends TestCase
             'end_date' => '2026-05-05',
         ]));
 
-        $response->assertInertia(function (Assert $page) {
+        $response->assertInertia(function (Assert $page): void {
             $props = $page->toArray()['props'];
             $fastProduct = collect($props['stockCoverage']['products'])->firstWhere('product_title', 'Fast Product');
             $idleProduct = collect($props['stockCoverage']['products'])->firstWhere('product_title', 'Idle Product');
@@ -390,7 +390,7 @@ class AdvancedSalesInsightsTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('reports.insights.index'));
 
-        $response->assertInertia(function (Assert $page) {
+        $response->assertInertia(function (Assert $page): void {
             $props = $page->toArray()['props'];
 
             $this->assertSame(1, $props['promoMonitor']['summary']['active']);

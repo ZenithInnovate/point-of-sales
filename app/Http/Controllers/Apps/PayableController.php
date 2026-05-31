@@ -28,15 +28,15 @@ class PayableController extends Controller
             ->withSum('payments as total_paid', 'amount')
             ->orderByDesc('created_at');
 
-        $query->when($filters['status'], function ($q, $status) {
+        $query->when($filters['status'], function ($q, $status): void {
             $q->where('status', $status);
-        })->when($filters['supplier'], function ($q, $supplier) {
+        })->when($filters['supplier'], function ($q, $supplier): void {
             $q->where('supplier_id', $supplier);
-        })->when($filters['invoice'], function ($q, $invoice) {
+        })->when($filters['invoice'], function ($q, string $invoice): void {
             $q->where('document_number', 'like', '%'.$invoice.'%');
-        })->when($filters['due_from'], function ($q, $date) {
+        })->when($filters['due_from'], function ($q, $date): void {
             $q->whereDate('due_date', '>=', $date);
-        })->when($filters['due_to'], function ($q, $date) {
+        })->when($filters['due_to'], function ($q, $date): void {
             $q->whereDate('due_date', '<=', $date);
         });
 
@@ -86,7 +86,7 @@ class PayableController extends Controller
         $payable->load([
             'supplier:id,name,phone,email,address',
             'purchaseOrder:id,document_number,status',
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->orderByDesc('paid_at')->with(['bankAccount:id,bank_name,account_number,account_name,logo', 'user:id,name']);
             },
         ]);
@@ -131,21 +131,19 @@ class PayableController extends Controller
             return $item;
         });
 
-        $agingSummary = $payables->groupBy('aging_bucket')->map(function ($group, $bucket) {
-            return [
-                'bucket' => $bucket,
-                'count' => $group->count(),
-                'total' => $group->sum('total'),
-                'paid' => $group->sum('total_paid'),
-                'remaining' => $group->sum(fn ($p) => max(0, $p->total - $p->total_paid)),
-            ];
-        })->values();
+        $agingSummary = $payables->groupBy('aging_bucket')->map(fn($group, $bucket) => [
+            'bucket' => $bucket,
+            'count' => $group->count(),
+            'total' => $group->sum('total'),
+            'paid' => $group->sum('total_paid'),
+            'remaining' => $group->sum(fn ($p): float|int => max(0, $p->total - $p->total_paid)),
+        ])->values();
 
         return response()->json([
             'supplier' => $supplier,
             'payables' => $payables,
             'aging_summary' => $agingSummary,
-            'total_outstanding' => $payables->where('status', '!=', 'paid')->sum(fn ($p) => max(0, $p->total - $p->total_paid)),
+            'total_outstanding' => $payables->where('status', '!=', 'paid')->sum(fn ($p): float|int => max(0, $p->total - $p->total_paid)),
         ]);
     }
 
@@ -164,7 +162,7 @@ class PayableController extends Controller
             return back()->with('error', 'Nominal melebihi sisa hutang.');
         }
 
-        DB::transaction(function () use ($validated, $payable, $request) {
+        DB::transaction(function () use ($validated, $payable, $request): void {
             PayablePayment::create([
                 'payable_id' => $payable->id,
                 'paid_at' => $validated['paid_at'],

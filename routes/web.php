@@ -34,9 +34,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // redirect to dashboard
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+Route::get('/', fn() => redirect()->route('login'));
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -60,15 +58,13 @@ Route::get('/license', function () {
     ]);
 })->name('license.validation');
 
-Route::get('/dashboard/access', function () {
-    return Inertia::render('Dashboard/Access');
-})->middleware(['auth', 'verified'])->name('dashboard.access');
+Route::get('/dashboard/access', fn() => Inertia::render('Dashboard/Access'))->middleware(['auth', 'verified'])->name('dashboard.access');
 
 // Public share routes (no login)
 Route::get('/share/transactions/{invoice}', [\App\Http\Controllers\DocumentController::class, 'publicInvoice'])
     ->name('transactions.public');
 
-Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], function (): void {
     Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified', 'permission:dashboard-access'])->name('dashboard');
     Route::get('/permissions', [PermissionController::class, 'index'])->middleware('permission:permissions-access')->name('permissions.index');
     // roles route
@@ -105,7 +101,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
             }
             return $next($request);
         }
-    ]], function () {
+    ]], function (): void {
         Route::resource('tenants', TenantController::class)
             ->middlewareFor(['index', 'show'], 'permission:tenants-access')
             ->middlewareFor(['create', 'store'], 'permission:tenants-create')

@@ -39,16 +39,16 @@ class PricingRuleController extends Controller
 
         $rules = PricingRule::query()
             ->with(['product:id,title', 'category:id,name', 'creator:id,name', 'qtyBreaks', 'bundleItems', 'buyGetItems'])
-            ->when($filters['search'], function ($query, $search) {
+            ->when($filters['search'], function ($query, string $search): void {
                 $query->where('name', 'like', '%'.$search.'%');
             })
-            ->when($filters['status'] !== null && $filters['status'] !== '', function ($query) use ($filters) {
+            ->when($filters['status'] !== null && $filters['status'] !== '', function ($query) use ($filters): void {
                 match ($filters['status']) {
                     'active' => $query->where('is_active', true)
-                        ->where(function ($builder) {
+                        ->where(function ($builder): void {
                             $builder->whereNull('starts_at')->orWhere('starts_at', '<=', now());
                         })
-                        ->where(function ($builder) {
+                        ->where(function ($builder): void {
                             $builder->whereNull('ends_at')->orWhere('ends_at', '>=', now());
                         }),
                     'scheduled' => $query->where('is_active', true)->whereNotNull('starts_at')->where('starts_at', '>', now()),
@@ -57,10 +57,10 @@ class PricingRuleController extends Controller
                     default => null,
                 };
             })
-            ->when($filters['target_type'], function ($query, $targetType) {
+            ->when($filters['target_type'], function ($query, $targetType): void {
                 $query->where('target_type', $targetType);
             })
-            ->when($filters['kind'], function ($query, $kind) {
+            ->when($filters['kind'], function ($query, $kind): void {
                 $query->where('kind', $kind);
             })
             ->orderByDesc('is_active')
@@ -68,7 +68,7 @@ class PricingRuleController extends Controller
             ->orderBy('name')
             ->paginate(10)
             ->withQueryString()
-            ->through(fn (PricingRule $rule) => [
+            ->through(fn (PricingRule $rule): array => [
                 'id' => $rule->id,
                 'name' => $rule->name,
                 'kind' => $rule->kind,
@@ -94,10 +94,10 @@ class PricingRuleController extends Controller
             'rules' => $rules,
             'filters' => $filters,
             'summary' => [
-                'active' => $summaryBase->filter(fn (PricingRule $rule) => $rule->currentStatusLabel() === 'active')->count(),
-                'scheduled' => $summaryBase->filter(fn (PricingRule $rule) => $rule->currentStatusLabel() === 'scheduled')->count(),
-                'expired' => $summaryBase->filter(fn (PricingRule $rule) => $rule->currentStatusLabel() === 'expired')->count(),
-                'inactive' => $summaryBase->filter(fn (PricingRule $rule) => $rule->currentStatusLabel() === 'inactive')->count(),
+                'active' => $summaryBase->filter(fn (PricingRule $rule): bool => $rule->currentStatusLabel() === 'active')->count(),
+                'scheduled' => $summaryBase->filter(fn (PricingRule $rule): bool => $rule->currentStatusLabel() === 'scheduled')->count(),
+                'expired' => $summaryBase->filter(fn (PricingRule $rule): bool => $rule->currentStatusLabel() === 'expired')->count(),
+                'inactive' => $summaryBase->filter(fn (PricingRule $rule): bool => $rule->currentStatusLabel() === 'inactive')->count(),
             ],
             'recentAudits' => AuditLog::query()
                 ->where('module', 'pricing_rules')
@@ -144,20 +144,20 @@ class PricingRuleController extends Controller
             ...$this->formPayload(),
             'rule' => [
                 ...$pricingRule->toArray(),
-                'qty_breaks' => $pricingRule->qtyBreaks->map(fn (PricingRuleQtyBreak $break) => [
+                'qty_breaks' => $pricingRule->qtyBreaks->map(fn (PricingRuleQtyBreak $break): array => [
                     'id' => $break->id,
                     'min_qty' => (int) $break->min_qty,
                     'discount_type' => $break->discount_type,
                     'discount_value' => (float) $break->discount_value,
                     'sort_order' => (int) $break->sort_order,
                 ])->values()->all(),
-                'bundle_items' => $pricingRule->bundleItems->map(fn (PricingRuleBundleItem $item) => [
+                'bundle_items' => $pricingRule->bundleItems->map(fn (PricingRuleBundleItem $item): array => [
                     'id' => $item->id,
                     'product_id' => (int) $item->product_id,
                     'quantity' => (int) $item->quantity,
                     'sort_order' => (int) $item->sort_order,
                 ])->values()->all(),
-                'buy_get_items' => $pricingRule->buyGetItems->map(fn (PricingRuleBuyGetItem $item) => [
+                'buy_get_items' => $pricingRule->buyGetItems->map(fn (PricingRuleBuyGetItem $item): array => [
                     'id' => $item->id,
                     'product_id' => (int) $item->product_id,
                     'role' => $item->role,
@@ -210,9 +210,9 @@ class PricingRuleController extends Controller
     {
         $validated = $this->validateRule($request);
         $rule = new PricingRule($validated['rule']);
-        $rule->setRelation('qtyBreaks', collect($validated['relations']['qty_breaks'])->map(fn (array $break) => new PricingRuleQtyBreak($break)));
-        $rule->setRelation('bundleItems', collect($validated['relations']['bundle_items'])->map(fn (array $item) => new PricingRuleBundleItem($item)));
-        $rule->setRelation('buyGetItems', collect($validated['relations']['buy_get_items'])->map(fn (array $item) => new PricingRuleBuyGetItem($item)));
+        $rule->setRelation('qtyBreaks', collect($validated['relations']['qty_breaks'])->map(fn (array $break): \App\Models\PricingRuleQtyBreak => new PricingRuleQtyBreak($break)));
+        $rule->setRelation('bundleItems', collect($validated['relations']['bundle_items'])->map(fn (array $item): \App\Models\PricingRuleBundleItem => new PricingRuleBundleItem($item)));
+        $rule->setRelation('buyGetItems', collect($validated['relations']['buy_get_items'])->map(fn (array $item): \App\Models\PricingRuleBuyGetItem => new PricingRuleBuyGetItem($item)));
 
         $sampleCarts = $this->buildPreviewCarts($rule);
         $customer = $request->filled('preview_customer_id')
@@ -348,7 +348,7 @@ class PricingRuleController extends Controller
 
         if ($validated['kind'] === PricingRule::KIND_QTY_BREAK) {
             $validated['qty_breaks'] = collect($validated['qty_breaks'] ?? [])
-                ->map(fn (array $break, int $index) => [
+                ->map(fn (array $break, int $index): array => [
                     'min_qty' => (int) $break['min_qty'],
                     'discount_type' => $break['discount_type'],
                     'discount_value' => (float) $break['discount_value'],
@@ -360,7 +360,7 @@ class PricingRuleController extends Controller
         }
 
         $validated['bundle_items'] = collect($validated['bundle_items'] ?? [])
-            ->map(fn (array $item, int $index) => [
+            ->map(fn (array $item, int $index): array => [
                 'product_id' => (int) $item['product_id'],
                 'quantity' => (int) $item['quantity'],
                 'sort_order' => (int) ($item['sort_order'] ?? $index),
@@ -368,7 +368,7 @@ class PricingRuleController extends Controller
             ->values()
             ->all();
         $validated['buy_get_items'] = collect($validated['buy_get_items'] ?? [])
-            ->map(fn (array $item, int $index) => [
+            ->map(fn (array $item, int $index): array => [
                 'product_id' => (int) $item['product_id'],
                 'role' => $item['role'],
                 'quantity' => (int) $item['quantity'],
@@ -478,7 +478,7 @@ class PricingRuleController extends Controller
 
         return $products
             ->values()
-            ->map(function (Product $product, int $index) use ($rule) {
+            ->map(function (Product $product, int $index) use ($rule): \App\Models\Cart {
                 $qty = $this->previewQuantityForRule($rule, $product);
                 $cart = new Cart([
                     'id' => -($index + 1),

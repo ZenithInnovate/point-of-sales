@@ -71,7 +71,7 @@ class SupplierReturnService
 
     public function complete(SupplierReturn $return): void
     {
-        DB::transaction(function () use ($return) {
+        DB::transaction(function () use ($return): void {
             $return->load('items');
 
             foreach ($return->items as $item) {
@@ -91,7 +91,7 @@ class SupplierReturnService
             }
 
             if ($return->payable_id && $return->payable) {
-                $returnAmount = $return->items->sum(fn ($i) => $i->qty_returned * $i->unit_price);
+                $returnAmount = $return->items->sum(fn ($i): int|float => $i->qty_returned * $i->unit_price);
                 $payable = $return->payable;
                 $payable->total = max(0, $payable->total - $returnAmount);
                 if ($payable->total <= 0) {
@@ -121,7 +121,7 @@ class SupplierReturnService
 
     public function cancel(SupplierReturn $return): void
     {
-        DB::transaction(function () use ($return) {
+        DB::transaction(function () use ($return): void {
             $return->update(['status' => 'cancelled']);
 
             $this->auditLogService->log(

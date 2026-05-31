@@ -47,13 +47,13 @@ class SalesReturnController extends Controller
 
         $salesReturns = SalesReturn::query()
             ->with(['transaction:id,invoice,payment_method,payment_status', 'customer:id,name', 'cashier:id,name'])
-            ->when(! $request->user()->isSuperAdmin(), function (Builder $query) use ($request) {
-                $query->whereHas('transaction', function (Builder $builder) use ($request) {
+            ->when(! $request->user()->isSuperAdmin(), function (Builder $query) use ($request): void {
+                $query->whereHas('transaction', function (Builder $builder) use ($request): void {
                     $builder->where('cashier_id', $request->user()->id);
                 });
             })
             ->when($filters['code'], fn (Builder $query, $code) => $query->where('code', 'like', '%'.$code.'%'))
-            ->when($filters['invoice'], function (Builder $query, $invoice) {
+            ->when($filters['invoice'], function (Builder $query, $invoice): void {
                 $query->whereHas('transaction', fn (Builder $builder) => $builder->where('invoice', 'like', '%'.$invoice.'%'));
             })
             ->when($filters['date_from'], fn (Builder $query, $date) => $query->whereDate('created_at', '>=', $date))
@@ -145,7 +145,7 @@ class SalesReturnController extends Controller
 
         $payload = $this->prepareDraftPayload($salesReturn->transaction, $request->validated(), $salesReturn->id);
 
-        DB::transaction(function () use ($salesReturn, $payload) {
+        DB::transaction(function () use ($salesReturn, $payload): void {
             $salesReturn->update([
                 'return_type' => $payload['return_type'],
                 'refund_amount' => $payload['refund_amount'],
@@ -180,7 +180,7 @@ class SalesReturnController extends Controller
         $this->ensureDraft($salesReturn);
         $before = $this->salesReturnAuditPayload($salesReturn);
 
-        DB::transaction(function () use ($request, $salesReturn) {
+        DB::transaction(function () use ($request, $salesReturn): void {
             $activeShift = $this->cashierShiftService->requireActiveShiftForUser(
                 $request->user()->id,
                 lockForUpdate: true
@@ -325,7 +325,7 @@ class SalesReturnController extends Controller
             'credited_amount' => (int) $salesReturn->credited_amount,
             'total_return_amount' => (int) $salesReturn->total_return_amount,
             'transaction_id' => (int) $salesReturn->transaction_id,
-            'items_summary' => $salesReturn->items->map(fn (SalesReturnItem $item) => [
+            'items_summary' => $salesReturn->items->map(fn (SalesReturnItem $item): array => [
                 'product_id' => $item->product_id,
                 'product_title' => $item->product?->title,
                 'qty_return' => (int) $item->qty_return,
@@ -363,7 +363,7 @@ class SalesReturnController extends Controller
                 'items.product:id,title,barcode,sku,buy_price',
                 'items.transactionDetail:id,transaction_id,product_id,qty,price',
             ])
-            ->when(! $request->user()->isSuperAdmin(), function (Builder $query) use ($request) {
+            ->when(! $request->user()->isSuperAdmin(), function (Builder $query) use ($request): void {
                 $query->whereHas('transaction', fn (Builder $builder) => $builder->where('cashier_id', $request->user()->id));
             })
             ->findOrFail($salesReturnId);
@@ -398,9 +398,9 @@ class SalesReturnController extends Controller
                 'status' => $transaction->receivable->status,
                 'remaining' => (int) $transaction->receivable->remaining,
             ] : null,
-            'details' => $transaction->details->map(function (TransactionDetail $detail) use ($draftItems) {
+            'details' => $transaction->details->map(function (TransactionDetail $detail) use ($draftItems): array {
                 $completedReturnedQty = (int) $detail->salesReturnItems
-                    ->filter(fn (SalesReturnItem $item) => $item->salesReturn?->status === 'completed')
+                    ->filter(fn (SalesReturnItem $item): bool => $item->salesReturn?->status === 'completed')
                     ->sum('qty_return');
 
                 $draftItem = $draftItems->get($detail->id);
@@ -455,33 +455,31 @@ class SalesReturnController extends Controller
                 'id' => $salesReturn->transaction?->id,
                 'invoice' => $salesReturn->transaction?->invoice,
             ],
-            'items' => $salesReturn->items->map(function (SalesReturnItem $item) {
-                return [
-                    'id' => $item->id,
-                    'transaction_detail_id' => $item->transaction_detail_id,
-                    'product' => $item->product ? [
-                        'id' => $item->product->id,
-                        'title' => $item->product->title,
-                        'barcode' => $item->product->barcode,
-                        'sku' => $item->product->sku,
-                    ] : null,
-                    'qty_sold' => (int) $item->qty_sold,
-                    'qty_returned_before' => (int) $item->qty_returned_before,
-                    'qty_return' => (int) $item->qty_return,
-                    'unit_price' => (int) $item->unit_price,
-                    'subtotal' => (int) $item->subtotal,
-                    'return_reason' => $item->return_reason,
-                    'restock_to_inventory' => (bool) $item->restock_to_inventory,
-                ];
-            })->values(),
+            'items' => $salesReturn->items->map(fn(SalesReturnItem $item) => [
+                'id' => $item->id,
+                'transaction_detail_id' => $item->transaction_detail_id,
+                'product' => $item->product ? [
+                    'id' => $item->product->id,
+                    'title' => $item->product->title,
+                    'barcode' => $item->product->barcode,
+                    'sku' => $item->product->sku,
+                ] : null,
+                'qty_sold' => (int) $item->qty_sold,
+                'qty_returned_before' => (int) $item->qty_returned_before,
+                'qty_return' => (int) $item->qty_return,
+                'unit_price' => (int) $item->unit_price,
+                'subtotal' => (int) $item->subtotal,
+                'return_reason' => $item->return_reason,
+                'restock_to_inventory' => (bool) $item->restock_to_inventory,
+            ])->values(),
         ];
     }
 
     private function transactionHasReturnableItems(Transaction $transaction): bool
     {
-        return $transaction->details->contains(function (TransactionDetail $detail) {
+        return $transaction->details->contains(function (TransactionDetail $detail): bool {
             $completedReturnedQty = (int) $detail->salesReturnItems
-                ->filter(fn (SalesReturnItem $item) => $item->salesReturn?->status === 'completed')
+                ->filter(fn (SalesReturnItem $item): bool => $item->salesReturn?->status === 'completed')
                 ->sum('qty_return');
 
             return $completedReturnedQty < (int) $detail->qty;
@@ -500,7 +498,7 @@ class SalesReturnController extends Controller
         }
 
         $items = collect($validated['items'])
-            ->map(function (array $item) use ($details, $returnedQtyMap) {
+            ->map(function (array $item) use ($details, $returnedQtyMap): ?array {
                 $detail = $details->get((int) $item['transaction_detail_id']);
 
                 if (! $detail) {
@@ -538,7 +536,7 @@ class SalesReturnController extends Controller
                     'qty_return' => $qtyReturn,
                     'unit_price' => (int) $detail->price,
                     'subtotal' => $qtyReturn * (int) $detail->price,
-                    'return_reason' => trim($item['return_reason']),
+                    'return_reason' => trim((string) $item['return_reason']),
                     'restock_to_inventory' => (bool) ($item['restock_to_inventory'] ?? true),
                 ];
             })
@@ -622,7 +620,7 @@ class SalesReturnController extends Controller
     {
         return SalesReturnItem::query()
             ->selectRaw('transaction_detail_id, COALESCE(SUM(qty_return), 0) as total_qty')
-            ->whereHas('salesReturn', function (Builder $query) use ($transactionId, $excludeSalesReturnId) {
+            ->whereHas('salesReturn', function (Builder $query) use ($transactionId, $excludeSalesReturnId): void {
                 $query->where('transaction_id', $transactionId)
                     ->where('status', 'completed');
 

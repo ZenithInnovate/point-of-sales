@@ -51,7 +51,7 @@ class TransactionController extends Controller
             ->get();
 
         $initialPricingPreview = $this->loyaltyService->previewCheckout(
-            $this->pricingService->previewCart($carts, null)
+            $this->pricingService->previewCart($carts)
         );
 
         // Get held carts grouped by hold_id
@@ -60,7 +60,7 @@ class TransactionController extends Controller
             ->held()
             ->get()
             ->groupBy('hold_id')
-            ->map(function ($items, $holdId) {
+            ->map(function ($items, $holdId): array {
                 $first = $items->first();
 
                 return [
@@ -82,8 +82,8 @@ class TransactionController extends Controller
             ->where('stock', '>', 0)
             ->orderBy('title')
             ->get();
-        $pricingBadges = $this->pricingService->previewProducts($products, null);
-        $products = $products->map(function (Product $product) use ($pricingBadges) {
+        $pricingBadges = $this->pricingService->previewProducts($products);
+        $products = $products->map(function (Product $product) use ($pricingBadges): array {
             $pricing = $pricingBadges->get($product->id);
 
             return [
@@ -260,10 +260,9 @@ class TransactionController extends Controller
             $cart->delete();
 
             return back();
-        } else {
-            // Handle case where no cart is found (e.g., redirect with error message)
-            return back()->withErrors(['message' => 'Cart not found']);
         }
+        // Handle case where no cart is found (e.g., redirect with error message)
+        return back()->withErrors(['message' => 'Cart not found']);
 
     }
 
@@ -436,7 +435,7 @@ class TransactionController extends Controller
             ->held()
             ->get()
             ->groupBy('hold_id')
-            ->map(function ($items, $holdId) {
+            ->map(function ($items, $holdId): array {
                 $first = $items->first();
 
                 return [
@@ -445,7 +444,7 @@ class TransactionController extends Controller
                     'held_at' => $first->held_at,
                     'items_count' => $items->sum('qty'),
                     'total' => $items->sum('price'),
-                    'items' => $items->map(fn ($item) => [
+                    'items' => $items->map(fn ($item): array => [
                         'id' => $item->id,
                         'product' => $item->product,
                         'qty' => $item->qty,
@@ -472,7 +471,7 @@ class TransactionController extends Controller
         $isPayLater = $request->boolean('pay_later');
         $paymentGateway = $isPayLater ? null : $request->input('payment_gateway');
         if ($paymentGateway) {
-            $paymentGateway = strtolower($paymentGateway);
+            $paymentGateway = strtolower((string) $paymentGateway);
         }
         $paymentSetting = null;
 
@@ -495,7 +494,7 @@ class TransactionController extends Controller
         $length = 10;
         $random = '';
         for ($i = 0; $i < $length; $i++) {
-            $random .= rand(0, 1) ? rand(0, 9) : chr(rand(ord('a'), ord('z')));
+            $random .= random_int(0, 1) !== 0 ? random_int(0, 9) : chr(random_int(ord('a'), ord('z')));
         }
 
         $invoice = 'TRX-'.Str::upper($random);
@@ -607,7 +606,7 @@ class TransactionController extends Controller
                 ]);
 
                 $product = Product::find($cart->product_id);
-                $product->stock = $product->stock - $cart->qty;
+                $product->stock -= $cart->qty;
                 $product->save();
             }
 
@@ -693,18 +692,18 @@ class TransactionController extends Controller
         }
 
         $query
-            ->when($filters['invoice'], function (Builder $builder, $invoice) {
+            ->when($filters['invoice'], function (Builder $builder, string $invoice): void {
                 $builder->where('invoice', 'like', '%'.$invoice.'%');
             })
-            ->when($filters['start_date'], function (Builder $builder, $date) {
+            ->when($filters['start_date'], function (Builder $builder, $date): void {
                 $builder->whereDate('created_at', '>=', $date);
             })
-            ->when($filters['end_date'], function (Builder $builder, $date) {
+            ->when($filters['end_date'], function (Builder $builder, $date): void {
                 $builder->whereDate('created_at', '<=', $date);
             });
 
         $transactions = $query->paginate(10)->withQueryString();
-        $transactions->through(function (Transaction $transaction) use ($salesReturnTablesReady) {
+        $transactions->through(function (Transaction $transaction) use ($salesReturnTablesReady): array {
             $canCreateSalesReturn = false;
 
             if ($salesReturnTablesReady) {
@@ -712,7 +711,7 @@ class TransactionController extends Controller
 
                 foreach ($transaction->details as $detail) {
                     $returnedQty = (int) $detail->salesReturnItems
-                        ->filter(fn ($item) => $item->salesReturn?->status === 'completed')
+                        ->filter(fn ($item): bool => $item->salesReturn?->status === 'completed')
                         ->sum('qty_return');
 
                     if ($returnedQty < (int) $detail->qty) {

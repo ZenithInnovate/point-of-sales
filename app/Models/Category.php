@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -44,7 +46,7 @@ class Category extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => app()->bound('tenant')
+            get: fn ($value): string => app()->bound('tenant')
                 ? asset('/storage/tenants/' . app('tenant')->storage_key . '/category/' . $value)
                 : asset('/storage/category/' . $value),
         );

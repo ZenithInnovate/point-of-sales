@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'auth' => [
         'public_registration' => env('AUTH_PUBLIC_REGISTRATION', false),

@@ -26,7 +26,7 @@ class ProductController extends Controller
     public function index()
     {
         // get products
-        $products = Product::when(request()->search, function ($products) {
+        $products = Product::when(request()->search, function ($products): void {
             $products = $products->where('title', 'like', '%'.request()->search.'%');
         })->with('category')->latest()->paginate(5);
 
@@ -192,14 +192,14 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\RedirectResponse
     {
         // find by ID
         $product = Product::findOrFail($id);
         $before = $this->productAuditPayload($product);
 
         // remove image
-        Storage::disk('public')->delete('products/'.basename($product->image));
+        Storage::disk('public')->delete('products/'.basename((string) $product->image));
 
         // delete
         $product->delete();

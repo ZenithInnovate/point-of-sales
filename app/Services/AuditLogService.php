@@ -98,7 +98,7 @@ class AuditLogService
             return 'configured';
         }
 
-        if ($hadBefore && ! $hasAfter) {
+        if (! $hasAfter) {
             return 'removed';
         }
 
@@ -164,7 +164,7 @@ class AuditLogService
     private function normalizeValue(mixed $value): mixed
     {
         if ($value instanceof Collection) {
-            return $value->map(fn ($item) => $this->normalizeValue($item))->values()->all();
+            return $value->map(fn ($item): mixed => $this->normalizeValue($item))->values()->all();
         }
 
         if ($value instanceof Model) {

@@ -69,15 +69,11 @@ class PaymentWebhookTest extends TestCase
 
         $response->assertForbidden();
         $this->assertSame('pending', $transaction->fresh()->payment_status);
-        Log::shouldNotHaveReceived('info', function ($message) {
-            return $message === 'Midtrans Webhook Received';
-        });
-        Log::shouldHaveReceived('warning', function ($message, $context = []) {
-            return $message === 'Midtrans Webhook: Invalid signature'
-                && ! array_key_exists('received', $context)
-                && ! array_key_exists('expected', $context)
-                && ($context['verification_result'] ?? null) === 'invalid';
-        });
+        Log::shouldNotHaveReceived('info', fn($message) => $message === 'Midtrans Webhook Received');
+        Log::shouldHaveReceived('warning', fn($message, $context = []) => $message === 'Midtrans Webhook: Invalid signature'
+            && ! array_key_exists('received', $context)
+            && ! array_key_exists('expected', $context)
+            && ($context['verification_result'] ?? null) === 'invalid');
     }
 
     public function test_xendit_webhook_updates_transaction_status_when_token_is_valid(): void
@@ -129,14 +125,10 @@ class PaymentWebhookTest extends TestCase
 
         $response->assertForbidden();
         $this->assertSame('pending', $transaction->fresh()->payment_status);
-        Log::shouldNotHaveReceived('info', function ($message) {
-            return $message === 'Xendit Webhook Received';
-        });
-        Log::shouldHaveReceived('warning', function ($message, $context = []) {
-            return $message === 'Xendit Webhook: Invalid callback token'
-                && ! array_key_exists('token', $context)
-                && ($context['verification_result'] ?? null) === 'invalid';
-        });
+        Log::shouldNotHaveReceived('info', fn($message) => $message === 'Xendit Webhook Received');
+        Log::shouldHaveReceived('warning', fn($message, $context = []) => $message === 'Xendit Webhook: Invalid callback token'
+            && ! array_key_exists('token', $context)
+            && ($context['verification_result'] ?? null) === 'invalid');
     }
 
     private function createPendingTransaction(string $paymentMethod): Transaction

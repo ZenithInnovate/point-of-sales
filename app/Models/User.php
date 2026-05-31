@@ -84,17 +84,15 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getPermissions()
     {
-        return $this->getAllPermissions()->mapWithKeys(function ($permission) {
-            return [
-                $permission['name'] => true,
-            ];
-        });
+        return $this->getAllPermissions()->mapWithKeys(fn($permission) => [
+            $permission['name'] => true,
+        ]);
     }
 
     /**
      * check role isSuperAdmin
      */
-    public function isSuperAdmin()
+    public function isSuperAdmin(): bool
     {
         return $this->hasRole('super-admin');
     }

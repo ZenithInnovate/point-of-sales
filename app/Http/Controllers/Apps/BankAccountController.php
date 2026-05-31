@@ -203,7 +203,7 @@ class BankAccountController extends Controller
 
         $beforeOrder = BankAccount::ordered()
             ->get(['id', 'bank_name', 'sort_order'])
-            ->map(fn (BankAccount $account) => [
+            ->map(fn (BankAccount $account): array => [
                 'id' => $account->id,
                 'bank_name' => $account->bank_name,
                 'sort_order' => (int) $account->sort_order,
@@ -216,7 +216,7 @@ class BankAccountController extends Controller
 
         $afterOrder = BankAccount::ordered()
             ->get(['id', 'bank_name', 'sort_order'])
-            ->map(fn (BankAccount $account) => [
+            ->map(fn (BankAccount $account): array => [
                 'id' => $account->id,
                 'bank_name' => $account->bank_name,
                 'sort_order' => (int) $account->sort_order,

@@ -38,7 +38,7 @@ class HandleInertiaRequests extends Middleware
             $userId = $request->user()->id;
 
             $lowStockNotifications = Product::where('stock', '<=', 0)
-                ->whereNotExists(function ($query) use ($userId) {
+                ->whereNotExists(function ($query) use ($userId): void {
                     $query->selectRaw('1')
                         ->from('product_notification_reads as pr')
                         ->whereColumn('pr.product_id', 'products.id')
@@ -48,14 +48,12 @@ class HandleInertiaRequests extends Middleware
                 ->orderByDesc('updated_at')
                 ->limit(10)
                 ->get(['id', 'title', 'stock', 'updated_at'])
-                ->map(function ($product) {
-                    return [
-                        'id' => $product->id,
-                        'title' => $product->title,
-                        'stock' => (int) $product->stock,
-                        'time' => optional($product->updated_at)->diffForHumans(),
-                    ];
-                });
+                ->map(fn($product) => [
+                    'id' => $product->id,
+                    'title' => $product->title,
+                    'stock' => (int) $product->stock,
+                    'time' => optional($product->updated_at)->diffForHumans(),
+                ]);
 
             $payableAgingService = new PayableAgingService;
             $receivableService = new ReceivableService;
@@ -69,7 +67,7 @@ class HandleInertiaRequests extends Middleware
                 ->orderBy('due_date')
                 ->limit(5)
                 ->get(['id', 'invoice', 'customer_id', 'due_date', 'total', 'paid', 'status'])
-                ->map(function ($item) {
+                ->map(function ($item): array {
                     $remaining = max(0, ($item->total ?? 0) - ($item->paid ?? 0));
 
                     return [
@@ -88,7 +86,7 @@ class HandleInertiaRequests extends Middleware
                 ->orderBy('due_date')
                 ->limit(5)
                 ->get(['id', 'document_number', 'due_date', 'total', 'paid', 'status'])
-                ->map(function ($item) {
+                ->map(function ($item): array {
                     $remaining = max(0, ($item->total ?? 0) - ($item->paid ?? 0));
 
                     return [
@@ -134,10 +132,10 @@ class HandleInertiaRequests extends Middleware
 
         if (Schema::hasTable('settings')) {
             $logo = \App\Models\Setting::get('store_logo');
-            if ($logo && ! str_starts_with($logo, 'http') && ! str_starts_with($logo, '/storage')) {
+            if ($logo && ! str_starts_with((string) $logo, 'http') && ! str_starts_with((string) $logo, '/storage')) {
                 $logo = app()->bound('tenant')
-                    ? asset('/storage/tenants/' . app('tenant')->storage_key . '/' . ltrim($logo, '/'))
-                    : asset('storage/'.ltrim($logo, '/'));
+                    ? asset('/storage/tenants/' . app('tenant')->storage_key . '/' . ltrim((string) $logo, '/'))
+                    : asset('storage/'.ltrim((string) $logo, '/'));
             }
 
             $storeProfile = [

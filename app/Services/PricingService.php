@@ -13,13 +13,9 @@ use Illuminate\Support\Collection;
 
 class PricingService
 {
-    public function __construct(
-        private readonly LoyaltyService $loyaltyService
-    ) {}
-
     public function getActiveRules(?CarbonInterface $at = null): Collection
     {
-        $at = $at ?? now();
+        $at ??= now();
 
         return PricingRule::query()
             ->with([
@@ -30,10 +26,10 @@ class PricingService
                 'buyGetItems.product:id,title,sell_price,category_id',
             ])
             ->where('is_active', true)
-            ->where(function ($query) use ($at) {
+            ->where(function ($query) use ($at): void {
                 $query->whereNull('starts_at')->orWhere('starts_at', '<=', $at);
             })
-            ->where(function ($query) use ($at) {
+            ->where(function ($query) use ($at): void {
                 $query->whereNull('ends_at')->orWhere('ends_at', '>=', $at);
             })
             ->orderByDesc('priority')
@@ -44,7 +40,7 @@ class PricingService
     public function previewCart(iterable $carts, ?Customer $customer = null, ?CarbonInterface $at = null): array
     {
         $cartCollection = collect($carts)
-            ->filter(fn ($cart) => $cart instanceof Cart && $cart->product)
+            ->filter(fn ($cart): bool => $cart instanceof Cart && $cart->product)
             ->values();
         $rules = $this->getActiveRules($at);
 
@@ -54,7 +50,7 @@ class PricingService
     public function previewCartWithRules(iterable $carts, ?Customer $customer, Collection $rules): array
     {
         $cartCollection = collect($carts)
-            ->filter(fn ($cart) => $cart instanceof Cart && $cart->product)
+            ->filter(fn ($cart): bool => $cart instanceof Cart && $cart->product)
             ->values();
 
         return $this->buildPreview($cartCollection, $customer, $rules->values());
@@ -65,10 +61,8 @@ class PricingService
         $rules = $this->getActiveRules($at);
 
         return collect($products)
-            ->filter(fn ($product) => $product instanceof Product)
-            ->mapWithKeys(function (Product $product) use ($customer, $rules) {
-                return [$product->id => $this->calculateProductPrice($product, 1, $customer, $rules)];
-            });
+            ->filter(fn ($product): bool => $product instanceof Product)
+            ->mapWithKeys(fn(Product $product) => [$product->id => $this->calculateProductPrice($product, 1, $customer, $rules)]);
     }
 
     public function calculateProductPrice(
@@ -77,18 +71,18 @@ class PricingService
         ?Customer $customer = null,
         ?Collection $rules = null
     ): array {
-        $rules = $rules ?? $this->getActiveRules();
+        $rules ??= $this->getActiveRules();
         $quantity = max(1, $qty);
         $matchingRules = $rules
-            ->filter(fn (PricingRule $rule) => $this->matchesCustomerScope($rule, $customer))
-            ->filter(fn (PricingRule $rule) => $this->ruleTouchesProduct($rule, $product));
+            ->filter(fn (PricingRule $rule): bool => $this->matchesCustomerScope($rule, $customer))
+            ->filter(fn (PricingRule $rule): bool => $this->ruleTouchesProduct($rule, $product));
 
         $directCandidates = $matchingRules
-            ->filter(fn (PricingRule $rule) => in_array($rule->kind, [
+            ->filter(fn (PricingRule $rule): bool => in_array($rule->kind, [
                 PricingRule::KIND_STANDARD_DISCOUNT,
                 PricingRule::KIND_QTY_BREAK,
             ], true))
-            ->map(function (PricingRule $rule) use ($product, $quantity) {
+            ->map(function (PricingRule $rule) use ($product, $quantity): ?array {
                 $previewQuantity = $rule->kind === PricingRule::KIND_QTY_BREAK
                     ? max($quantity, (int) ($rule->preview_quantity_multiplier ?: $rule->qtyBreaks->max('min_qty') ?: 1))
                     : $quantity;
@@ -122,7 +116,7 @@ class PricingService
         }
 
         $complexRule = $matchingRules
-            ->filter(fn (PricingRule $rule) => in_array($rule->kind, [
+            ->filter(fn (PricingRule $rule): bool => in_array($rule->kind, [
                 PricingRule::KIND_BUNDLE_PRICE,
                 PricingRule::KIND_BUY_X_GET_Y,
             ], true))
@@ -155,7 +149,7 @@ class PricingService
 
     private function buildPreview(Collection $carts, ?Customer $customer, Collection $rules): array
     {
-        $items = $carts->map(function (Cart $cart) {
+        $items = $carts->map(function (Cart $cart): array {
             $baseUnitPrice = (int) $cart->product->sell_price;
 
             return [
@@ -176,17 +170,17 @@ class PricingService
         })->keyBy('cart_id');
 
         $remainingQuantities = $items
-            ->mapWithKeys(fn (array $item, int|string $cartId) => [(int) $cartId => (int) $item['qty']])
+            ->mapWithKeys(fn (array $item, int|string $cartId): array => [(int) $cartId => (int) $item['qty']])
             ->all();
 
         $eligibleRules = $rules
-            ->filter(fn (PricingRule $rule) => $this->matchesCustomerScope($rule, $customer))
+            ->filter(fn (PricingRule $rule): bool => $this->matchesCustomerScope($rule, $customer))
             ->values();
 
         $appliedGroups = [];
 
         $bundleRules = $eligibleRules
-            ->filter(fn (PricingRule $rule) => $rule->kind === PricingRule::KIND_BUNDLE_PRICE)
+            ->filter(fn (PricingRule $rule): bool => $rule->kind === PricingRule::KIND_BUNDLE_PRICE)
             ->values();
         $appliedGroups = array_merge(
             $appliedGroups,
@@ -194,7 +188,7 @@ class PricingService
         );
 
         $buyGetRules = $eligibleRules
-            ->filter(fn (PricingRule $rule) => $rule->kind === PricingRule::KIND_BUY_X_GET_Y)
+            ->filter(fn (PricingRule $rule): bool => $rule->kind === PricingRule::KIND_BUY_X_GET_Y)
             ->values();
         $appliedGroups = array_merge(
             $appliedGroups,
@@ -213,11 +207,11 @@ class PricingService
             }
 
             $candidate = $eligibleRules
-                ->filter(fn (PricingRule $rule) => in_array($rule->kind, [
+                ->filter(fn (PricingRule $rule): bool => in_array($rule->kind, [
                     PricingRule::KIND_QTY_BREAK,
                     PricingRule::KIND_STANDARD_DISCOUNT,
                 ], true))
-                ->map(fn (PricingRule $rule) => $this->calculateLineCandidate($rule, $cartProduct, $remainingQty))
+                ->map(fn (PricingRule $rule): ?array => $this->calculateLineCandidate($rule, $cartProduct, $remainingQty))
                 ->filter()
                 ->sortBy([
                     ['rule.priority', 'desc'],
@@ -225,8 +219,10 @@ class PricingService
                     ['rule.id', 'asc'],
                 ])
                 ->first();
-
-            if (! $candidate || (int) $candidate['line_discount'] <= 0) {
+            if (! $candidate) {
+                continue;
+            }
+            if ((int) $candidate['line_discount'] <= 0) {
                 continue;
             }
 
@@ -240,7 +236,7 @@ class PricingService
             $items->put($cartId, $currentItem);
         }
 
-        $items = $items->map(function (array $item) {
+        $items = $items->map(function (array $item): array {
             $lineTotal = max(0, (int) $item['line_total']);
             $item['line_total'] = $lineTotal;
             $item['line_discount_total'] = max(0, (int) $item['line_discount_total']);
@@ -257,15 +253,15 @@ class PricingService
             'items' => $items->all(),
             'applied_groups' => array_values($appliedGroups),
             'consumed_quantities' => collect($remainingQuantities)
-                ->mapWithKeys(function (int $qty, int $cartId) use ($items) {
+                ->mapWithKeys(function (int $qty, int $cartId) use ($items): array {
                     $original = (int) collect($items)->firstWhere('cart_id', $cartId)['qty'];
 
                     return [$cartId => max(0, $original - $qty)];
                 })
                 ->all(),
             'unmatched_items' => collect($remainingQuantities)
-                ->filter(fn (int $qty) => $qty > 0)
-                ->mapWithKeys(fn (int $qty, int $cartId) => [$cartId => $qty])
+                ->filter(fn (int $qty): bool => $qty > 0)
+                ->mapWithKeys(fn (int $qty, int $cartId): array => [$cartId => $qty])
                 ->all(),
             'summary' => [
                 'base_subtotal' => $baseSubtotal,
@@ -285,11 +281,9 @@ class PricingService
 
         while (true) {
             $candidates = $rules
-                ->map(function (PricingRule $rule) use ($items, $remainingQuantities, $stage) {
-                    return $stage === 'bundle'
-                        ? $this->buildBundleCandidate($rule, $items, $remainingQuantities)
-                        : $this->buildBuyGetCandidate($rule, $items, $remainingQuantities);
-                })
+                ->map(fn(PricingRule $rule) => $stage === 'bundle'
+                    ? $this->buildBundleCandidate($rule, $items, $remainingQuantities)
+                    : $this->buildBuyGetCandidate($rule, $items, $remainingQuantities))
                 ->filter()
                 ->sortBy([
                     ['priority', 'desc'],
@@ -344,7 +338,7 @@ class PricingService
             $matched = $this->consumeMatchingItems(
                 $items,
                 $tempRemaining,
-                fn (array $item) => (int) $item['product_id'] === (int) $bundleItem->product_id,
+                fn (array $item): bool => (int) $item['product_id'] === (int) $bundleItem->product_id,
                 (int) $bundleItem->quantity
             );
 
@@ -400,7 +394,7 @@ class PricingService
             $matched = $this->consumeMatchingItems(
                 $items,
                 $tempRemaining,
-                fn (array $item) => (int) $item['product_id'] === (int) $buyItem->product_id,
+                fn (array $item): bool => (int) $item['product_id'] === (int) $buyItem->product_id,
                 (int) $buyItem->quantity
             );
 
@@ -419,7 +413,7 @@ class PricingService
             $matched = $this->consumeMatchingItems(
                 $items,
                 $tempRemaining,
-                fn (array $item) => (int) $item['product_id'] === (int) $getItem->product_id,
+                fn (array $item): bool => (int) $item['product_id'] === (int) $getItem->product_id,
                 (int) $getItem->quantity
             );
 
@@ -518,7 +512,7 @@ class PricingService
 
         if ($rule->kind === PricingRule::KIND_QTY_BREAK) {
             $break = $rule->qtyBreaks
-                ->filter(fn (PricingRuleQtyBreak $break) => $quantity >= (int) $break->min_qty)
+                ->filter(fn (PricingRuleQtyBreak $break): bool => $quantity >= (int) $break->min_qty)
                 ->sortBy([
                     ['min_qty', 'desc'],
                     ['sort_order', 'asc'],
@@ -568,8 +562,8 @@ class PricingService
     {
         return match ($rule->customer_scope) {
             PricingRule::SCOPE_ALL => true,
-            PricingRule::SCOPE_WALK_IN => $customer === null,
-            PricingRule::SCOPE_REGISTERED => $customer !== null,
+            PricingRule::SCOPE_WALK_IN => !$customer instanceof \App\Models\Customer,
+            PricingRule::SCOPE_REGISTERED => $customer instanceof \App\Models\Customer,
             PricingRule::SCOPE_MEMBER => $this->matchesMemberRule($rule, $customer),
             default => false,
         };
@@ -652,11 +646,11 @@ class PricingService
         }
 
         if ($rule->kind === PricingRule::KIND_BUNDLE_PRICE) {
-            return $rule->bundleItems->contains(fn ($item) => (int) $item->product_id === (int) $product->id);
+            return $rule->bundleItems->contains(fn ($item): bool => (int) $item->product_id === (int) $product->id);
         }
 
         if ($rule->kind === PricingRule::KIND_BUY_X_GET_Y) {
-            return $rule->buyGetItems->contains(fn ($item) => (int) $item->product_id === (int) $product->id);
+            return $rule->buyGetItems->contains(fn ($item): bool => (int) $item->product_id === (int) $product->id);
         }
 
         return false;

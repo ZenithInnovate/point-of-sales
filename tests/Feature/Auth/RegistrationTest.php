@@ -87,7 +87,7 @@ class RegistrationTest extends TestCase
     {
         $response = $this->get('/login');
 
-        $response->assertInertia(fn (Assert $page) => $page
+        $response->assertInertia(fn (Assert $page): \Inertia\Testing\AssertableInertia => $page
             ->component('Auth/Login')
             ->where('canRegister', false)
         );

@@ -72,7 +72,7 @@ class GoodsReceivingService
             $this->updateOrderStatus($order);
 
             if ($receiving->supplier_id) {
-                $this->createOrUpdatePayable($order, $receiving, $userId);
+                $this->createOrUpdatePayable($order, $receiving);
             }
 
             $this->auditLogService->log(
@@ -106,7 +106,7 @@ class GoodsReceivingService
         $order->update($updates);
     }
 
-    private function createOrUpdatePayable(PurchaseOrder $order, GoodsReceiving $receiving, int $userId): void
+    private function createOrUpdatePayable(PurchaseOrder $order, GoodsReceiving $receiving): void
     {
         $total = $receiving->items()->sum(\DB::raw('qty_received * (SELECT unit_price FROM purchase_order_items WHERE id = goods_receiving_items.purchase_order_item_id)'));
 

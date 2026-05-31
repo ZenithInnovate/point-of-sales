@@ -127,7 +127,7 @@ class SupplierReturnController extends Controller
 
     public function cancel(Request $request, SupplierReturn $supplierReturn)
     {
-        if (! in_array($supplierReturn->status, ['draft'])) {
+        if ($supplierReturn->status != 'draft') {
             return back()->with('error', 'Retur tidak dapat dibatalkan.');
         }
 

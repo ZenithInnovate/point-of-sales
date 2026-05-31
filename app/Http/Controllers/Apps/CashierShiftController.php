@@ -43,7 +43,7 @@ class CashierShiftController extends Controller
         $query = $this->cashierShiftService->visibleToUser($query, $request->user());
 
         $shifts = $query->paginate(10)->withQueryString();
-        $shifts->through(fn (CashierShift $shift) => $this->transformShift($shift));
+        $shifts->through(fn (CashierShift $shift): array => $this->transformShift($shift));
 
         $activeShift = $this->cashierShiftService->getActiveShiftForUser($request->user()->id);
         $cashiers = $request->user()->isSuperAdmin() || $request->user()->can('cashier-shifts-force-close')
@@ -54,7 +54,7 @@ class CashierShiftController extends Controller
             'shifts' => $shifts,
             'filters' => $filters,
             'cashiers' => $cashiers,
-            'activeShift' => $activeShift ? $this->transformShift($activeShift) : null,
+            'activeShift' => $activeShift instanceof \App\Models\CashierShift ? $this->transformShift($activeShift) : null,
             'canForceClose' => $request->user()->isSuperAdmin() || $request->user()->can('cashier-shifts-force-close'),
         ]);
     }
@@ -103,7 +103,7 @@ class CashierShiftController extends Controller
         $before = $this->shiftAuditPayload($cashierShift);
         $forceClose = $cashierShift->user_id !== $request->user()->id;
 
-        if ($forceClose && ! ($request->user()->isSuperAdmin() || $request->user()->can('cashier-shifts-force-close'))) {
+        if ($forceClose && (!$request->user()->isSuperAdmin() && !$request->user()->can('cashier-shifts-force-close'))) {
             abort(403);
         }
 

@@ -38,8 +38,8 @@ class StockOpnameController extends Controller
 
         $stockOpnames = StockOpname::query()
             ->with(['creator:id,name', 'finalizer:id,name'])
-            ->when($filters['search'], function ($query, $search) {
-                $query->where(function ($builder) use ($search) {
+            ->when($filters['search'], function ($query, $search): void {
+                $query->where(function ($builder) use ($search): void {
                     $builder
                         ->where('code', 'like', '%'.$search.'%')
                         ->orWhere('notes', 'like', '%'.$search.'%');
@@ -94,7 +94,7 @@ class StockOpnameController extends Controller
             ? collect()
             : Product::query()
                 ->with('category:id,name')
-                ->where(function ($builder) use ($productFilters) {
+                ->where(function ($builder) use ($productFilters): void {
                     $builder
                         ->where('title', 'like', '%'.$productFilters['search'].'%')
                         ->orWhere('barcode', 'like', '%'.$productFilters['search'].'%')
@@ -191,7 +191,7 @@ class StockOpnameController extends Controller
             }
         }
 
-        DB::transaction(function () use ($request, $stockOpname) {
+        DB::transaction(function () use ($request, $stockOpname): void {
             foreach ($stockOpname->items as $item) {
                 if ($item->physical_stock === null) {
                     continue;
@@ -240,7 +240,7 @@ class StockOpnameController extends Controller
             meta: [
                 'code' => $stockOpname->code,
                 'notes' => $stockOpname->notes,
-                'items' => $stockOpname->items->map(fn (StockOpnameItem $item) => [
+                'items' => $stockOpname->items->map(fn (StockOpnameItem $item): array => [
                     'product_id' => $item->product_id,
                     'product_title' => $item->product?->title,
                     'stock_before' => (int) $item->system_stock,

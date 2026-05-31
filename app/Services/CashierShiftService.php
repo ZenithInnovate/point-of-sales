@@ -152,7 +152,7 @@ class CashierShiftService
 
     public function summarizeForDisplay(?CashierShift $shift): ?array
     {
-        if (! $shift) {
+        if (!$shift instanceof \App\Models\CashierShift) {
             return null;
         }
 

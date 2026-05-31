@@ -31,15 +31,15 @@ class ReceivableController extends Controller
             ->withSum('payments as total_paid', 'amount')
             ->orderByDesc('created_at');
 
-        $query->when($filters['status'], function ($q, $status) {
+        $query->when($filters['status'], function ($q, $status): void {
             $q->where('status', $status);
-        })->when($filters['customer'], function ($q, $customer) {
+        })->when($filters['customer'], function ($q, $customer): void {
             $q->where('customer_id', $customer);
-        })->when($filters['invoice'], function ($q, $invoice) {
+        })->when($filters['invoice'], function ($q, string $invoice): void {
             $q->where('invoice', 'like', '%'.$invoice.'%');
-        })->when($filters['due_from'], function ($q, $date) {
+        })->when($filters['due_from'], function ($q, $date): void {
             $q->whereDate('due_date', '>=', $date);
-        })->when($filters['due_to'], function ($q, $date) {
+        })->when($filters['due_to'], function ($q, $date): void {
             $q->whereDate('due_date', '<=', $date);
         });
 
@@ -63,7 +63,7 @@ class ReceivableController extends Controller
         $receivable->load([
             'customer:id,name,no_telp',
             'transaction',
-            'payments' => function ($query) {
+            'payments' => function ($query): void {
                 $query->orderByDesc('paid_at')->with(['bankAccount:id,bank_name,account_number,account_name,logo', 'user:id,name']);
             },
         ]);
@@ -91,7 +91,7 @@ class ReceivableController extends Controller
             return back()->with('error', 'Nominal melebihi sisa piutang.');
         }
 
-        DB::transaction(function () use ($validated, $receivable, $request) {
+        DB::transaction(function () use ($validated, $receivable, $request): void {
             ReceivablePayment::create([
                 'receivable_id' => $receivable->id,
                 'paid_at' => $validated['paid_at'],

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Middleware\EnforceAbsoluteSessionLifetime;
 use App\Http\Middleware\EnsureActiveCashierShift;
 use App\Http\Middleware\EnsureBotGuard;
@@ -27,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware) {
+    ->withMiddleware(function (Middleware $middleware): void {
         $middleware->prepend(TenantIdentification::class);
 
         $middleware->web(append: [
@@ -47,7 +49,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'step_up' => EnsureRecentPasswordConfirmation::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
+    ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Throwable $exception, Request $request) {
             if ($exception instanceof ValidationException) {
                 return null;

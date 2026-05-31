@@ -23,23 +23,20 @@ class TenantsMigrateCommand extends Command
     protected $description = 'Menjalankan migrasi untuk database masing-masing tenant.';
 
     /**
-     * The tenant manager instance.
-     */
-    protected TenantManager $tenantManager;
-
-    /**
      * Create a new command instance.
      */
-    public function __construct(TenantManager $tenantManager)
+    public function __construct(/**
+     * The tenant manager instance.
+     */
+    protected TenantManager $tenantManager)
     {
         parent::__construct();
-        $this->tenantManager = $tenantManager;
     }
 
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         $tenantId = $this->option('tenant');
 

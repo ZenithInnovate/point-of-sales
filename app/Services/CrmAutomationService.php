@@ -41,7 +41,7 @@ class CrmAutomationService
 
     public function buildAudience(array $filters, ?CarbonInterface $at = null): Collection
     {
-        $at = $at ?? now();
+        $at ??= now();
 
         $query = Customer::query()
             ->with(['segments', 'receivables', 'vouchers'])
@@ -49,7 +49,7 @@ class CrmAutomationService
 
         $segmentIds = collect($filters['segment_ids'] ?? [])
             ->filter()
-            ->map(fn ($id) => (int) $id)
+            ->map(fn ($id): int => (int) $id)
             ->all();
         if ($segmentIds !== []) {
             $query->whereHas('segments', fn ($builder) => $builder->whereIn('customer_segments.id', $segmentIds));
@@ -65,7 +65,7 @@ class CrmAutomationService
         return $query->get()->filter(function (Customer $customer) use ($filters, $at) {
             $voucherFilter = $filters['voucher_filter'] ?? 'all';
             $hasActiveVoucher = $customer->vouchers
-                ->filter(fn ($voucher) => $voucher->currentStatusLabel() === 'active')
+                ->filter(fn ($voucher): bool => $voucher->currentStatusLabel() === 'active')
                 ->isNotEmpty();
             if ($voucherFilter === 'has_active_voucher' && ! $hasActiveVoucher) {
                 return false;
@@ -76,10 +76,10 @@ class CrmAutomationService
 
             $receivableStatus = $filters['receivable_status'] ?? 'all';
             $hasOutstanding = $customer->receivables
-                ->filter(fn ($receivable) => $receivable->status !== 'paid' && $receivable->remaining > 0)
+                ->filter(fn ($receivable): bool => $receivable->status !== 'paid' && $receivable->remaining > 0)
                 ->isNotEmpty();
             $hasOverdue = $customer->receivables
-                ->filter(fn ($receivable) => $receivable->status !== 'paid' && $receivable->due_date && $at->gt($receivable->due_date))
+                ->filter(fn ($receivable): bool => $receivable->status !== 'paid' && $receivable->due_date && $at->gt($receivable->due_date))
                 ->isNotEmpty();
             $hasDueSoon = $customer->receivables
                 ->filter(function ($receivable) use ($at) {
@@ -127,11 +127,11 @@ class CrmAutomationService
 
     public function processCampaign(CustomerCampaign $campaign, ?CarbonInterface $at = null): CustomerCampaign
     {
-        $at = $at ?? now();
+        $at ??= now();
         $campaign->logs()->delete();
 
         $audience = $this->buildAudience($campaign->audience_filters ?? [], $at);
-        $snapshot = $audience->map(fn (Customer $customer) => [
+        $snapshot = $audience->map(fn (Customer $customer): array => [
             'customer_id' => $customer->id,
             'name' => $customer->name,
             'no_telp' => $customer->no_telp,
@@ -271,7 +271,7 @@ class CrmAutomationService
 
     public function generateScheduledReminders(?CarbonInterface $at = null): void
     {
-        $at = $at ?? now();
+        $at ??= now();
         $this->segmentationService->syncAutoSegments($at);
 
         $this->generateDueSoonCampaign($at);
@@ -367,7 +367,7 @@ class CrmAutomationService
             $customers = Customer::query()
                 ->with('segments')
                 ->where('loyalty_transaction_count', '>', 0)
-                ->where(function ($query) use ($at) {
+                ->where(function ($query) use ($at): void {
                     $query->whereNull('last_purchase_at')
                         ->orWhere('last_purchase_at', '<', $at->copy()->subDays(30));
                 })
@@ -389,7 +389,7 @@ class CrmAutomationService
             }
 
             $campaign->update([
-                'audience_snapshot' => $customers->map(fn (Customer $customer) => [
+                'audience_snapshot' => $customers->map(fn (Customer $customer): array => [
                     'customer_id' => $customer->id,
                     'name' => $customer->name,
                     'reason' => 'inactive_customer',
@@ -424,7 +424,7 @@ class CrmAutomationService
         }
 
         $campaign->update([
-            'audience_snapshot' => $receivables->map(fn (Receivable $receivable) => [
+            'audience_snapshot' => $receivables->map(fn (Receivable $receivable): array => [
                 'customer_id' => $receivable->customer_id,
                 'receivable_id' => $receivable->id,
                 'invoice' => $receivable->invoice,
@@ -452,7 +452,7 @@ class CrmAutomationService
 
     private function refreshCampaignStatus(?CustomerCampaign $campaign): void
     {
-        if (! $campaign) {
+        if (!$campaign instanceof \App\Models\CustomerCampaign) {
             return;
         }
 

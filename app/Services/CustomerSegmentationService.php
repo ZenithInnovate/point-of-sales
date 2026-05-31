@@ -82,7 +82,7 @@ class CustomerSegmentationService
 
     public function syncAutoSegments(?CarbonInterface $at = null): void
     {
-        $at = $at ?? now();
+        $at ??= now();
         $this->ensureDefaultAutoSegments();
 
         $segments = CustomerSegment::query()
@@ -93,7 +93,7 @@ class CustomerSegmentationService
         Customer::query()
             ->with(['receivables'])
             ->orderBy('id')
-            ->chunkById(100, function ($customers) use ($segments, $at) {
+            ->chunkById(100, function ($customers) use ($segments, $at): void {
                 foreach ($customers as $customer) {
                     foreach ($segments as $segment) {
                         $matches = $this->matchesAutoSegment($customer, $segment, $at);
@@ -149,7 +149,7 @@ class CustomerSegmentationService
         return $customer->segments
             ->sortBy('name')
             ->values()
-            ->map(fn (CustomerSegment $segment) => [
+            ->map(fn (CustomerSegment $segment): array => [
                 'id' => $segment->id,
                 'name' => $segment->name,
                 'slug' => $segment->slug,
@@ -167,7 +167,7 @@ class CustomerSegmentationService
             ->where('is_active', true)
             ->orderBy('name')
             ->get()
-            ->map(fn (CustomerSegment $segment) => [
+            ->map(fn (CustomerSegment $segment): array => [
                 'value' => $segment->id,
                 'label' => $segment->name,
                 'type' => $segment->type,
@@ -238,14 +238,14 @@ class CustomerSegmentationService
     private function matchesCreditCustomer(Customer $customer): bool
     {
         return $customer->receivables
-            ->filter(fn ($receivable) => $receivable->status !== 'paid' && $receivable->remaining > 0)
+            ->filter(fn ($receivable): bool => $receivable->status !== 'paid' && $receivable->remaining > 0)
             ->isNotEmpty();
     }
 
     private function matchesOverdueCustomer(Customer $customer): bool
     {
         return $customer->receivables
-            ->filter(fn ($receivable) => $receivable->status !== 'paid' && $receivable->due_date && now()->gt($receivable->due_date))
+            ->filter(fn ($receivable): bool => $receivable->status !== 'paid' && $receivable->due_date && now()->gt($receivable->due_date))
             ->isNotEmpty();
     }
 }

@@ -80,7 +80,7 @@ class PurchaseOrderController extends Controller
         $purchaseOrder->load([
             'supplier:id,name,phone,email,address',
             'items.product:id,title,sku,image',
-            'goodsReceivings' => function ($q) {
+            'goodsReceivings' => function ($q): void {
                 $q->with('items.product:id,title,sku')->orderByDesc('received_at');
             },
             'creator:id,name',

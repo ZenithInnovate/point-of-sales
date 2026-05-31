@@ -66,7 +66,7 @@ class PurchaseOrderService
 
     public function placeOrder(PurchaseOrder $order): void
     {
-        DB::transaction(function () use ($order) {
+        DB::transaction(function () use ($order): void {
             $before = $order->replicate();
 
             $order->update([
@@ -88,7 +88,7 @@ class PurchaseOrderService
 
     public function cancelOrder(PurchaseOrder $order): void
     {
-        DB::transaction(function () use ($order) {
+        DB::transaction(function () use ($order): void {
             $before = $order->replicate();
 
             $order->update([

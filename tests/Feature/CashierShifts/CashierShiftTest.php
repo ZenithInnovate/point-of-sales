@@ -107,7 +107,7 @@ class CashierShiftTest extends TestCase
             ->actingAs($cashier)
             ->get(route('transactions.index'));
 
-        $response->assertInertia(fn (Assert $page) => $page
+        $response->assertInertia(fn (Assert $page): \Inertia\Testing\AssertableInertia => $page
             ->component('Dashboard/Transactions/Index')
             ->where('activeCashierShift.id', $shift->id)
             ->where('activeCashierShift.opening_cash', 90000));

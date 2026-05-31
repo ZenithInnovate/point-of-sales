@@ -57,7 +57,7 @@ class LoyaltyService
     public function tierOptions(): array
     {
         return collect($this->tiers())
-            ->map(fn (array $tier, string $key) => [
+            ->map(fn (array $tier, string $key): array => [
                 'value' => $key,
                 'label' => $tier['label'],
             ])
@@ -75,7 +75,7 @@ class LoyaltyService
             'earn_rate_amount' => $settings['earn_rate_amount'],
             'redeem_point_value' => $settings['redeem_point_value'],
             'tiers' => collect($settings['tiers'])
-                ->map(fn (array $config, string $key) => [
+                ->map(fn (array $config, string $key): array => [
                     'key' => $key,
                     ...$config,
                 ])
@@ -173,7 +173,7 @@ class LoyaltyService
         array $options = [],
         ?CarbonInterface $at = null
     ): array {
-        $at = $at ?? now();
+        $at ??= now();
         $settings = $this->settings();
         $subtotalAfterPromo = max(0, (int) data_get($pricingPreview, 'summary.subtotal_after_promo', 0));
         $manualDiscountRequested = max(0, (int) ($options['manual_discount'] ?? 0));
@@ -183,7 +183,7 @@ class LoyaltyService
 
         $availablePoints = $customer?->is_loyalty_member ? (int) $customer->loyalty_points : 0;
         $validatedVoucher = $this->validateVoucher($customer, $voucher, $subtotalAfterPromo, $at);
-        $voucherDiscount = $validatedVoucher
+        $voucherDiscount = $validatedVoucher instanceof \App\Models\CustomerVoucher
             ? $this->calculateVoucherDiscount($validatedVoucher, $subtotalAfterPromo)
             : 0;
 
@@ -226,17 +226,17 @@ class LoyaltyService
                 'points_value' => $redeemPointValue,
                 'points_earned_preview' => $pointsEarnedPreview,
             ],
-            'customer' => $customer ? [
+            'customer' => $customer instanceof \App\Models\Customer ? [
                 'id' => $customer->id,
                 'is_loyalty_member' => (bool) $customer->is_loyalty_member,
                 'member_code' => $customer->member_code,
                 'loyalty_tier' => $customer->loyalty_tier,
                 'loyalty_points' => $availablePoints,
             ] : null,
-            'voucher' => $validatedVoucher ? $this->serializeVoucher($validatedVoucher) : null,
-            'eligible_vouchers' => $customer
+            'voucher' => $validatedVoucher instanceof \App\Models\CustomerVoucher ? $this->serializeVoucher($validatedVoucher) : null,
+            'eligible_vouchers' => $customer instanceof \App\Models\Customer
                 ? $this->eligibleVouchersForCustomer($customer, $subtotalAfterPromo, $at)
-                    ->map(fn (CustomerVoucher $eligibleVoucher) => $this->serializeVoucher($eligibleVoucher))
+                    ->map(fn (CustomerVoucher $eligibleVoucher): array => $this->serializeVoucher($eligibleVoucher))
                     ->values()
                     ->all()
                 : [],
@@ -249,20 +249,20 @@ class LoyaltyService
         int $subtotalAfterPromo = 0,
         ?CarbonInterface $at = null
     ): Collection {
-        $at = $at ?? now();
+        $at ??= now();
 
         return $customer->vouchers()
             ->where('is_active', true)
             ->where('is_used', false)
-            ->where(function ($query) use ($at) {
+            ->where(function ($query) use ($at): void {
                 $query->whereNull('starts_at')->orWhere('starts_at', '<=', $at);
             })
-            ->where(function ($query) use ($at) {
+            ->where(function ($query) use ($at): void {
                 $query->whereNull('expires_at')->orWhere('expires_at', '>=', $at);
             })
             ->orderBy('expires_at')
             ->get()
-            ->filter(fn (CustomerVoucher $voucher) => $subtotalAfterPromo >= (int) $voucher->minimum_order)
+            ->filter(fn (CustomerVoucher $voucher): bool => $subtotalAfterPromo >= (int) $voucher->minimum_order)
             ->values();
     }
 
@@ -271,7 +271,7 @@ class LoyaltyService
         ?Customer $customer,
         array $checkoutPreview
     ): ?Customer {
-        if (! $customer) {
+        if (!$customer instanceof \App\Models\Customer) {
             return null;
         }
 
@@ -358,7 +358,7 @@ class LoyaltyService
         int $subtotalAfterPromo,
         ?CarbonInterface $at = null
     ): ?CustomerVoucher {
-        $at = $at ?? now();
+        $at ??= now();
 
         if (! $customer || ! $voucher instanceof CustomerVoucher) {
             return null;
@@ -419,7 +419,7 @@ class LoyaltyService
         Customer::query()
             ->where('is_loyalty_member', true)
             ->orderBy('id')
-            ->chunkById(100, function ($customers) {
+            ->chunkById(100, function ($customers): void {
                 foreach ($customers as $customer) {
                     $this->syncTier($customer);
                 }

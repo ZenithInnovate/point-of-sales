@@ -19,8 +19,8 @@ class TenantController extends Controller
     public function index()
     {
         $tenants = Tenant::where('id', '!=', 'admin')
-            ->when(request()->search, function ($query) {
-                $query->where(function ($q) {
+            ->when(request()->search, function ($query): void {
+                $query->where(function ($q): void {
                     $q->where('name', 'like', '%'.request()->search.'%')
                       ->orWhere('id', 'like', '%'.request()->search.'%')
                       ->orWhere('domain', 'like', '%'.request()->search.'%');
@@ -67,7 +67,7 @@ class TenantController extends Controller
         $dbPort = $request->db_port ?: config('database.connections.landlord.port');
         $dbDatabase = $request->db_database ?: 'pos_tenant_' . str_replace('-', '_', $id);
         $dbUsername = $request->db_username ?: config('database.connections.landlord.username');
-        $dbPassword = $request->db_password !== null ? $request->db_password : config('database.connections.landlord.password');
+        $dbPassword = $request->db_password ?? config('database.connections.landlord.password');
 
         try {
             // Panggil command Artisan tenant:create untuk setup komplit
@@ -148,7 +148,7 @@ class TenantController extends Controller
             DB::connection('landlord')->statement(
                 "DROP DATABASE IF EXISTS `{$tenant->db_database}`;"
             );
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // Abaikan jika database tidak bisa di-drop atau menggunakan SQLite
         }
 

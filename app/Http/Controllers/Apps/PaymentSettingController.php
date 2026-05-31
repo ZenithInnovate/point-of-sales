@@ -36,7 +36,7 @@ class PaymentSettingController extends Controller
             $webhookWarnings[] = 'Xendit aktif tetapi callback token belum diisi. Webhook Xendit akan ditolak sampai token tersedia.';
         }
 
-        if (collect($setting->paymentSettingSources())->contains(fn (array $source) => $source['source'] === 'env')) {
+        if (collect($setting->paymentSettingSources())->contains(fn (array $source): bool => $source['source'] === 'env')) {
             $this->auditLogService->log(
                 event: 'security.payment_secret_source_overridden',
                 module: 'security',
@@ -45,7 +45,7 @@ class PaymentSettingController extends Controller
                 meta: [
                     'severity' => 'info',
                     'sources' => collect($setting->paymentSettingSources())
-                        ->filter(fn (array $source) => $source['source'] === 'env')
+                        ->filter(fn (array $source): bool => $source['source'] === 'env')
                         ->keys()
                         ->values()
                         ->all(),
@@ -135,8 +135,7 @@ class PaymentSettingController extends Controller
 
         if (
             $data['default_gateway'] !== 'cash'
-            && ! (($data['default_gateway'] === PaymentSetting::GATEWAY_MIDTRANS && $midtransEnabled)
-                || ($data['default_gateway'] === PaymentSetting::GATEWAY_XENDIT && $xenditEnabled))
+            && (!($data['default_gateway'] === PaymentSetting::GATEWAY_MIDTRANS && $midtransEnabled) && !($data['default_gateway'] === PaymentSetting::GATEWAY_XENDIT && $xenditEnabled))
         ) {
             return back()->withErrors([
                 'default_gateway' => 'Gateway default harus dalam kondisi aktif.',
@@ -196,7 +195,7 @@ class PaymentSettingController extends Controller
             ],
         );
 
-        if (collect($setting->paymentSettingSources())->contains(fn (array $source) => $source['source'] === 'env')) {
+        if (collect($setting->paymentSettingSources())->contains(fn (array $source): bool => $source['source'] === 'env')) {
             $this->auditLogService->log(
                 event: 'security.payment_secret_source_overridden',
                 module: 'security',
@@ -205,7 +204,7 @@ class PaymentSettingController extends Controller
                 meta: [
                     'severity' => 'info',
                     'sources' => collect($setting->paymentSettingSources())
-                        ->filter(fn (array $source) => $source['source'] === 'env')
+                        ->filter(fn (array $source): bool => $source['source'] === 'env')
                         ->keys()
                         ->values()
                         ->all(),
