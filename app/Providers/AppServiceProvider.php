@@ -28,5 +28,9 @@ class AppServiceProvider extends ServiceProvider
                 'issues' => $issues,
             ]);
         }
+
+        if ($this->app->environment('testing')) {
+            $this->loadMigrationsFrom(database_path('migrations/tenant'));
+        }
     }
 }

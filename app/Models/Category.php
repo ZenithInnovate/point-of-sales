@@ -44,7 +44,9 @@ class Category extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => asset('/storage/category/'.$value),
+            get: fn ($value) => app()->bound('tenant')
+                ? asset('/storage/tenants/' . app('tenant')->id . '/public/category/' . $value)
+                : asset('/storage/category/' . $value),
         );
     }
 }

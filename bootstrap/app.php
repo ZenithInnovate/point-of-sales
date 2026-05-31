@@ -6,6 +6,7 @@ use App\Http\Middleware\EnsureBotGuard;
 use App\Http\Middleware\EnsurePublicRegistrationEnabled;
 use App\Http\Middleware\EnsureRecentPasswordConfirmation;
 use App\Http\Middleware\SecureHeaders;
+use App\Http\Middleware\TenantIdentification;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -27,6 +28,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->prepend(TenantIdentification::class);
+
         $middleware->web(append: [
             SecureHeaders::class,
             EnforceAbsoluteSessionLifetime::class,

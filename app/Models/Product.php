@@ -71,7 +71,9 @@ class Product extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => asset('/storage/products/'.$value),
+            get: fn ($value) => app()->bound('tenant')
+                ? asset('/storage/tenants/' . app('tenant')->id . '/public/products/' . $value)
+                : asset('/storage/products/' . $value),
         );
     }
 }
