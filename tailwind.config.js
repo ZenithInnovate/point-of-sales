@@ -112,7 +112,14 @@ export default {
                 "touch-lg": "3rem",
             },
             borderRadius: {
-                "4xl": "2rem",
+                DEFAULT: "0.5rem",
+                sm: "0.375rem",
+                md: "0.5rem",
+                lg: "0.5rem",
+                xl: "0.5rem",
+                "2xl": "0.5rem",
+                "3xl": "0.5rem",
+                "4xl": "0.5rem",
             },
             boxShadow: {
                 glow: "0 0 20px rgba(99, 102, 241, 0.3)",
