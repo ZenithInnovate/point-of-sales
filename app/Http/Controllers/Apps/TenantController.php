@@ -45,6 +45,10 @@ class TenantController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has('domain')) {
+            $request->merge(['domain' => explode(':', $request->domain)[0]]);
+        }
+
         $request->validate([
             'id' => 'required|alpha_dash|unique:landlord.tenants,id',
             'name' => 'required|string|max:255',
@@ -109,6 +113,10 @@ class TenantController extends Controller
     {
         if ($tenant->id === 'admin') {
             abort(403, 'Tenant Pusat tidak dapat dimodifikasi.');
+        }
+
+        if ($request->has('domain')) {
+            $request->merge(['domain' => explode(':', $request->domain)[0]]);
         }
 
         $request->validate([
