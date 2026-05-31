@@ -72,7 +72,7 @@ class Product extends Model
     {
         return Attribute::make(
             get: fn ($value) => app()->bound('tenant')
-                ? asset('/storage/tenants/' . app('tenant')->id . '/public/products/' . $value)
+                ? asset('/storage/tenants/' . app('tenant')->id . '/products/' . $value)
                 : asset('/storage/products/' . $value),
         );
     }

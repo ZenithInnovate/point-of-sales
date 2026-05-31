@@ -45,7 +45,7 @@ class Category extends Model
     {
         return Attribute::make(
             get: fn ($value) => app()->bound('tenant')
-                ? asset('/storage/tenants/' . app('tenant')->id . '/public/category/' . $value)
+                ? asset('/storage/tenants/' . app('tenant')->id . '/category/' . $value)
                 : asset('/storage/category/' . $value),
         );
     }

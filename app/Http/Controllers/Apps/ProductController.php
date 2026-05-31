@@ -74,7 +74,7 @@ class ProductController extends Controller
         ]);
         // upload image
         $image = $request->file('image');
-        $image->storeAs('public/products', $image->hashName());
+        $image->storeAs('products', $image->hashName(), 'public');
 
         // create product
         $product = Product::create([
@@ -146,11 +146,11 @@ class ProductController extends Controller
         if ($request->file('image')) {
 
             // remove old image
-            Storage::disk('local')->delete('public/products/'.basename($product->image));
+            Storage::disk('public')->delete('products/'.basename($product->image));
 
             // upload new image
             $image = $request->file('image');
-            $image->storeAs('public/products', $image->hashName());
+            $image->storeAs('products', $image->hashName(), 'public');
 
             // update product with new image
             $product->update([
@@ -199,7 +199,7 @@ class ProductController extends Controller
         $before = $this->productAuditPayload($product);
 
         // remove image
-        Storage::disk('local')->delete('public/products/'.basename($product->image));
+        Storage::disk('public')->delete('products/'.basename($product->image));
 
         // delete
         $product->delete();
