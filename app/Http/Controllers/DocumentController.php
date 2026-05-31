@@ -22,7 +22,9 @@ class DocumentController extends Controller
     {
         $logo = \App\Models\Setting::get('store_logo');
         if ($logo && ! str_starts_with($logo, 'http') && ! str_starts_with($logo, '/storage')) {
-            $logo = asset('storage/'.ltrim($logo, '/'));
+            $logo = app()->bound('tenant')
+                ? asset('/storage/tenants/' . app('tenant')->storage_key . '/' . ltrim($logo, '/'))
+                : asset('storage/'.ltrim($logo, '/'));
         }
 
         $logoData = null;
