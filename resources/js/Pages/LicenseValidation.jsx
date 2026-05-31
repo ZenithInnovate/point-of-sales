@@ -48,17 +48,6 @@ export default function LicenseValidation({ tenant_name, tenant_domain, landlord
                         </p>
                     </div>
 
-                    {/* Aksi Kembali */}
-                    <div className="pt-2">
-                        <a
-                            href={landlord_url}
-                            className="w-full py-3 px-4 rounded-xl border border-slate-800 hover:border-slate-700 bg-slate-950 hover:bg-slate-900 text-slate-300 hover:text-white font-medium transition-all duration-200 flex items-center justify-center gap-2 text-sm shadow-sm"
-                        >
-                            <IconArrowLeft size={16} />
-                            <span>Kembali</span>
-                        </a>
-                    </div>
-
                     {/* Footer */}
                     <div className="text-center mt-8 text-xs text-slate-600">
                         AkarPOS SaaS Multi-Tenancy System &bull; Domain Protection

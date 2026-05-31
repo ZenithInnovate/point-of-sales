@@ -72,8 +72,14 @@ class TenantIdentification
 
             $hasValidLicense = in_array($tenant->domain, $validDomains);
 
-            if (!$hasValidLicense && !$request->is('license*')) {
-                return redirect()->route('license.validation');
+            if (!$hasValidLicense) {
+                if (!$request->is('license*')) {
+                    return redirect()->route('license.validation');
+                }
+            } else {
+                if ($request->is('license*')) {
+                    return redirect()->route('login');
+                }
             }
         }
 
