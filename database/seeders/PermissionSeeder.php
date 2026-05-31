@@ -17,6 +17,34 @@ class PermissionSeeder extends Seeder
 
         $create = fn ($name) => Permission::firstOrCreate(['name' => $name, 'guard_name' => 'web']);
 
+        // Check if currently seeding the landlord database
+        $isLandlord = \Illuminate\Support\Facades\DB::connection()->getDatabaseName() === config('database.connections.landlord.database');
+
+        if ($isLandlord) {
+            // Only seed SaaS & Administrative central permissions
+            $create('dashboard-access');
+            $create('users-access');
+            $create('users-create');
+            $create('users-update');
+            $create('users-delete');
+            $create('roles-access');
+            $create('roles-create');
+            $create('roles-update');
+            $create('roles-delete');
+            $create('permissions-access');
+            $create('permissions-create');
+            $create('permissions-update');
+            $create('permissions-delete');
+            $create('tenants-access');
+            $create('tenants-create');
+            $create('tenants-update');
+            $create('tenants-delete');
+            $create('audit-logs-access');
+
+            app(PermissionRegistrar::class)->forgetCachedPermissions();
+            return;
+        }
+
         // dashboard permissions
         $create('dashboard-access');
 

@@ -23,8 +23,18 @@ try {
     ]);
     echo Artisan::output();
 
-    // 2. Jalankan seeder roles, permissions, dan users ke database landlord
-    echo "2. Menjalankan seeder awal (Admin, Kasir, Roles, Settings) ke database landlord...\n";
+    // 2. Bersihkan tabel permissions lama agar tidak bentrok
+    echo "2. Membersihkan tabel permission lama di database landlord...\n";
+    DB::connection('landlord')->statement('SET FOREIGN_KEY_CHECKS=0;');
+    DB::connection('landlord')->table('role_has_permissions')->truncate();
+    DB::connection('landlord')->table('model_has_permissions')->truncate();
+    DB::connection('landlord')->table('model_has_roles')->truncate();
+    DB::connection('landlord')->table('permissions')->truncate();
+    DB::connection('landlord')->table('roles')->truncate();
+    DB::connection('landlord')->statement('SET FOREIGN_KEY_CHECKS=1;');
+
+    // 3. Jalankan seeder roles, permissions, dan users ke database landlord
+    echo "3. Menjalankan seeder awal (Admin, Kasir, Roles, Settings) ke database landlord...\n";
     Artisan::call('db:seed', [
         '--database' => 'landlord',
         '--class' => 'Database\\Seeders\\DatabaseSeeder',
@@ -32,8 +42,8 @@ try {
     ]);
     echo Artisan::output();
 
-    // 3. Daftarkan/Pastikan tenant 'admin' terdaftar di tabel tenants landlord
-    echo "3. Mendaftarkan tenant 'admin' di database landlord...\n";
+    // 4. Daftarkan/Pastikan tenant 'admin' terdaftar di tabel tenants landlord
+    echo "4. Mendaftarkan tenant 'admin' di database landlord...\n";
     $tenant = Tenant::updateOrCreate(
         ['id' => 'admin'],
         [
