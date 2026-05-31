@@ -21,7 +21,7 @@ import { useAuthorization } from "@/Utils/authorization";
 // Customer Card for Grid View
 function CustomerCard({ customer, canUpdate, canDelete }) {
     return (
-        <div className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 hover:shadow-lg hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
+        <div className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 hover:shadow-lg hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 flex flex-col h-full">
             {/* Avatar & Name */}
             <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
@@ -80,7 +80,7 @@ function CustomerCard({ customer, canUpdate, canDelete }) {
 
             {/* Actions */}
             {(canUpdate || canDelete) && (
-                <div className="flex gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                <div className="flex gap-2 pt-3 border-t border-slate-100 dark:border-slate-800 mt-auto">
                     {canUpdate && (
                         <Link
                             href={route("customers.edit", customer.id)}
