@@ -33,9 +33,7 @@ export default function Index({ stockMutations, products, filters }) {
             <Head title="Mutasi Stok" />
 
             <div className="mb-6">
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-                    Mutasi Stok
-                </h1>
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Mutasi Stok</h1>
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                     Histori perubahan stok dari stock opname dan initial stock produk.
                 </p>
@@ -44,9 +42,7 @@ export default function Index({ stockMutations, products, filters }) {
             <div className="mb-4 grid grid-cols-1 gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 md:grid-cols-4">
                 <select
                     value={filters.product_id || ""}
-                    onChange={(event) =>
-                        updateFilter("product_id", event.target.value)
-                    }
+                    onChange={(event) => updateFilter("product_id", event.target.value)}
                     className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 >
                     <option value="">Semua Produk</option>
@@ -59,9 +55,7 @@ export default function Index({ stockMutations, products, filters }) {
 
                 <select
                     value={filters.mutation_type || ""}
-                    onChange={(event) =>
-                        updateFilter("mutation_type", event.target.value)
-                    }
+                    onChange={(event) => updateFilter("mutation_type", event.target.value)}
                     className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 >
                     <option value="">Semua Tipe</option>
@@ -73,18 +67,14 @@ export default function Index({ stockMutations, products, filters }) {
                 <input
                     type="date"
                     value={filters.date_from || ""}
-                    onChange={(event) =>
-                        updateFilter("date_from", event.target.value)
-                    }
+                    onChange={(event) => updateFilter("date_from", event.target.value)}
                     className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 />
 
                 <input
                     type="date"
                     value={filters.date_to || ""}
-                    onChange={(event) =>
-                        updateFilter("date_to", event.target.value)
-                    }
+                    onChange={(event) => updateFilter("date_to", event.target.value)}
                     className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 />
             </div>
@@ -115,7 +105,9 @@ export default function Index({ stockMutations, products, filters }) {
                                                 {mutation.product?.title || "-"}
                                             </p>
                                             <p className="text-xs text-slate-500 dark:text-slate-400">
-                                                {mutation.product?.barcode || mutation.product?.sku || "-"}
+                                                {mutation.product?.barcode ||
+                                                    mutation.product?.sku ||
+                                                    "-"}
                                             </p>
                                         </div>
                                     </Table.Td>
@@ -160,9 +152,7 @@ export default function Index({ stockMutations, products, filters }) {
                 </Table>
             </Table.Card>
 
-            {stockMutations.last_page > 1 && (
-                <Pagination links={stockMutations.links} />
-            )}
+            {stockMutations.last_page > 1 && <Pagination links={stockMutations.links} />}
         </>
     );
 }

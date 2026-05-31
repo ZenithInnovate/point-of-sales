@@ -37,21 +37,22 @@ export default function Index({ tenants }) {
 
             {/* Header */}
             <div className="mb-6">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">
                             <IconBuildingStore size={28} className="text-primary-500" />
                             Kelola Tenant
                         </h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
-                            {tenants.total || tenants.data?.length || 0} tenant terdaftar di database landlord
+                            {tenants.total || tenants.data?.length || 0} tenant terdaftar di
+                            database landlord
                         </p>
                     </div>
                     {canCreateTenants && (
                         <Button
                             type={"link"}
                             icon={<IconCirclePlus size={18} strokeWidth={1.5} />}
-                            className="bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30"
+                            className="bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
                             label={"Tambah Tenant"}
                             href={route("tenants.create")}
                         />
@@ -87,62 +88,65 @@ export default function Index({ tenants }) {
                         <Table.Tbody>
                             {tenants.data.map((tenant, i) => (
                                 <tr
-                                    className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                                    className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
                                     key={tenant.id}
                                 >
                                     <Table.Td className="text-center font-medium text-slate-500">
-                                        {++i +
-                                            (tenants.current_page - 1) *
-                                                tenants.per_page}
+                                        {++i + (tenants.current_page - 1) * tenants.per_page}
                                     </Table.Td>
                                     <Table.Td>
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-lg bg-primary-50 dark:bg-primary-950/40 text-primary-600 dark:text-primary-400 flex items-center justify-center font-bold text-lg">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 text-lg font-bold text-primary-600 dark:bg-primary-950/40 dark:text-primary-400">
                                                 {tenant.name.charAt(0).toUpperCase()}
                                             </div>
                                             <div>
                                                 <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
                                                     {tenant.name}
                                                 </p>
-                                                <p className="text-xs text-slate-400 font-mono">
+                                                <p className="font-mono text-xs text-slate-400">
                                                     ID: {tenant.id}
                                                 </p>
                                             </div>
                                         </div>
                                     </Table.Td>
                                     <Table.Td>
-                                        <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-350 text-sm font-medium">
+                                        <div className="dark:text-slate-350 flex items-center gap-1.5 text-sm font-medium text-slate-600">
                                             <IconLink size={14} className="text-slate-400" />
                                             <a
                                                 href={`http://${tenant.domain}`}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="hover:text-primary-600 hover:underline transition-colors"
+                                                className="transition-colors hover:text-primary-600 hover:underline"
                                             >
                                                 {tenant.domain}
                                             </a>
                                         </div>
                                     </Table.Td>
                                     <Table.Td>
-                                        <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-350 text-sm font-mono">
+                                        <div className="dark:text-slate-350 flex items-center gap-1.5 font-mono text-sm text-slate-600">
                                             <IconDatabase size={14} className="text-slate-400" />
                                             <span>{tenant.db_database}</span>
                                         </div>
                                     </Table.Td>
                                     <Table.Td>
-                                        <span className={`px-2.5 py-0.5 rounded-lg text-xs font-bold uppercase tracking-wider ${getStatusBadge(tenant.status)}`}>
+                                        <span
+                                            className={`rounded-lg px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${getStatusBadge(tenant.status)}`}
+                                        >
                                             {tenant.status}
                                         </span>
                                     </Table.Td>
                                     <Table.Td>
-                                        <div className="flex items-center gap-1.5 text-slate-500 text-xs">
+                                        <div className="flex items-center gap-1.5 text-xs text-slate-500">
                                             <IconCalendar size={14} />
                                             <span>
-                                                {new Date(tenant.created_at).toLocaleDateString("id-ID", {
-                                                    day: "numeric",
-                                                    month: "short",
-                                                    year: "numeric",
-                                                })}
+                                                {new Date(tenant.created_at).toLocaleDateString(
+                                                    "id-ID",
+                                                    {
+                                                        day: "numeric",
+                                                        month: "short",
+                                                        year: "numeric",
+                                                    }
+                                                )}
                                             </span>
                                         </div>
                                     </Table.Td>
@@ -151,8 +155,13 @@ export default function Index({ tenants }) {
                                             {canEditTenants && (
                                                 <Button
                                                     type={"edit"}
-                                                    icon={<IconPencilCog size={16} strokeWidth={1.5} />}
-                                                    className="border bg-warning-100 border-warning-200 text-warning-600 hover:bg-warning-200 dark:bg-warning-900/50 dark:border-warning-800 dark:text-warning-400 rounded-lg"
+                                                    icon={
+                                                        <IconPencilCog
+                                                            size={16}
+                                                            strokeWidth={1.5}
+                                                        />
+                                                    }
+                                                    className="rounded-lg border border-warning-200 bg-warning-100 text-warning-600 hover:bg-warning-200 dark:border-warning-800 dark:bg-warning-900/50 dark:text-warning-400"
                                                     href={route("tenants.edit", tenant.id)}
                                                 />
                                             )}
@@ -160,7 +169,7 @@ export default function Index({ tenants }) {
                                                 <Button
                                                     type={"delete"}
                                                     icon={<IconTrash size={16} strokeWidth={1.5} />}
-                                                    className="border bg-danger-100 border-danger-200 text-danger-600 hover:bg-danger-200 dark:bg-danger-900/50 dark:border-danger-800 dark:text-danger-400 rounded-lg"
+                                                    className="rounded-lg border border-danger-200 bg-danger-100 text-danger-600 hover:bg-danger-200 dark:border-danger-800 dark:bg-danger-900/50 dark:text-danger-400"
                                                     url={route("tenants.destroy", tenant.id)}
                                                 />
                                             )}
@@ -173,21 +182,21 @@ export default function Index({ tenants }) {
                 </Table.Card>
             ) : (
                 /* Empty State */
-                <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
-                    <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                <div className="flex flex-col items-center justify-center rounded-lg border border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-900">
+                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                         <IconDatabaseOff size={32} className="text-slate-400" strokeWidth={1.5} />
                     </div>
-                    <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-1">
+                    <h3 className="mb-1 text-lg font-medium text-slate-800 dark:text-slate-200">
                         Belum Ada Tenant Terdaftar
                     </h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+                    <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
                         Daftarkan tenant POS pertama Anda untuk memulai multi-tenant SaaS.
                     </p>
                     {canCreateTenants && (
                         <Button
                             type={"link"}
                             icon={<IconCirclePlus size={18} />}
-                            className="bg-primary-500 hover:bg-primary-600 text-white"
+                            className="bg-primary-500 text-white hover:bg-primary-600"
                             label="Tambah Tenant"
                             href={route("tenants.create")}
                         />
@@ -195,9 +204,7 @@ export default function Index({ tenants }) {
                 </div>
             )}
 
-            {tenants.last_page !== 1 && (
-                <Pagination links={tenants.links} />
-            )}
+            {tenants.last_page !== 1 && <Pagination links={tenants.links} />}
         </>
     );
 }

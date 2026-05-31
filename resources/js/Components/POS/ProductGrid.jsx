@@ -1,10 +1,5 @@
 import React from "react";
-import {
-    IconShoppingBag,
-    IconPhoto,
-    IconMinus,
-    IconPlus,
-} from "@tabler/icons-react";
+import { IconShoppingBag, IconPhoto, IconMinus, IconPlus } from "@tabler/icons-react";
 import { getProductImageUrl } from "@/Utils/imageUrl";
 
 const formatPrice = (value = 0) =>
@@ -28,38 +23,30 @@ function ProductCard({ product, onAddToCart, isAdding }) {
         <button
             onClick={() => hasStock && onAddToCart(product)}
             disabled={!hasStock || isAdding}
-            className={`
-                group relative flex flex-col bg-white dark:bg-slate-900
-                rounded-2xl border border-slate-200 dark:border-slate-800
-                overflow-hidden transition-all duration-200
-                ${
-                    hasStock
-                        ? "hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
-                        : "opacity-60 cursor-not-allowed"
-                }
-            `}
+            className={`group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all duration-200 dark:border-slate-800 dark:bg-slate-900 ${
+                hasStock
+                    ? "cursor-pointer hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-lg active:scale-[0.98] dark:hover:border-primary-700"
+                    : "cursor-not-allowed opacity-60"
+            } `}
         >
             {/* Product Image */}
-            <div className="relative aspect-square bg-slate-100 dark:bg-slate-800 overflow-hidden">
+            <div className="relative aspect-square overflow-hidden bg-slate-100 dark:bg-slate-800">
                 {product.image ? (
                     <img
                         src={getProductImageUrl(product.image)}
                         alt={product.title}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                         loading="lazy"
                     />
                 ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                        <IconPhoto
-                            size={32}
-                            className="text-slate-300 dark:text-slate-600"
-                        />
+                    <div className="flex h-full w-full items-center justify-center">
+                        <IconPhoto size={32} className="text-slate-300 dark:text-slate-600" />
                     </div>
                 )}
 
                 {/* Stock Badge */}
                 {lowStock && (
-                    <span className="absolute top-2 right-2 px-2 py-0.5 text-xs font-medium bg-warning-100 text-warning-700 dark:bg-warning-900/50 dark:text-warning-400 rounded-full">
+                    <span className="absolute right-2 top-2 rounded-full bg-warning-100 px-2 py-0.5 text-xs font-medium text-warning-700 dark:bg-warning-900/50 dark:text-warning-400">
                         Sisa {product.stock}
                     </span>
                 )}
@@ -72,8 +59,8 @@ function ProductCard({ product, onAddToCart, isAdding }) {
 
                 {/* Out of Stock Overlay */}
                 {!hasStock && (
-                    <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center">
-                        <span className="px-3 py-1 bg-danger-500 text-white text-xs font-semibold rounded-full">
+                    <div className="absolute inset-0 flex items-center justify-center bg-slate-900/60">
+                        <span className="rounded-full bg-danger-500 px-3 py-1 text-xs font-semibold text-white">
                             Habis
                         </span>
                     </div>
@@ -81,8 +68,8 @@ function ProductCard({ product, onAddToCart, isAdding }) {
 
                 {/* Hover Add Indicator (centered on image) */}
                 {hasStock && (
-                    <div className="absolute inset-0 bg-primary-500/10 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none flex items-center justify-center">
-                        <div className="bg-primary-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-primary-500/10 opacity-0 transition-opacity group-hover:opacity-100">
+                        <div className="rounded-full bg-primary-500 px-4 py-2 text-sm font-semibold text-white shadow-lg">
                             + Tambah
                         </div>
                     </div>
@@ -90,8 +77,8 @@ function ProductCard({ product, onAddToCart, isAdding }) {
             </div>
 
             {/* Product Info */}
-            <div className="flex-1 p-3 flex flex-col justify-between min-h-[80px]">
-                <h3 className="text-sm font-medium text-slate-800 dark:text-slate-200 line-clamp-2 leading-tight">
+            <div className="flex min-h-[80px] flex-1 flex-col justify-between p-3">
+                <h3 className="line-clamp-2 text-sm font-medium leading-tight text-slate-800 dark:text-slate-200">
                     {product.title}
                 </h3>
                 <div className="mt-2">
@@ -110,7 +97,6 @@ function ProductCard({ product, onAddToCart, isAdding }) {
                     )}
                 </div>
             </div>
-
         </button>
     );
 }
@@ -120,15 +106,11 @@ function CategoryTab({ category, isActive, onClick }) {
     return (
         <button
             onClick={onClick}
-            className={`
-                px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap
-                transition-all duration-200 min-h-touch
-                ${
-                    isActive
-                        ? "bg-primary-500 text-white shadow-md shadow-primary-500/30"
-                        : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700"
-                }
-            `}
+            className={`min-h-touch whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+                isActive
+                    ? "bg-primary-500 text-white shadow-md shadow-primary-500/30"
+                    : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800"
+            } `}
         >
             {category.name}
         </button>
@@ -136,14 +118,7 @@ function CategoryTab({ category, isActive, onClick }) {
 }
 
 // Search Input
-function SearchInput({
-    value,
-    onChange,
-    onSearch,
-    isSearching,
-    placeholder,
-    inputRef,
-}) {
+function SearchInput({ value, onChange, onSearch, isSearching, placeholder, inputRef }) {
     return (
         <div className="relative">
             <input
@@ -152,20 +127,13 @@ function SearchInput({
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && onSearch?.()}
-                placeholder={
-                    placeholder ||
-                    "Cari produk atau scan barcode... (/ untuk fokus)"
-                }
-                className="w-full h-12 pl-4 pr-12 rounded-xl border border-slate-200 dark:border-slate-700
-                    bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200
-                    placeholder-slate-400 dark:placeholder-slate-500
-                    focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 dark:focus:border-primary-500
-                    transition-all text-base"
+                placeholder={placeholder || "Cari produk atau scan barcode... (/ untuk fokus)"}
+                className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-4 pr-12 text-base text-slate-800 placeholder-slate-400 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-primary-500"
                 disabled={isSearching}
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
                 {isSearching ? (
-                    <div className="w-5 h-5 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary-500 border-t-transparent" />
                 ) : (
                     <IconShoppingBag size={20} className="text-slate-400" />
                 )}
@@ -188,8 +156,7 @@ export default function ProductGrid({
     addingProductId,
     searchInputRef,
 }) {
-    const normalizedSelectedCategory =
-        selectedCategory === null ? null : Number(selectedCategory);
+    const normalizedSelectedCategory = selectedCategory === null ? null : Number(selectedCategory);
 
     // Filter products by category and search
     const filteredProducts = products.filter((product) => {
@@ -204,9 +171,9 @@ export default function ProductGrid({
     });
 
     return (
-        <div className="h-full flex flex-col">
+        <div className="flex h-full flex-col">
             {/* Search Bar */}
-            <div className="p-4 border-b border-slate-200 dark:border-slate-800">
+            <div className="border-b border-slate-200 p-4 dark:border-slate-800">
                 <SearchInput
                     value={searchQuery}
                     onChange={onSearchChange}
@@ -218,7 +185,7 @@ export default function ProductGrid({
             </div>
 
             {/* Category Tabs */}
-            <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-800 overflow-x-auto scrollbar-hide">
+            <div className="scrollbar-hide overflow-x-auto border-b border-slate-200 px-4 py-3 dark:border-slate-800">
                 <div className="flex gap-2">
                     <CategoryTab
                         category={{ id: null, name: "Semua" }}
@@ -229,10 +196,7 @@ export default function ProductGrid({
                         <CategoryTab
                             key={category.id}
                             category={category}
-                            isActive={
-                                normalizedSelectedCategory ===
-                                Number(category.id)
-                            }
+                            isActive={normalizedSelectedCategory === Number(category.id)}
                             onClick={() => onCategoryChange(Number(category.id))}
                         />
                     ))}
@@ -240,9 +204,9 @@ export default function ProductGrid({
             </div>
 
             {/* Products Grid */}
-            <div className="flex-1 overflow-y-auto p-4 scrollbar-thin">
+            <div className="scrollbar-thin flex-1 overflow-y-auto p-4">
                 {filteredProducts.length > 0 ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                         {filteredProducts.map((product) => (
                             <ProductCard
                                 key={product.id}
@@ -253,16 +217,10 @@ export default function ProductGrid({
                         ))}
                     </div>
                 ) : (
-                    <div className="h-full flex flex-col items-center justify-center text-slate-400 dark:text-slate-600">
-                        <IconShoppingBag
-                            size={48}
-                            strokeWidth={1.5}
-                            className="mb-3"
-                        />
+                    <div className="flex h-full flex-col items-center justify-center text-slate-400 dark:text-slate-600">
+                        <IconShoppingBag size={48} strokeWidth={1.5} className="mb-3" />
                         <p className="text-sm">
-                            {searchQuery
-                                ? "Produk tidak ditemukan"
-                                : "Tidak ada produk"}
+                            {searchQuery ? "Produk tidak ditemukan" : "Tidak ada produk"}
                         </p>
                     </div>
                 )}

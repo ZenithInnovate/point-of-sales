@@ -4,12 +4,7 @@ import DashboardLayout from "@/Layouts/DashboardLayout";
 import Input from "@/Components/Dashboard/Input";
 import Checkbox from "@/Components/Dashboard/Checkbox";
 import { useAuthorization } from "@/Utils/authorization";
-import {
-    IconCreditCard,
-    IconDeviceFloppy,
-    IconBrandStripe,
-    IconCash,
-} from "@tabler/icons-react";
+import { IconCreditCard, IconDeviceFloppy, IconBrandStripe, IconCash } from "@tabler/icons-react";
 import toast from "react-hot-toast";
 
 export default function Payment({
@@ -85,42 +80,41 @@ export default function Payment({
             <Head title="Pengaturan Payment" />
 
             <div className="mb-6">
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">
                     <IconCreditCard size={28} className="text-primary-500" />
                     Pengaturan Payment Gateway
                 </h1>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     Konfigurasi metode pembayaran dan gateway
                 </p>
             </div>
 
             <form onSubmit={handleSubmit} className="max-w-3xl space-y-6">
                 {/* Default Gateway */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-                    <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+                <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+                    <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                         <IconCash size={18} />
                         Gateway Default
                     </h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                        Gateway pembayaran default yang digunakan kasir saat
-                        membuka halaman transaksi.
+                    <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+                        Gateway pembayaran default yang digunakan kasir saat membuka halaman
+                        transaksi.
                     </p>
                     {!canUpdatePaymentSettings && (
                         <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300">
-                            Anda hanya memiliki akses lihat. Perubahan payment settings memerlukan permission update dan konfirmasi password ulang.
+                            Anda hanya memiliki akses lihat. Perubahan payment settings memerlukan
+                            permission update dan konfirmasi password ulang.
                         </div>
                     )}
                     <div>
-                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                        <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                             Pilih Gateway
                         </label>
                         <select
                             value={data.default_gateway}
-                            onChange={(e) =>
-                                setData("default_gateway", e.target.value)
-                            }
+                            onChange={(e) => setData("default_gateway", e.target.value)}
                             disabled={!canUpdatePaymentSettings}
-                            className="w-full h-11 px-4 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
+                            className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                         >
                             {supportedGateways.map((gw) => (
                                 <option
@@ -129,13 +123,12 @@ export default function Payment({
                                     disabled={!isGatewaySelectable(gw.value)}
                                 >
                                     {gw.label}
-                                    {!isGatewaySelectable(gw.value) &&
-                                        " (nonaktif)"}
+                                    {!isGatewaySelectable(gw.value) && " (nonaktif)"}
                                 </option>
                             ))}
                         </select>
                         {errors?.default_gateway && (
-                            <small className="text-xs text-danger-500 mt-1">
+                            <small className="mt-1 text-xs text-danger-500">
                                 {errors.default_gateway}
                             </small>
                         )}
@@ -143,13 +136,13 @@ export default function Payment({
                 </div>
 
                 {/* Bank Transfer */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+                    <div className="mb-4 flex items-center justify-between">
+                        <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                             🏦 Transfer Bank
                         </h3>
                         <label
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all ${
+                            className={`flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
                                 data.bank_transfer_enabled
                                     ? "bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400"
                                     : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
@@ -157,52 +150,41 @@ export default function Payment({
                         >
                             <Checkbox
                                 checked={data.bank_transfer_enabled}
-                                onChange={(e) =>
-                                    setData(
-                                        "bank_transfer_enabled",
-                                        e.target.checked
-                                    )
-                                }
+                                onChange={(e) => setData("bank_transfer_enabled", e.target.checked)}
                                 disabled={!canUpdatePaymentSettings}
                             />
                             {data.bank_transfer_enabled ? "Aktif" : "Nonaktif"}
                         </label>
                     </div>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                        Pembayaran manual via transfer bank. Kasir akan
-                        memasukkan transaksi dengan status pending, kemudian
-                        admin mengkonfirmasi setelah dana diterima.
+                    <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+                        Pembayaran manual via transfer bank. Kasir akan memasukkan transaksi dengan
+                        status pending, kemudian admin mengkonfirmasi setelah dana diterima.
                     </p>
-                        <a
-                            href={route("settings.bank-accounts.index")}
-                        className="inline-flex items-center gap-2 text-sm text-primary-500 hover:text-primary-600 font-medium"
+                    <a
+                        href={route("settings.bank-accounts.index")}
+                        className="inline-flex items-center gap-2 text-sm font-medium text-primary-500 hover:text-primary-600"
                     >
                         Kelola Rekening Bank →
                     </a>
                 </div>
 
                 {/* Midtrans */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+                    <div className="mb-4 flex items-center justify-between">
+                        <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                             <IconBrandStripe size={18} />
                             Midtrans Snap
                         </h3>
                         <label
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all ${
+                            className={`flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
                                 data.midtrans_enabled
-                                    ? "bg-success-100 dark:bg-success-900/50 text-success-700 dark:text-success-400"
-                                    : "bg-slate-100 dark:bg-slate-800 text-slate-500"
+                                    ? "bg-success-100 text-success-700 dark:bg-success-900/50 dark:text-success-400"
+                                    : "bg-slate-100 text-slate-500 dark:bg-slate-800"
                             }`}
                         >
                             <Checkbox
                                 checked={data.midtrans_enabled}
-                                onChange={(e) =>
-                                    setData(
-                                        "midtrans_enabled",
-                                        e.target.checked
-                                    )
-                                }
+                                onChange={(e) => setData("midtrans_enabled", e.target.checked)}
                                 disabled={!canUpdatePaymentSettings}
                             />
                             {data.midtrans_enabled ? "Aktif" : "Nonaktif"}
@@ -210,9 +192,7 @@ export default function Payment({
                     </div>
                     <div
                         className={`space-y-4 ${
-                            !data.midtrans_enabled
-                                ? "opacity-50 pointer-events-none"
-                                : ""
+                            !data.midtrans_enabled ? "pointer-events-none opacity-50" : ""
                         }`}
                     >
                         <div className="grid gap-4 md:grid-cols-2">
@@ -220,12 +200,7 @@ export default function Payment({
                                 label="Server Key"
                                 type="password"
                                 value={data.midtrans_server_key}
-                                onChange={(e) =>
-                                    setData(
-                                        "midtrans_server_key",
-                                        e.target.value
-                                    )
-                                }
+                                onChange={(e) => setData("midtrans_server_key", e.target.value)}
                                 errors={errors?.midtrans_server_key}
                                 placeholder={
                                     paymentSettingSources?.midtrans_server_key?.configured
@@ -234,19 +209,15 @@ export default function Payment({
                                 }
                                 disabled={
                                     !canUpdatePaymentSettings ||
-                                    paymentSettingSources?.midtrans_server_key?.managed_by_environment
+                                    paymentSettingSources?.midtrans_server_key
+                                        ?.managed_by_environment
                                 }
                             />
                             <Input
                                 label="Client Key"
                                 type="text"
                                 value={data.midtrans_client_key}
-                                onChange={(e) =>
-                                    setData(
-                                        "midtrans_client_key",
-                                        e.target.value
-                                    )
-                                }
+                                onChange={(e) => setData("midtrans_client_key", e.target.value)}
                                 errors={errors?.midtrans_client_key}
                                 placeholder="SB-Mid-client-xxx"
                                 disabled={!canUpdatePaymentSettings}
@@ -256,15 +227,10 @@ export default function Payment({
                             "midtrans_server_key",
                             "Isi ulang hanya jika ingin mengganti secret."
                         )}
-                        <label className="flex items-center gap-2 cursor-pointer">
+                        <label className="flex cursor-pointer items-center gap-2">
                             <Checkbox
                                 checked={data.midtrans_production}
-                                onChange={(e) =>
-                                    setData(
-                                        "midtrans_production",
-                                        e.target.checked
-                                    )
-                                }
+                                onChange={(e) => setData("midtrans_production", e.target.checked)}
                                 disabled={!canUpdatePaymentSettings}
                             />
                             <span className="text-sm text-slate-600 dark:text-slate-400">
@@ -275,24 +241,22 @@ export default function Payment({
                 </div>
 
                 {/* Xendit */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+                    <div className="mb-4 flex items-center justify-between">
+                        <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                             <IconCreditCard size={18} />
                             Xendit Invoice
                         </h3>
                         <label
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all ${
+                            className={`flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
                                 data.xendit_enabled
-                                    ? "bg-success-100 dark:bg-success-900/50 text-success-700 dark:text-success-400"
-                                    : "bg-slate-100 dark:bg-slate-800 text-slate-500"
+                                    ? "bg-success-100 text-success-700 dark:bg-success-900/50 dark:text-success-400"
+                                    : "bg-slate-100 text-slate-500 dark:bg-slate-800"
                             }`}
                         >
                             <Checkbox
                                 checked={data.xendit_enabled}
-                                onChange={(e) =>
-                                    setData("xendit_enabled", e.target.checked)
-                                }
+                                onChange={(e) => setData("xendit_enabled", e.target.checked)}
                                 disabled={!canUpdatePaymentSettings}
                             />
                             {data.xendit_enabled ? "Aktif" : "Nonaktif"}
@@ -300,9 +264,7 @@ export default function Payment({
                     </div>
                     <div
                         className={`space-y-4 ${
-                            !data.xendit_enabled
-                                ? "opacity-50 pointer-events-none"
-                                : ""
+                            !data.xendit_enabled ? "pointer-events-none opacity-50" : ""
                         }`}
                     >
                         <div className="grid gap-4 md:grid-cols-2">
@@ -310,9 +272,7 @@ export default function Payment({
                                 label="Secret Key"
                                 type="password"
                                 value={data.xendit_secret_key}
-                                onChange={(e) =>
-                                    setData("xendit_secret_key", e.target.value)
-                                }
+                                onChange={(e) => setData("xendit_secret_key", e.target.value)}
                                 errors={errors?.xendit_secret_key}
                                 placeholder={
                                     paymentSettingSources?.xendit_secret_key?.configured
@@ -328,9 +288,7 @@ export default function Payment({
                                 label="Public Key"
                                 type="text"
                                 value={data.xendit_public_key}
-                                onChange={(e) =>
-                                    setData("xendit_public_key", e.target.value)
-                                }
+                                onChange={(e) => setData("xendit_public_key", e.target.value)}
                                 errors={errors?.xendit_public_key}
                                 placeholder="xnd_public_development_xxx"
                                 disabled={!canUpdatePaymentSettings}
@@ -344,9 +302,7 @@ export default function Payment({
                             label="Callback Token"
                             type="password"
                             value={data.xendit_callback_token}
-                            onChange={(e) =>
-                                setData("xendit_callback_token", e.target.value)
-                            }
+                            onChange={(e) => setData("xendit_callback_token", e.target.value)}
                             errors={errors?.xendit_callback_token}
                             placeholder={
                                 paymentSettingSources?.xendit_callback_token?.configured
@@ -362,15 +318,10 @@ export default function Payment({
                             "xendit_callback_token",
                             "Isi ulang hanya jika ingin mengganti token."
                         )}
-                        <label className="flex items-center gap-2 cursor-pointer">
+                        <label className="flex cursor-pointer items-center gap-2">
                             <Checkbox
                                 checked={data.xendit_production}
-                                onChange={(e) =>
-                                    setData(
-                                        "xendit_production",
-                                        e.target.checked
-                                    )
-                                }
+                                onChange={(e) => setData("xendit_production", e.target.checked)}
                                 disabled={!canUpdatePaymentSettings}
                             />
                             <span className="text-sm text-slate-600 dark:text-slate-400">
@@ -381,13 +332,13 @@ export default function Payment({
                 </div>
 
                 {/* Webhook URLs Info */}
-                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700 p-6">
-                    <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-700 dark:bg-slate-800/50">
+                    <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                         🔗 Webhook URLs
                     </h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
-                        Salin URL berikut dan paste ke dashboard Midtrans/Xendit
-                        sebagai Notification/Callback URL.
+                    <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+                        Salin URL berikut dan paste ke dashboard Midtrans/Xendit sebagai
+                        Notification/Callback URL.
                     </p>
                     {webhookWarnings.length > 0 && (
                         <div className="mb-4 space-y-2">
@@ -403,7 +354,7 @@ export default function Payment({
                     )}
                     <div className="space-y-3">
                         <div>
-                            <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                            <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                 Midtrans Notification URL
                             </label>
                             <div className="flex items-center gap-2">
@@ -411,24 +362,22 @@ export default function Payment({
                                     type="text"
                                     readOnly
                                     value={webhookUrls.midtrans || ""}
-                                    className="flex-1 h-10 px-3 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400"
+                                    className="h-10 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        navigator.clipboard.writeText(
-                                            webhookUrls.midtrans || ""
-                                        );
+                                        navigator.clipboard.writeText(webhookUrls.midtrans || "");
                                         toast.success("URL disalin!");
                                     }}
-                                    className="px-3 h-10 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                    className="h-10 rounded-lg border border-slate-200 px-3 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
                                 >
                                     Salin
                                 </button>
                             </div>
                         </div>
                         <div>
-                            <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1">
+                            <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                 Xendit Callback URL
                             </label>
                             <div className="flex items-center gap-2">
@@ -436,17 +385,15 @@ export default function Payment({
                                     type="text"
                                     readOnly
                                     value={webhookUrls.xendit || ""}
-                                    className="flex-1 h-10 px-3 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400"
+                                    className="h-10 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400"
                                 />
                                 <button
                                     type="button"
                                     onClick={() => {
-                                        navigator.clipboard.writeText(
-                                            webhookUrls.xendit || ""
-                                        );
+                                        navigator.clipboard.writeText(webhookUrls.xendit || "");
                                         toast.success("URL disalin!");
                                     }}
-                                    className="px-3 h-10 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                    className="h-10 rounded-lg border border-slate-200 px-3 text-sm font-medium text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
                                 >
                                     Salin
                                 </button>
@@ -460,7 +407,7 @@ export default function Payment({
                     <button
                         type="submit"
                         disabled={processing || !canUpdatePaymentSettings}
-                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-medium transition-colors disabled:opacity-50"
+                        className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-6 py-2.5 font-medium text-white transition-colors hover:bg-primary-600 disabled:opacity-50"
                     >
                         <IconDeviceFloppy size={18} />
                         {processing ? "Menyimpan..." : "Simpan Konfigurasi"}

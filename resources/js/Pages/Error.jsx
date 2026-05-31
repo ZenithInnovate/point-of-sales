@@ -23,7 +23,8 @@ const errorContent = {
     },
     404: {
         title: "Halaman Tidak Ditemukan",
-        description: "Halaman yang Anda cari tidak tersedia, dipindahkan, atau URL yang dimasukkan tidak tepat.",
+        description:
+            "Halaman yang Anda cari tidak tersedia, dipindahkan, atau URL yang dimasukkan tidak tepat.",
         icon: IconAlertTriangle,
     },
     419: {
@@ -138,7 +139,8 @@ export default function Error({ status, homeUrl, homeLabel }) {
                                                 {status}
                                             </div>
                                             <div className="mt-4 rounded-2xl border border-slate-200 bg-white/80 p-4 text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-950/70 dark:text-slate-400">
-                                                Pastikan URL, hak akses, atau status layanan sudah sesuai sebelum mencoba lagi.
+                                                Pastikan URL, hak akses, atau status layanan sudah
+                                                sesuai sebelum mencoba lagi.
                                             </div>
                                         </div>
                                     </div>

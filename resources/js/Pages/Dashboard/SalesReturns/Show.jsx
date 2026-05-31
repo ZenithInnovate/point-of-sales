@@ -12,14 +12,8 @@ export default function Show({ salesReturn, transaction }) {
             salesReturn={salesReturn}
             submitRoute={route("sales-returns.update", salesReturn.id)}
             submitMethod="patch"
-            canEdit={
-                salesReturn.status === "draft" &&
-                can("sales-returns-create")
-            }
-            canComplete={
-                salesReturn.status === "draft" &&
-                can("sales-returns-complete")
-            }
+            canEdit={salesReturn.status === "draft" && can("sales-returns-create")}
+            canComplete={salesReturn.status === "draft" && can("sales-returns-complete")}
             completeRoute={route("sales-returns.complete", salesReturn.id)}
         />
     );

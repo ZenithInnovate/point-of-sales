@@ -73,9 +73,7 @@ export default function Show({
                                             : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
                                     }`}
                                 >
-                                    {member.is_loyalty_member
-                                        ? "Aktif"
-                                        : "Nonaktif"}
+                                    {member.is_loyalty_member ? "Aktif" : "Nonaktif"}
                                 </span>
                             </div>
                             <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -144,9 +142,7 @@ export default function Show({
                                     </p>
                                     <p className="mt-2 text-sm font-semibold text-slate-900 dark:text-white">
                                         {stats?.last_visit
-                                            ? new Date(
-                                                  stats.last_visit
-                                              ).toLocaleDateString("id-ID")
+                                            ? new Date(stats.last_visit).toLocaleDateString("id-ID")
                                             : "-"}
                                     </p>
                                 </div>
@@ -183,7 +179,10 @@ export default function Show({
                                 </div>
                             ) : (
                                 <div className="rounded-2xl bg-slate-50 px-4 py-8 text-center dark:bg-slate-800/50">
-                                    <IconDatabaseOff size={28} className="mx-auto mb-3 text-slate-400" />
+                                    <IconDatabaseOff
+                                        size={28}
+                                        className="mx-auto mb-3 text-slate-400"
+                                    />
                                     <p className="text-sm text-slate-500 dark:text-slate-400">
                                         Belum ada transaksi member.
                                     </p>
@@ -222,9 +221,7 @@ export default function Show({
                                                                 : "text-rose-600 dark:text-rose-300"
                                                         }`}
                                                     >
-                                                        {history.points_delta >= 0
-                                                            ? "+"
-                                                            : ""}
+                                                        {history.points_delta >= 0 ? "+" : ""}
                                                         {history.points_delta} poin
                                                     </p>
                                                     <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -237,7 +234,10 @@ export default function Show({
                                 </div>
                             ) : (
                                 <div className="rounded-2xl bg-slate-50 px-4 py-8 text-center dark:bg-slate-800/50">
-                                    <IconDatabaseOff size={28} className="mx-auto mb-3 text-slate-400" />
+                                    <IconDatabaseOff
+                                        size={28}
+                                        className="mx-auto mb-3 text-slate-400"
+                                    />
                                     <p className="text-sm text-slate-500 dark:text-slate-400">
                                         Belum ada histori reward.
                                     </p>
@@ -306,7 +306,10 @@ export default function Show({
                                 </div>
                             ) : (
                                 <div className="rounded-2xl bg-slate-50 px-4 py-8 text-center dark:bg-slate-800/50">
-                                    <IconDatabaseOff size={28} className="mx-auto mb-3 text-slate-400" />
+                                    <IconDatabaseOff
+                                        size={28}
+                                        className="mx-auto mb-3 text-slate-400"
+                                    />
                                     <p className="text-sm text-slate-500 dark:text-slate-400">
                                         Belum ada segment untuk member ini.
                                     </p>
@@ -331,7 +334,10 @@ export default function Show({
                                 </div>
                             ) : (
                                 <div className="rounded-2xl bg-slate-50 px-4 py-8 text-center dark:bg-slate-800/50">
-                                    <IconDatabaseOff size={28} className="mx-auto mb-3 text-slate-400" />
+                                    <IconDatabaseOff
+                                        size={28}
+                                        className="mx-auto mb-3 text-slate-400"
+                                    />
                                     <p className="text-sm text-slate-500 dark:text-slate-400">
                                         Belum ada data produk favorit.
                                     </p>
@@ -370,7 +376,10 @@ export default function Show({
                                 </div>
                             ) : (
                                 <div className="rounded-2xl bg-slate-50 px-4 py-8 text-center dark:bg-slate-800/50">
-                                    <IconDatabaseOff size={28} className="mx-auto mb-3 text-slate-400" />
+                                    <IconDatabaseOff
+                                        size={28}
+                                        className="mx-auto mb-3 text-slate-400"
+                                    />
                                     <p className="text-sm text-slate-500 dark:text-slate-400">
                                         Belum ada voucher untuk member ini.
                                     </p>

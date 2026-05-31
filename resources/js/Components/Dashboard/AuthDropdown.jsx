@@ -21,10 +21,7 @@ export default function AuthDropdown({ auth, isMobile }) {
 
     // define method handleClickOutside
     const handleClickOutside = (event) => {
-        if (
-            dropdownRef.current &&
-            !dropdownRef.current.contains(event.target)
-        ) {
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setIsToggle(false);
         }
     };
@@ -65,10 +62,10 @@ export default function AuthDropdown({ auth, isMobile }) {
                             <img
                                 src={avatarUrl}
                                 alt={auth.user.name}
-                                className="w-10 h-10 rounded-full object-cover"
+                                className="h-10 w-10 rounded-full object-cover"
                             />
                         ) : (
-                            <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-semibold">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 font-semibold text-primary-700">
                                 {userInitial}
                             </div>
                         )}
@@ -81,7 +78,7 @@ export default function AuthDropdown({ auth, isMobile }) {
                         leaveFrom="transform scale-100 opacity-100"
                         leaveTo="transform scale-95 opacity-0"
                     >
-                        <Menu.Items className="absolute rounded-lg w-48 border mt-2 py-2 right-0 z-[100] bg-white dark:bg-gray-950 dark:border-gray-900">
+                        <Menu.Items className="absolute right-0 z-[100] mt-2 w-48 rounded-lg border bg-white py-2 dark:border-gray-900 dark:bg-gray-950">
                             <div className="flex flex-col gap-1.5 divide-y divide-gray-100 dark:divide-gray-900">
                                 {/* <Menu.Item>
                                     <Link href="/apps/profile" className='px-3 py-1.5 text-sm flex items-center gap-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'>
@@ -91,12 +88,9 @@ export default function AuthDropdown({ auth, isMobile }) {
                                 <Menu.Item>
                                     <button
                                         onClick={logout}
-                                        className="px-3 py-1.5 text-sm flex items-center gap-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
+                                        className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
                                     >
-                                        <IconLogout
-                                            strokeWidth={"1.5"}
-                                            size={"20"}
-                                        />
+                                        <IconLogout strokeWidth={"1.5"} size={"20"} />
                                         Logout
                                     </button>
                                 </Menu.Item>
@@ -111,10 +105,10 @@ export default function AuthDropdown({ auth, isMobile }) {
                             <img
                                 src={avatarUrl}
                                 alt={auth.user.name}
-                                className="w-10 h-10 rounded-full object-cover"
+                                className="h-10 w-10 rounded-full object-cover"
                             />
                         ) : (
-                            <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-semibold">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-100 font-semibold text-primary-700">
                                 {userInitial}
                             </div>
                         )}

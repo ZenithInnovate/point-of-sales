@@ -13,13 +13,7 @@ const formatDateTime = (value) =>
           }).format(new Date(value))
         : "-";
 
-export default function Index({
-    auditLogs,
-    filters,
-    users = [],
-    modules = [],
-    events = [],
-}) {
+export default function Index({ auditLogs, filters, users = [], modules = [], events = [] }) {
     const currentFilters = useMemo(
         () => ({
             user_id: filters?.user_id || "",
@@ -197,10 +191,7 @@ export default function Index({
                                 </tr>
                             ))
                         ) : (
-                            <Table.Empty
-                                colSpan={7}
-                                message="Belum ada data audit log."
-                            />
+                            <Table.Empty colSpan={7} message="Belum ada data audit log." />
                         )}
                     </Table.Tbody>
                 </Table>

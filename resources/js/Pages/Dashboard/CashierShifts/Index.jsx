@@ -28,12 +28,7 @@ const formatDateTime = (value) => {
     }).format(new Date(value));
 };
 
-export default function Index({
-    shifts,
-    filters,
-    cashiers = [],
-    activeShift = null,
-}) {
+export default function Index({ shifts, filters, cashiers = [], activeShift = null }) {
     const { auth, errors } = usePage().props;
     const { can } = useAuthorization();
     const [openingCash, setOpeningCash] = useState("");
@@ -124,7 +119,9 @@ export default function Index({
                                     placeholder="0"
                                 />
                                 {errors?.opening_cash && (
-                                    <p className="mt-2 text-xs text-rose-500">{errors.opening_cash}</p>
+                                    <p className="mt-2 text-xs text-rose-500">
+                                        {errors.opening_cash}
+                                    </p>
                                 )}
                             </div>
                             <div className="md:col-span-2">
@@ -196,7 +193,9 @@ export default function Index({
                     {cashiers.length > 1 ? (
                         <select
                             value={currentFilters.cashier_id}
-                            onChange={(event) => handleFilterChange("cashier_id", event.target.value)}
+                            onChange={(event) =>
+                                handleFilterChange("cashier_id", event.target.value)
+                            }
                             className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                         >
                             <option value="">Semua Kasir</option>
@@ -252,7 +251,10 @@ export default function Index({
                         <Table.Tbody>
                             {shifts.data.length > 0 ? (
                                 shifts.data.map((shift) => (
-                                    <tr key={shift.id} className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                    <tr
+                                        key={shift.id}
+                                        className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                    >
                                         <Table.Td>
                                             <div>
                                                 <p className="font-semibold text-slate-800 dark:text-slate-200">

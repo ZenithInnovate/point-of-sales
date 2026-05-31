@@ -1,10 +1,4 @@
-import React, {
-    useEffect,
-    useMemo,
-    useState,
-    useCallback,
-    useRef,
-} from "react";
+import React, { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { Head, router, usePage } from "@inertiajs/react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -14,9 +8,7 @@ import CartPanel from "@/Components/POS/CartPanel";
 import PaymentPanel from "@/Components/POS/PaymentPanel";
 import CustomerSelect from "@/Components/POS/CustomerSelect";
 import NumpadModal from "@/Components/POS/NumpadModal";
-import HeldTransactions, {
-    HoldButton,
-} from "@/Components/POS/HeldTransactions";
+import HeldTransactions, { HoldButton } from "@/Components/POS/HeldTransactions";
 import useBarcodeScanner from "@/Hooks/useBarcodeScanner";
 import { getProductImageUrl } from "@/Utils/imageUrl";
 import { useAuthorization } from "@/Utils/authorization";
@@ -54,12 +46,7 @@ export default function Index({
     bankAccounts = [],
     loyaltyTierOptions = [],
 }) {
-    const {
-        auth,
-        errors,
-        lowStockNotifications = [],
-        activeCashierShift,
-    } = usePage().props;
+    const { auth, errors, lowStockNotifications = [], activeCashierShift } = usePage().props;
     const { can } = useAuthorization();
     const canOpenShift = can("cashier-shifts-open");
 
@@ -76,9 +63,7 @@ export default function Index({
     const [redeemPointsInput, setRedeemPointsInput] = useState("");
     const [cashInput, setCashInput] = useState("");
     const [shippingInput, setShippingInput] = useState("");
-    const [paymentMethod, setPaymentMethod] = useState(
-        defaultPaymentGateway ?? "cash"
-    );
+    const [paymentMethod, setPaymentMethod] = useState(defaultPaymentGateway ?? "cash");
     const [payLater, setPayLater] = useState(false);
     const [dueDate, setDueDate] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -89,8 +74,7 @@ export default function Index({
     const [selectedVoucherId, setSelectedVoucherId] = useState("");
     const [openingCashInput, setOpeningCashInput] = useState("");
     const [shiftNotesInput, setShiftNotesInput] = useState("");
-    const normalizedSelectedCategory =
-        selectedCategory === null ? null : Number(selectedCategory);
+    const normalizedSelectedCategory = selectedCategory === null ? null : Number(selectedCategory);
     const pricingItemsByCartId = useMemo(() => {
         const items = pricingPreview?.items || [];
 
@@ -142,14 +126,8 @@ export default function Index({
     const LowStockAlerts = () => null;
 
     // Calculations
-    const discount = useMemo(
-        () => Math.max(0, Number(discountInput) || 0),
-        [discountInput]
-    );
-    const shipping = useMemo(
-        () => Math.max(0, Number(shippingInput) || 0),
-        [shippingInput]
-    );
+    const discount = useMemo(() => Math.max(0, Number(discountInput) || 0), [discountInput]);
+    const shipping = useMemo(() => Math.max(0, Number(shippingInput) || 0), [shippingInput]);
     const baseSubtotal = useMemo(
         () => Number(pricingPreview?.summary?.base_subtotal ?? carts_total ?? 0),
         [pricingPreview, carts_total]
@@ -255,9 +233,7 @@ export default function Index({
 
     useEffect(() => {
         const eligibleVoucherIds = new Set(
-            (pricingPreview?.eligible_vouchers || []).map((voucher) =>
-                String(voucher.id)
-            )
+            (pricingPreview?.eligible_vouchers || []).map((voucher) => String(voucher.id))
         );
 
         if (selectedVoucherId && !eligibleVoucherIds.has(selectedVoucherId)) {
@@ -269,8 +245,7 @@ export default function Index({
     const paymentOptions = useMemo(() => {
         const options = Array.isArray(paymentGateways)
             ? paymentGateways.filter(
-                  (gateway) =>
-                      gateway?.value && gateway.value.toLowerCase() !== "cash"
+                  (gateway) => gateway?.value && gateway.value.toLowerCase() !== "cash"
               )
             : [];
 
@@ -386,8 +361,7 @@ export default function Index({
     useEffect(() => {
         const handleKeyDown = (e) => {
             // Don't trigger if user is typing in an input
-            if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")
-                return;
+            if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
 
             switch (e.key) {
                 case "/":
@@ -404,14 +378,11 @@ export default function Index({
                     break;
                 case "F2":
                     e.preventDefault();
-                    if (carts.length > 0 && selectedCustomer)
-                        handleSubmitTransaction();
+                    if (carts.length > 0 && selectedCustomer) handleSubmitTransaction();
                     break;
                 case "F3":
                     e.preventDefault();
-                    setMobileView(
-                        mobileView === "products" ? "cart" : "products"
-                    );
+                    setMobileView(mobileView === "products" ? "cart" : "products");
                     break;
                 case "F4":
                     e.preventDefault();
@@ -489,9 +460,7 @@ export default function Index({
                 cash: isCashPayment ? cash : payable,
                 change: isCashPayment ? Math.max(cash - payable, 0) : 0,
                 payment_gateway: payLater ? null : isCashPayment ? null : paymentMethod,
-                bank_account_id: isBankTransfer
-                    ? selectedBankAccount?.id
-                    : null,
+                bank_account_id: isBankTransfer ? selectedBankAccount?.id : null,
                 pay_later: payLater,
                 due_date: dueDate,
             },
@@ -526,12 +495,8 @@ export default function Index({
                 Number(product.category_id) === normalizedSelectedCategory;
             const matchesSearch =
                 !searchQuery ||
-                product.title
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase()) ||
-                product.barcode
-                    ?.toLowerCase()
-                    .includes(searchQuery.toLowerCase());
+                product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                product.barcode?.toLowerCase().includes(searchQuery.toLowerCase());
             return matchesCategory && matchesSearch;
         });
     }, [products, normalizedSelectedCategory, searchQuery]);
@@ -550,7 +515,8 @@ export default function Index({
                             Shift kasir belum dibuka
                         </h1>
                         <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                            Buka shift terlebih dulu untuk mengaktifkan transaksi, keranjang, dan cash closing.
+                            Buka shift terlebih dulu untuk mengaktifkan transaksi, keranjang, dan
+                            cash closing.
                         </p>
 
                         <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -567,7 +533,9 @@ export default function Index({
                                     placeholder="0"
                                 />
                                 {errors?.opening_cash && (
-                                    <p className="mt-2 text-xs text-rose-500">{errors.opening_cash}</p>
+                                    <p className="mt-2 text-xs text-rose-500">
+                                        {errors.opening_cash}
+                                    </p>
                                 )}
                             </div>
                             <div>
@@ -613,14 +581,14 @@ export default function Index({
         <>
             <Head title="Transaksi" />
 
-            <div className="h-[calc(100vh-4rem)] flex flex-col lg:flex-row">
+            <div className="flex h-[calc(100vh-4rem)] flex-col lg:flex-row">
                 {/* Mobile Tab Switcher */}
-                <div className="lg:hidden flex border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                <div className="flex border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 lg:hidden">
                     <button
                         onClick={() => setMobileView("products")}
-                        className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
+                        className={`flex flex-1 items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
                             mobileView === "products"
-                                ? "text-primary-600 border-b-2 border-primary-500"
+                                ? "border-b-2 border-primary-500 text-primary-600"
                                 : "text-slate-500"
                         }`}
                     >
@@ -629,9 +597,9 @@ export default function Index({
                     </button>
                     <button
                         onClick={() => setMobileView("cart")}
-                        className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-colors relative ${
+                        className={`relative flex flex-1 items-center justify-center gap-2 py-3 text-sm font-medium transition-colors ${
                             mobileView === "cart"
-                                ? "text-primary-600 border-b-2 border-primary-500"
+                                ? "border-b-2 border-primary-500 text-primary-600"
                                 : "text-slate-500"
                         }`}
                     >
@@ -639,7 +607,7 @@ export default function Index({
                         <span className="relative inline-flex items-center gap-1">
                             Keranjang
                             {cartCount > 0 && (
-                                <span className="inline-flex items-center justify-center px-1.5 min-w-[20px] h-5 text-[11px] font-bold bg-primary-500 text-white rounded-full">
+                                <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary-500 px-1.5 text-[11px] font-bold text-white">
                                     {cartCount}
                                 </span>
                             )}
@@ -649,10 +617,8 @@ export default function Index({
 
                 {/* Left Panel - Products */}
                 <div
-                    className={`flex-1 bg-slate-100 dark:bg-slate-950 overflow-hidden ${
-                        mobileView !== "products"
-                            ? "hidden lg:flex lg:flex-col"
-                            : "flex flex-col"
+                    className={`flex-1 overflow-hidden bg-slate-100 dark:bg-slate-950 ${
+                        mobileView !== "products" ? "hidden lg:flex lg:flex-col" : "flex flex-col"
                     }`}
                 >
                     <ProductGrid
@@ -660,9 +626,7 @@ export default function Index({
                         categories={categories}
                         selectedCategory={selectedCategory}
                         onCategoryChange={(categoryId) =>
-                            setSelectedCategory(
-                                categoryId === null ? null : Number(categoryId)
-                            )
+                            setSelectedCategory(categoryId === null ? null : Number(categoryId))
                         }
                         searchQuery={searchQuery}
                         onSearchChange={setSearchQuery}
@@ -675,13 +639,13 @@ export default function Index({
 
                 {/* Right Panel - Cart & Payment */}
                 <div
-                    className={`w-full lg:w-[420px] xl:w-[480px] flex flex-col bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 min-h-0 overflow-hidden ${
+                    className={`flex min-h-0 w-full flex-col overflow-hidden border-l border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 lg:w-[420px] xl:w-[480px] ${
                         mobileView !== "cart" ? "hidden lg:flex" : "flex"
                     }`}
                     style={{ height: "calc(100vh - 4rem)" }}
                 >
                     {/* Customer Select - Fixed */}
-                    <div className="p-3 border-b border-slate-200 dark:border-slate-800 flex-shrink-0">
+                    <div className="flex-shrink-0 border-b border-slate-200 p-3 dark:border-slate-800">
                         <CustomerSelect
                             customers={customers}
                             selected={selectedCustomer}
@@ -695,7 +659,7 @@ export default function Index({
 
                     {/* Held Transactions & Alerts */}
                     {heldCarts.length > 0 && (
-                        <div className="p-3 border-b border-slate-200 dark:border-slate-800">
+                        <div className="border-b border-slate-200 p-3 dark:border-slate-800">
                             <HeldTransactions
                                 heldCarts={heldCarts}
                                 hasActiveCart={carts.length > 0}
@@ -704,10 +668,10 @@ export default function Index({
                     )}
 
                     {/* Cart Items - Scrollable */}
-                    <div className="flex-1 overflow-y-auto min-h-0">
+                    <div className="min-h-0 flex-1 overflow-y-auto">
                         {/* Hold Button - at top of cart section */}
                         {carts.length > 0 && (
-                            <div className="p-3 border-b border-slate-200 dark:border-slate-800">
+                            <div className="border-b border-slate-200 p-3 dark:border-slate-800">
                                 <HoldButton
                                     hasItems={carts.length > 0}
                                     onHold={handleHoldCart}
@@ -716,34 +680,29 @@ export default function Index({
                             </div>
                         )}
 
-                        <div className="p-3 border-b border-slate-200 dark:border-slate-800">
-                            <div className="flex items-center justify-between mb-3">
-                                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                        <div className="border-b border-slate-200 p-3 dark:border-slate-800">
+                            <div className="mb-3 flex items-center justify-between">
+                                <h3 className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                     <IconShoppingCart size={16} />
                                     Keranjang
                                 </h3>
                                 {carts.length > 0 && (
-                                    <span className="px-2.5 py-0.5 text-xs font-bold bg-primary-100 text-primary-700 dark:bg-primary-900/50 dark:text-primary-300 rounded-full whitespace-nowrap">
+                                    <span className="whitespace-nowrap rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-bold text-primary-700 dark:bg-primary-900/50 dark:text-primary-300">
                                         {cartCount} item
                                     </span>
                                 )}
                             </div>
 
                             {carts.length > 0 ? (
-                                <div className="space-y-2 max-h-[200px] overflow-y-auto pr-1">
-                                    {carts.map((item) => (
+                                <div className="max-h-[200px] space-y-2 overflow-y-auto pr-1">
+                                    {carts.map((item) =>
                                         (() => {
-                                            const pricingItem =
-                                                pricingItemsByCartId[item.id];
+                                            const pricingItem = pricingItemsByCartId[item.id];
                                             const baseLineTotal = Number(
-                                                pricingItem?.line_base_total ??
-                                                    item.price ??
-                                                    0
+                                                pricingItem?.line_base_total ?? item.price ?? 0
                                             );
                                             const effectiveLineTotal = Number(
-                                                pricingItem?.line_total ??
-                                                    item.price ??
-                                                    0
+                                                pricingItem?.line_total ?? item.price ?? 0
                                             );
                                             const effectiveUnitPrice = Number(
                                                 pricingItem?.effective_unit_price ??
@@ -755,129 +714,114 @@ export default function Index({
                                                     item.product?.sell_price ??
                                                     0
                                             );
-                                            const pricingRule =
-                                                pricingItem?.pricing_rule;
+                                            const pricingRule = pricingItem?.pricing_rule;
 
                                             return (
-                                        <div
-                                            key={item.id}
-                                            className="flex items-center gap-2 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50 group"
-                                        >
-                                            <div className="w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-700 overflow-hidden flex-shrink-0">
-                                                {item.product?.image ? (
-                                                    <img
-                                                        src={getProductImageUrl(
-                                                            item.product.image
+                                                <div
+                                                    key={item.id}
+                                                    className="group flex items-center gap-2 rounded-lg bg-slate-50 p-2 dark:bg-slate-800/50"
+                                                >
+                                                    <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-700">
+                                                        {item.product?.image ? (
+                                                            <img
+                                                                src={getProductImageUrl(
+                                                                    item.product.image
+                                                                )}
+                                                                alt={item.product.title}
+                                                                className="h-full w-full object-cover"
+                                                            />
+                                                        ) : (
+                                                            <div className="flex h-full w-full items-center justify-center">
+                                                                <IconShoppingCart
+                                                                    size={14}
+                                                                    className="text-slate-400"
+                                                                />
+                                                            </div>
                                                         )}
-                                                        alt={item.product.title}
-                                                        className="w-full h-full object-cover"
-                                                    />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center">
-                                                        <IconShoppingCart
-                                                            size={14}
-                                                            className="text-slate-400"
-                                                        />
                                                     </div>
-                                                )}
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-medium text-slate-700 dark:text-slate-300 truncate">
-                                                    {item.product?.title ||
-                                                        "Produk"}
-                                                </p>
-                                                <div className="text-xs text-slate-500">
-                                                    {pricingRule &&
-                                                        effectiveUnitPrice <
-                                                            baseUnitPrice && (
-                                                            <p className="line-through text-slate-400">
-                                                                {formatPrice(
-                                                                    baseUnitPrice
-                                                                )}{" "}
-                                                                × {item.qty}
-                                                            </p>
-                                                        )}
-                                                    <p>
-                                                        {formatPrice(
-                                                            effectiveUnitPrice
-                                                        )}{" "}
-                                                        × {item.qty}
-                                                    </p>
-                                                    {pricingRule && (
-                                                        <p className="mt-0.5 text-[11px] font-medium text-rose-500">
-                                                            {pricingRule.name}
+                                                    <div className="min-w-0 flex-1">
+                                                        <p className="truncate text-xs font-medium text-slate-700 dark:text-slate-300">
+                                                            {item.product?.title || "Produk"}
                                                         </p>
-                                                    )}
+                                                        <div className="text-xs text-slate-500">
+                                                            {pricingRule &&
+                                                                effectiveUnitPrice <
+                                                                    baseUnitPrice && (
+                                                                    <p className="text-slate-400 line-through">
+                                                                        {formatPrice(baseUnitPrice)}{" "}
+                                                                        × {item.qty}
+                                                                    </p>
+                                                                )}
+                                                            <p>
+                                                                {formatPrice(effectiveUnitPrice)} ×{" "}
+                                                                {item.qty}
+                                                            </p>
+                                                            {pricingRule && (
+                                                                <p className="mt-0.5 text-[11px] font-medium text-rose-500">
+                                                                    {pricingRule.name}
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center gap-1">
+                                                        <button
+                                                            onClick={() =>
+                                                                handleUpdateQty(
+                                                                    item.id,
+                                                                    Math.max(1, item.qty - 1)
+                                                                )
+                                                            }
+                                                            disabled={item.qty <= 1}
+                                                            className="flex h-6 w-6 items-center justify-center rounded bg-slate-200 text-xs text-slate-600 hover:bg-slate-300 disabled:opacity-50 dark:bg-slate-700 dark:text-slate-300"
+                                                        >
+                                                            -
+                                                        </button>
+                                                        <span className="w-6 text-center text-xs font-medium">
+                                                            {item.qty}
+                                                        </span>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleUpdateQty(
+                                                                    item.id,
+                                                                    item.qty + 1
+                                                                )
+                                                            }
+                                                            className="flex h-6 w-6 items-center justify-center rounded bg-slate-200 text-xs text-slate-600 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-300"
+                                                        >
+                                                            +
+                                                        </button>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleRemoveFromCart(item.id)
+                                                            }
+                                                            className="ml-1 flex h-6 w-6 items-center justify-center rounded text-slate-400 hover:bg-danger-50 hover:text-danger-500 dark:hover:bg-danger-950/50"
+                                                        >
+                                                            <IconTrash size={12} />
+                                                        </button>
+                                                    </div>
+                                                    <p className="w-16 text-right text-xs font-semibold text-primary-600 dark:text-primary-400">
+                                                        {formatPrice(effectiveLineTotal)}
+                                                    </p>
                                                 </div>
-                                            </div>
-                                            <div className="flex items-center gap-1">
-                                                <button
-                                                    onClick={() =>
-                                                        handleUpdateQty(
-                                                            item.id,
-                                                            Math.max(
-                                                                1,
-                                                                item.qty - 1
-                                                            )
-                                                        )
-                                                    }
-                                                    disabled={item.qty <= 1}
-                                                    className="w-6 h-6 rounded flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 disabled:opacity-50 text-xs"
-                                                >
-                                                    -
-                                                </button>
-                                                <span className="w-6 text-center text-xs font-medium">
-                                                    {item.qty}
-                                                </span>
-                                                <button
-                                                    onClick={() =>
-                                                        handleUpdateQty(
-                                                            item.id,
-                                                            item.qty + 1
-                                                        )
-                                                    }
-                                                    className="w-6 h-6 rounded flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 text-xs"
-                                                >
-                                                    +
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleRemoveFromCart(
-                                                            item.id
-                                                        )
-                                                    }
-                                                    className="w-6 h-6 rounded flex items-center justify-center text-slate-400 hover:text-danger-500 hover:bg-danger-50 dark:hover:bg-danger-950/50 ml-1"
-                                                >
-                                                    <IconTrash size={12} />
-                                                </button>
-                                            </div>
-                                            <p className="text-xs font-semibold text-primary-600 dark:text-primary-400 w-16 text-right">
-                                                {formatPrice(
-                                                    effectiveLineTotal
-                                                )}
-                                            </p>
-                                        </div>
                                             );
                                         })()
-                                    ))}
+                                    )}
                                 </div>
                             ) : (
                                 <div className="py-6 text-center">
                                     <IconShoppingCart
                                         size={32}
-                                        className="mx-auto text-slate-300 dark:text-slate-600 mb-2"
+                                        className="mx-auto mb-2 text-slate-300 dark:text-slate-600"
                                     />
-                                    <p className="text-sm text-slate-400">
-                                        Keranjang kosong
-                                    </p>
+                                    <p className="text-sm text-slate-400">Keranjang kosong</p>
                                 </div>
                             )}
                         </div>
 
                         {/* Payment Details - Scrollable */}
-                        <div className="p-3 space-y-4">
+                        <div className="space-y-4 p-3">
                             {/* Pay later toggle */}
-                            <div className="flex items-center justify-between p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800">
+                            <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-800">
                                 <div>
                                     <p className="text-sm font-semibold text-slate-800 dark:text-white">
                                         Bayar Belakangan (Nota Barang)
@@ -886,7 +830,7 @@ export default function Index({
                                         Tidak perlu bayar sekarang, catat sebagai piutang.
                                     </p>
                                 </div>
-                                <label className="inline-flex items-center cursor-pointer">
+                                <label className="inline-flex cursor-pointer items-center">
                                     <input
                                         type="checkbox"
                                         className="sr-only"
@@ -900,12 +844,12 @@ export default function Index({
                                         }}
                                     />
                                     <span
-                                        className={`w-11 h-6 flex items-center bg-slate-300 rounded-full p-1 transition ${
+                                        className={`flex h-6 w-11 items-center rounded-full bg-slate-300 p-1 transition ${
                                             payLater ? "bg-primary-500" : ""
                                         }`}
                                     >
                                         <span
-                                            className={`bg-white w-4 h-4 rounded-full shadow transform transition ${
+                                            className={`h-4 w-4 transform rounded-full bg-white shadow transition ${
                                                 payLater ? "translate-x-5" : ""
                                             }`}
                                         />
@@ -915,21 +859,21 @@ export default function Index({
 
                             {payLater && (
                                 <div>
-                                    <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                    <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                         Tanggal Jatuh Tempo
                                     </label>
                                     <input
                                         type="date"
                                         value={dueDate}
                                         onChange={(e) => setDueDate(e.target.value)}
-                                        className="w-full h-11 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
+                                        className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900"
                                     />
                                 </div>
                             )}
 
                             {/* Payment Method Selection */}
                             <div>
-                                <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                     Metode Pembayaran
                                 </label>
                                 <div className="grid grid-cols-2 gap-2">
@@ -937,32 +881,26 @@ export default function Index({
                                         <button
                                             key={method.value}
                                             onClick={() =>
-                                                !payLater &&
-                                                setPaymentMethod(method.value)
+                                                !payLater && setPaymentMethod(method.value)
                                             }
                                             disabled={payLater}
-                                            className={`p-3 rounded-xl border-2 transition-all flex items-center gap-2 ${
+                                            className={`flex items-center gap-2 rounded-xl border-2 p-3 transition-all ${
                                                 paymentMethod === method.value && !payLater
                                                     ? "border-primary-500 bg-primary-50 dark:bg-primary-950/30"
-                                                    : "border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
-                                            } ${payLater ? "opacity-50 cursor-not-allowed" : ""}`}
+                                                    : "border-slate-200 hover:border-slate-300 dark:border-slate-700 dark:hover:border-slate-600"
+                                            } ${payLater ? "cursor-not-allowed opacity-50" : ""}`}
                                         >
                                             <div
-                                                className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                                                    paymentMethod ===
-                                                        method.value &&
-                                                    !payLater
+                                                className={`flex h-8 w-8 items-center justify-center rounded-lg ${
+                                                    paymentMethod === method.value && !payLater
                                                         ? "bg-primary-500 text-white"
-                                                        : "bg-slate-100 dark:bg-slate-800 text-slate-500"
+                                                        : "bg-slate-100 text-slate-500 dark:bg-slate-800"
                                                 }`}
                                             >
                                                 {method.value === "cash" ? (
                                                     <IconCash size={16} />
-                                                ) : method.value ===
-                                                  "bank_transfer" ? (
-                                                    <IconBuildingBank
-                                                        size={16}
-                                                    />
+                                                ) : method.value === "bank_transfer" ? (
+                                                    <IconBuildingBank size={16} />
                                                 ) : (
                                                     <IconCreditCard size={16} />
                                                 )}
@@ -970,8 +908,7 @@ export default function Index({
                                             <div className="text-left">
                                                 <p
                                                     className={`text-sm font-semibold ${
-                                                        paymentMethod ===
-                                                        method.value
+                                                        paymentMethod === method.value
                                                             ? "text-primary-700 dark:text-primary-300"
                                                             : "text-slate-700 dark:text-slate-300"
                                                     }`}
@@ -989,38 +926,29 @@ export default function Index({
                                 bankAccounts.length > 0 &&
                                 !payLater && (
                                     <div>
-                                        <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                        <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                             Rekening Tujuan
                                         </label>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                                             {bankAccounts.map((bank) => {
                                                 const isActive =
-                                                    selectedBankAccount?.id ===
-                                                    bank.id;
+                                                    selectedBankAccount?.id === bank.id;
                                                 return (
                                                     <button
                                                         key={bank.id}
-                                                        onClick={() =>
-                                                            setSelectedBankAccount(
-                                                                bank
-                                                            )
-                                                        }
-                                                        className={`p-3 rounded-xl border-2 transition-colors flex items-center gap-3 text-left ${
+                                                        onClick={() => setSelectedBankAccount(bank)}
+                                                        className={`flex items-center gap-3 rounded-xl border-2 p-3 text-left transition-colors ${
                                                             isActive
                                                                 ? "border-primary-500 bg-primary-50 dark:bg-primary-950/30"
-                                                                : "border-slate-200 dark:border-slate-700 hover:border-primary-200 dark:hover:border-primary-800"
+                                                                : "border-slate-200 hover:border-primary-200 dark:border-slate-700 dark:hover:border-primary-800"
                                                         }`}
                                                     >
-                                                        <div className="w-10 h-10 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden">
+                                                        <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
                                                             {bank.logo_url ? (
                                                                 <img
-                                                                    src={
-                                                                        bank.logo_url
-                                                                    }
-                                                                    alt={
-                                                                        bank.bank_name
-                                                                    }
-                                                                    className="max-w-full max-h-full object-contain"
+                                                                    src={bank.logo_url}
+                                                                    alt={bank.bank_name}
+                                                                    className="max-h-full max-w-full object-contain"
                                                                 />
                                                             ) : (
                                                                 <IconBuildingBank
@@ -1031,20 +959,13 @@ export default function Index({
                                                         </div>
                                                         <div className="flex-1">
                                                             <p className="text-xs font-semibold text-slate-800 dark:text-slate-200">
-                                                                {
-                                                                    bank.bank_name
-                                                                }
+                                                                {bank.bank_name}
                                                             </p>
                                                             <p className="text-xs text-slate-600 dark:text-slate-400">
-                                                                {
-                                                                    bank.account_number
-                                                                }
+                                                                {bank.account_number}
                                                             </p>
                                                             <p className="text-[11px] text-slate-500 dark:text-slate-500">
-                                                                a.n.{" "}
-                                                                {
-                                                                    bank.account_name
-                                                                }
+                                                                a.n. {bank.account_name}
                                                             </p>
                                                         </div>
                                                         {isActive && (
@@ -1062,30 +983,23 @@ export default function Index({
                             {/* Quick Amounts - Only for cash */}
                             {paymentMethod === "cash" && (
                                 <div>
-                                    <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                    <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                         Nominal Cepat
                                     </label>
                                     <div className="grid grid-cols-4 gap-2">
-                                        {[10000, 20000, 50000, 100000].map(
-                                            (amt) => (
-                                                <button
-                                                    key={amt}
-                                                    onClick={() =>
-                                                        setCashInput(
-                                                            String(amt)
-                                                        )
-                                                    }
-                                                    className={`py-2 px-1 rounded-lg text-xs font-semibold transition-all ${
-                                                        Number(cashInput) ===
-                                                        amt
-                                                            ? "bg-primary-500 text-white"
-                                                            : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200"
-                                                    }`}
-                                                >
-                                                    {formatPrice(amt)}
-                                                </button>
-                                            )
-                                        )}
+                                        {[10000, 20000, 50000, 100000].map((amt) => (
+                                            <button
+                                                key={amt}
+                                                onClick={() => setCashInput(String(amt))}
+                                                className={`rounded-lg px-1 py-2 text-xs font-semibold transition-all ${
+                                                    Number(cashInput) === amt
+                                                        ? "bg-primary-500 text-white"
+                                                        : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400"
+                                                }`}
+                                            >
+                                                {formatPrice(amt)}
+                                            </button>
+                                        ))}
                                     </div>
                                 </div>
                             )}
@@ -1099,7 +1013,8 @@ export default function Index({
                                                 Promo otomatis aktif
                                             </p>
                                             <p className="text-xs text-emerald-600/80 dark:text-emerald-400/80">
-                                                Harga item sudah disesuaikan berdasarkan rule promo yang berlaku.
+                                                Harga item sudah disesuaikan berdasarkan rule promo
+                                                yang berlaku.
                                             </p>
                                         </div>
                                         <span className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
@@ -1119,8 +1034,7 @@ export default function Index({
                                             <p className="text-xs text-primary-600/80 dark:text-primary-400/80">
                                                 Tier {selectedCustomer.loyalty_tier} | saldo{" "}
                                                 {pricingPreview?.summary
-                                                    ?.available_loyalty_points ??
-                                                    0}{" "}
+                                                    ?.available_loyalty_points ?? 0}{" "}
                                                 poin
                                             </p>
                                         </div>
@@ -1130,7 +1044,7 @@ export default function Index({
 
                             {selectedCustomer?.is_loyalty_member && (
                                 <div>
-                                    <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                    <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                         Redeem Poin
                                     </label>
                                     <input
@@ -1139,62 +1053,46 @@ export default function Index({
                                         value={redeemPointsInput}
                                         onChange={(e) =>
                                             setRedeemPointsInput(
-                                                e.target.value.replace(
-                                                    /[^\d]/g,
-                                                    ""
-                                                )
+                                                e.target.value.replace(/[^\d]/g, "")
                                             )
                                         }
                                         placeholder={`Maks ${
-                                            pricingPreview?.summary
-                                                ?.available_loyalty_points ?? 0
+                                            pricingPreview?.summary?.available_loyalty_points ?? 0
                                         } poin`}
-                                        className="w-full h-10 px-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
+                                        className="h-10 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900"
                                     />
                                 </div>
                             )}
 
                             {selectedCustomer?.is_loyalty_member &&
-                                (pricingPreview?.eligible_vouchers || [])
-                                    .length > 0 && (
+                                (pricingPreview?.eligible_vouchers || []).length > 0 && (
                                     <div>
-                                        <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                        <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                             Voucher Customer
                                         </label>
                                         <select
                                             value={selectedVoucherId}
-                                            onChange={(e) =>
-                                                setSelectedVoucherId(
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="w-full h-10 px-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
+                                            onChange={(e) => setSelectedVoucherId(e.target.value)}
+                                            className="h-10 w-full rounded-xl border border-slate-200 bg-white px-4 text-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900"
                                         >
-                                            <option value="">
-                                                Tanpa voucher
-                                            </option>
-                                            {(
-                                                pricingPreview?.eligible_vouchers ||
-                                                []
-                                            ).map((voucher) => (
-                                                <option
-                                                    key={voucher.id}
-                                                    value={voucher.id}
-                                                >
-                                                    {voucher.code} -{" "}
-                                                    {voucher.name}
-                                                </option>
-                                            ))}
+                                            <option value="">Tanpa voucher</option>
+                                            {(pricingPreview?.eligible_vouchers || []).map(
+                                                (voucher) => (
+                                                    <option key={voucher.id} value={voucher.id}>
+                                                        {voucher.code} - {voucher.name}
+                                                    </option>
+                                                )
+                                            )}
                                         </select>
                                     </div>
                                 )}
 
                             <div>
-                                <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                     Diskon Manual (Rp)
                                 </label>
                                 <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">
                                         Rp
                                     </span>
                                     <input
@@ -1202,26 +1100,21 @@ export default function Index({
                                         inputMode="numeric"
                                         value={discountInput}
                                         onChange={(e) =>
-                                            setDiscountInput(
-                                                e.target.value.replace(
-                                                    /[^\d]/g,
-                                                    ""
-                                                )
-                                            )
+                                            setDiscountInput(e.target.value.replace(/[^\d]/g, ""))
                                         }
                                         placeholder="0"
-                                        className="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
+                                        className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 text-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900"
                                     />
                                 </div>
                             </div>
 
                             {/* Shipping Cost Input */}
                             <div>
-                                <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                     Ongkos Kirim (Rp)
                                 </label>
                                 <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">
                                         Rp
                                     </span>
                                     <input
@@ -1229,30 +1122,23 @@ export default function Index({
                                         inputMode="numeric"
                                         value={shippingInput}
                                         onChange={(e) =>
-                                            setShippingInput(
-                                                e.target.value.replace(
-                                                    /[^\d]/g,
-                                                    ""
-                                                )
-                                            )
+                                            setShippingInput(e.target.value.replace(/[^\d]/g, ""))
                                         }
                                         placeholder="0"
-                                        className="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
+                                        className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 text-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900"
                                     />
                                 </div>
                                 {/* Quick Shipping Amounts */}
-                                <div className="grid grid-cols-4 gap-2 mt-2">
+                                <div className="mt-2 grid grid-cols-4 gap-2">
                                     {[10000, 15000, 20000, 25000].map((amt) => (
                                         <button
                                             key={amt}
                                             type="button"
-                                            onClick={() =>
-                                                setShippingInput(String(amt))
-                                            }
-                                            className={`py-1.5 px-1 rounded-lg text-xs font-medium transition-all ${
+                                            onClick={() => setShippingInput(String(amt))}
+                                            className={`rounded-lg px-1 py-1.5 text-xs font-medium transition-all ${
                                                 Number(shippingInput) === amt
                                                     ? "bg-primary-500 text-white"
-                                                    : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200"
+                                                    : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400"
                                             }`}
                                         >
                                             {formatPrice(amt)}
@@ -1264,11 +1150,11 @@ export default function Index({
                             {/* Cash Input - Only for cash */}
                             {paymentMethod === "cash" && (
                                 <div>
-                                    <label className="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-2">
+                                    <label className="mb-2 block text-xs font-medium text-slate-600 dark:text-slate-400">
                                         Jumlah Bayar (Rp)
                                     </label>
                                     <div className="relative">
-                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">
                                             Rp
                                         </span>
                                         <input
@@ -1276,15 +1162,10 @@ export default function Index({
                                             inputMode="numeric"
                                             value={cashInput}
                                             onChange={(e) =>
-                                                setCashInput(
-                                                    e.target.value.replace(
-                                                        /[^\d]/g,
-                                                        ""
-                                                    )
-                                                )
+                                                setCashInput(e.target.value.replace(/[^\d]/g, ""))
                                             }
                                             placeholder="0"
-                                            className="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-base font-semibold focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500"
+                                            className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-4 text-base font-semibold focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900"
                                         />
                                     </div>
                                 </div>
@@ -1293,19 +1174,15 @@ export default function Index({
                     </div>
 
                     {/* Summary & Submit - Fixed at bottom */}
-                    <div className="flex-shrink-0 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 p-3">
+                    <div className="flex-shrink-0 border-t border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900/80">
                         {/* Summary Row */}
-                        <div className="flex justify-between items-center mb-2 text-sm">
+                        <div className="mb-2 flex items-center justify-between text-sm">
                             <span className="text-slate-500">Subtotal Dasar</span>
-                            <span className="font-medium">
-                                {formatPrice(baseSubtotal)}
-                            </span>
+                            <span className="font-medium">{formatPrice(baseSubtotal)}</span>
                         </div>
                         {promoDiscount > 0 && (
-                            <div className="flex justify-between items-center mb-2 text-sm">
-                                <span className="text-slate-500">
-                                    Promo Otomatis
-                                </span>
+                            <div className="mb-2 flex items-center justify-between text-sm">
+                                <span className="text-slate-500">Promo Otomatis</span>
                                 <span className="text-emerald-600">
                                     -{formatPrice(promoDiscount)}
                                 </span>
@@ -1317,26 +1194,24 @@ export default function Index({
                                     Grup Promo Aktif
                                 </div>
                                 <div className="space-y-1.5">
-                                    {(pricingPreview?.applied_groups || []).map(
-                                        (group) => (
-                                            <div
-                                                key={group.key}
-                                                className="flex items-center justify-between text-xs"
-                                            >
-                                                <span className="truncate pr-3 text-slate-600 dark:text-slate-300">
-                                                    {group.label}
-                                                </span>
-                                                <span className="font-medium text-emerald-600">
-                                                    -{formatPrice(group.discount_total)}
-                                                </span>
-                                            </div>
-                                        )
-                                    )}
+                                    {(pricingPreview?.applied_groups || []).map((group) => (
+                                        <div
+                                            key={group.key}
+                                            className="flex items-center justify-between text-xs"
+                                        >
+                                            <span className="truncate pr-3 text-slate-600 dark:text-slate-300">
+                                                {group.label}
+                                            </span>
+                                            <span className="font-medium text-emerald-600">
+                                                -{formatPrice(group.discount_total)}
+                                            </span>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         )}
                         {voucherDiscount > 0 && (
-                            <div className="flex justify-between items-center mb-2 text-sm">
+                            <div className="mb-2 flex items-center justify-between text-sm">
                                 <span className="text-slate-500">Voucher</span>
                                 <span className="text-primary-600">
                                     -{formatPrice(voucherDiscount)}
@@ -1344,32 +1219,26 @@ export default function Index({
                             </div>
                         )}
                         {loyaltyDiscount > 0 && (
-                            <div className="flex justify-between items-center mb-2 text-sm">
-                                <span className="text-slate-500">
-                                    Redeem Poin
-                                </span>
+                            <div className="mb-2 flex items-center justify-between text-sm">
+                                <span className="text-slate-500">Redeem Poin</span>
                                 <span className="text-primary-600">
                                     -{formatPrice(loyaltyDiscount)}
                                 </span>
                             </div>
                         )}
                         {discount > 0 && (
-                            <div className="flex justify-between items-center mb-2 text-sm">
+                            <div className="mb-2 flex items-center justify-between text-sm">
                                 <span className="text-slate-500">Diskon Manual</span>
-                                <span className="text-danger-500">
-                                    -{formatPrice(discount)}
-                                </span>
+                                <span className="text-danger-500">-{formatPrice(discount)}</span>
                             </div>
                         )}
                         {shipping > 0 && (
-                            <div className="flex justify-between items-center mb-2 text-sm">
+                            <div className="mb-2 flex items-center justify-between text-sm">
                                 <span className="text-slate-500">Ongkir</span>
-                                <span className="font-medium">
-                                    +{formatPrice(shipping)}
-                                </span>
+                                <span className="font-medium">+{formatPrice(shipping)}</span>
                             </div>
                         )}
-                        <div className="flex justify-between items-center mb-3">
+                        <div className="mb-3 flex items-center justify-between">
                             <span className="font-semibold text-slate-800 dark:text-white">
                                 Total
                             </span>
@@ -1382,7 +1251,7 @@ export default function Index({
                             !payLater &&
                             cash >= payable &&
                             payable > 0 && (
-                                <div className="flex justify-between items-center mb-3 p-2 rounded-lg bg-success-50 dark:bg-success-950/30">
+                                <div className="mb-3 flex items-center justify-between rounded-lg bg-success-50 p-2 dark:bg-success-950/30">
                                     <span className="text-sm text-success-700 dark:text-success-400">
                                         Kembalian
                                     </span>
@@ -1398,23 +1267,21 @@ export default function Index({
                             disabled={
                                 !carts.length ||
                                 !selectedCustomer ||
-                                (!payLater &&
-                                    paymentMethod === "cash" &&
-                                    cash < payable) ||
+                                (!payLater && paymentMethod === "cash" && cash < payable) ||
                                 isLoadingPricing ||
                                 isSubmitting
                             }
-                            className={`w-full h-12 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
+                            className={`flex h-12 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold transition-all ${
                                 carts.length &&
                                 selectedCustomer &&
-                                (paymentMethod !== "cash" || cash >= payable)
-                                    && !isLoadingPricing
-                                    ? "bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white shadow-lg shadow-primary-500/30"
-                                    : "bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed"
+                                (paymentMethod !== "cash" || cash >= payable) &&
+                                !isLoadingPricing
+                                    ? "bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30 hover:from-primary-600 hover:to-primary-700"
+                                    : "cursor-not-allowed bg-slate-200 text-slate-400 dark:bg-slate-800"
                             }`}
                         >
                             {isSubmitting || isLoadingPricing ? (
-                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
                             ) : (
                                 <>
                                     <IconReceipt size={18} />
@@ -1422,15 +1289,12 @@ export default function Index({
                                         {!carts.length
                                             ? "Keranjang Kosong"
                                             : !selectedCustomer
-                                            ? "Pilih Pelanggan"
-                                            : paymentMethod === "cash" &&
-                                              cash < payable
-                                            ? `Kurang ${formatPrice(
-                                                  payable - cash
-                                              )}`
-                                            : isLoadingPricing
-                                            ? "Menghitung Promo..."
-                                            : "Selesaikan Transaksi"}
+                                              ? "Pilih Pelanggan"
+                                              : paymentMethod === "cash" && cash < payable
+                                                ? `Kurang ${formatPrice(payable - cash)}`
+                                                : isLoadingPricing
+                                                  ? "Menghitung Promo..."
+                                                  : "Selesaikan Transaksi"}
                                     </span>
                                 </>
                             )}
@@ -1456,8 +1320,8 @@ export default function Index({
                         className="absolute inset-0 bg-slate-900/60"
                         onClick={() => setShowShortcuts(false)}
                     />
-                    <div className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-6 max-w-sm w-full">
-                        <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
+                    <div className="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-xl dark:bg-slate-900">
+                        <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-slate-800 dark:text-white">
                             <IconKeyboard size={24} />
                             Keyboard Shortcuts
                         </h3>
@@ -1469,14 +1333,11 @@ export default function Index({
                                 ["F4", "Tampilkan Bantuan"],
                                 ["Esc", "Tutup Modal"],
                             ].map(([key, desc]) => (
-                                <div
-                                    key={key}
-                                    className="flex items-center justify-between"
-                                >
+                                <div key={key} className="flex items-center justify-between">
                                     <span className="text-slate-600 dark:text-slate-400">
                                         {desc}
                                     </span>
-                                    <kbd className="px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded text-sm font-mono font-bold text-slate-700 dark:text-slate-300">
+                                    <kbd className="rounded bg-slate-100 px-2 py-1 font-mono text-sm font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                                         {key}
                                     </kbd>
                                 </div>
@@ -1484,7 +1345,7 @@ export default function Index({
                         </div>
                         <button
                             onClick={() => setShowShortcuts(false)}
-                            className="mt-6 w-full py-2.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-medium"
+                            className="mt-6 w-full rounded-xl bg-primary-500 py-2.5 font-medium text-white hover:bg-primary-600"
                         >
                             Tutup
                         </button>

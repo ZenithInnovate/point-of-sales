@@ -14,15 +14,14 @@ export default function Index() {
 
             {/* Header */}
             <div className="mb-6">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">
                             <IconKey size={28} className="text-primary-500" />
                             Hak Akses
                         </h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
-                            {permissions.total || permissions.data?.length || 0}{" "}
-                            hak akses terdaftar
+                            {permissions.total || permissions.data?.length || 0} hak akses terdaftar
                         </p>
                     </div>
                 </div>
@@ -30,28 +29,25 @@ export default function Index() {
 
             {/* Search */}
             <div className="mb-4 w-full sm:w-80">
-                <Search
-                    url={route("permissions.index")}
-                    placeholder="Cari hak akses..."
-                />
+                <Search url={route("permissions.index")} placeholder="Cari hak akses..." />
             </div>
 
             {/* Permissions Grid */}
             {permissions.data.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
                     {permissions.data.map((permission, i) => (
                         <div
                             key={permission.id || i}
-                            className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-4 hover:shadow-md hover:border-primary-300 dark:hover:border-primary-700 transition-all"
+                            className="rounded-xl border border-slate-200 bg-white p-4 transition-all hover:border-primary-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-primary-700"
                         >
                             <div className="flex items-center gap-2">
-                                <div className="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center">
+                                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-100 dark:bg-primary-900/50">
                                     <IconShield
                                         size={16}
                                         className="text-primary-600 dark:text-primary-400"
                                     />
                                 </div>
-                                <span className="text-sm font-medium text-slate-700 dark:text-slate-300 truncate">
+                                <span className="truncate text-sm font-medium text-slate-700 dark:text-slate-300">
                                     {permission.name}
                                 </span>
                             </div>
@@ -59,15 +55,11 @@ export default function Index() {
                     ))}
                 </div>
             ) : (
-                <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
-                    <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
-                        <IconDatabaseOff
-                            size={32}
-                            className="text-slate-400"
-                            strokeWidth={1.5}
-                        />
+                <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-900">
+                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                        <IconDatabaseOff size={32} className="text-slate-400" strokeWidth={1.5} />
                     </div>
-                    <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-1">
+                    <h3 className="mb-1 text-lg font-medium text-slate-800 dark:text-slate-200">
                         Belum Ada Hak Akses
                     </h3>
                     <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -76,9 +68,7 @@ export default function Index() {
                 </div>
             )}
 
-            {permissions.last_page !== 1 && (
-                <Pagination links={permissions.links} />
-            )}
+            {permissions.last_page !== 1 && <Pagination links={permissions.links} />}
         </>
     );
 }

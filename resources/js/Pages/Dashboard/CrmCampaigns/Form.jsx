@@ -9,7 +9,8 @@ export default function Form({ mode = "create", campaign = null, audienceOptions
         name: campaign?.name ?? "",
         type: campaign?.type ?? "promo_broadcast",
         channel: campaign?.channel ?? "whatsapp_link",
-        message_template: campaign?.message_template ?? "Halo {{name}}, ada promo spesial untuk Anda.",
+        message_template:
+            campaign?.message_template ?? "Halo {{name}}, ada promo spesial untuk Anda.",
         save_as_draft: true,
         audience_filters: {
             segment_ids: campaign?.audience_filters?.segment_ids ?? [],
@@ -61,13 +62,20 @@ export default function Form({ mode = "create", campaign = null, audienceOptions
                                 <IconBroadcast size={22} />
                             </div>
                             <div>
-                                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Informasi Campaign</h2>
-                                <p className="text-sm text-slate-500 dark:text-slate-400">Campaign disimpan sebagai draft dan dapat diproses menjadi audience nyata.</p>
+                                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                                    Informasi Campaign
+                                </h2>
+                                <p className="text-sm text-slate-500 dark:text-slate-400">
+                                    Campaign disimpan sebagai draft dan dapat diproses menjadi
+                                    audience nyata.
+                                </p>
                             </div>
                         </div>
                         <div className="grid gap-4 md:grid-cols-2">
                             <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Nama Campaign</label>
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Nama Campaign
+                                </label>
                                 <input
                                     type="text"
                                     value={data.name}
@@ -76,7 +84,9 @@ export default function Form({ mode = "create", campaign = null, audienceOptions
                                 />
                             </div>
                             <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Tipe Campaign</label>
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Tipe Campaign
+                                </label>
                                 <select
                                     value={data.type}
                                     onChange={(event) => setData("type", event.target.value)}
@@ -84,11 +94,15 @@ export default function Form({ mode = "create", campaign = null, audienceOptions
                                 >
                                     <option value="promo_broadcast">Promo Broadcast</option>
                                     <option value="due_date_reminder">Due Date Reminder</option>
-                                    <option value="repeat_order_reminder">Repeat Order Reminder</option>
+                                    <option value="repeat_order_reminder">
+                                        Repeat Order Reminder
+                                    </option>
                                 </select>
                             </div>
                             <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Channel</label>
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Channel
+                                </label>
                                 <select
                                     value={data.channel}
                                     onChange={(event) => setData("channel", event.target.value)}
@@ -102,31 +116,53 @@ export default function Form({ mode = "create", campaign = null, audienceOptions
                                 <input
                                     type="checkbox"
                                     checked={data.save_as_draft}
-                                    onChange={(event) => setData("save_as_draft", event.target.checked)}
+                                    onChange={(event) =>
+                                        setData("save_as_draft", event.target.checked)
+                                    }
                                 />
-                                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Simpan sebagai draft</span>
+                                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Simpan sebagai draft
+                                </span>
                             </label>
                         </div>
                     </div>
 
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">Audience Builder</h2>
+                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
+                            Audience Builder
+                        </h2>
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="md:col-span-2">
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Segment Customer</label>
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Segment Customer
+                                </label>
                                 <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
                                     {audienceOptions.segment_options.map((segment) => {
-                                        const checked = data.audience_filters.segment_ids.includes(segment.value);
+                                        const checked = data.audience_filters.segment_ids.includes(
+                                            segment.value
+                                        );
                                         return (
-                                            <label key={segment.value} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                                            <label
+                                                key={segment.value}
+                                                className="flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                                            >
                                                 <input
                                                     type="checkbox"
                                                     checked={checked}
                                                     onChange={(event) => {
                                                         const nextValues = event.target.checked
-                                                            ? [...data.audience_filters.segment_ids, segment.value]
-                                                            : data.audience_filters.segment_ids.filter((value) => value !== segment.value);
-                                                        setAudienceFilter("segment_ids", nextValues);
+                                                            ? [
+                                                                  ...data.audience_filters
+                                                                      .segment_ids,
+                                                                  segment.value,
+                                                              ]
+                                                            : data.audience_filters.segment_ids.filter(
+                                                                  (value) => value !== segment.value
+                                                              );
+                                                        setAudienceFilter(
+                                                            "segment_ids",
+                                                            nextValues
+                                                        );
                                                     }}
                                                 />
                                                 <span>{segment.label}</span>
@@ -137,38 +173,56 @@ export default function Form({ mode = "create", campaign = null, audienceOptions
                             </div>
 
                             <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Customer Type</label>
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Customer Type
+                                </label>
                                 <select
                                     value={data.audience_filters.customer_type}
-                                    onChange={(event) => setAudienceFilter("customer_type", event.target.value)}
+                                    onChange={(event) =>
+                                        setAudienceFilter("customer_type", event.target.value)
+                                    }
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
                                     {audienceOptions.customer_types.map((option) => (
-                                        <option key={option.value} value={option.value}>{option.label}</option>
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
                             <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Status Piutang</label>
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Status Piutang
+                                </label>
                                 <select
                                     value={data.audience_filters.receivable_status}
-                                    onChange={(event) => setAudienceFilter("receivable_status", event.target.value)}
+                                    onChange={(event) =>
+                                        setAudienceFilter("receivable_status", event.target.value)
+                                    }
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
                                     {audienceOptions.receivable_statuses.map((option) => (
-                                        <option key={option.value} value={option.value}>{option.label}</option>
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
                             <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Voucher Filter</label>
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Voucher Filter
+                                </label>
                                 <select
                                     value={data.audience_filters.voucher_filter}
-                                    onChange={(event) => setAudienceFilter("voucher_filter", event.target.value)}
+                                    onChange={(event) =>
+                                        setAudienceFilter("voucher_filter", event.target.value)
+                                    }
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
                                     {audienceOptions.voucher_filters.map((option) => (
-                                        <option key={option.value} value={option.value}>{option.label}</option>
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
@@ -176,7 +230,9 @@ export default function Form({ mode = "create", campaign = null, audienceOptions
                     </div>
 
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">Template Pesan</h2>
+                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
+                            Template Pesan
+                        </h2>
                         <textarea
                             rows="5"
                             value={data.message_template}
@@ -185,7 +241,7 @@ export default function Form({ mode = "create", campaign = null, audienceOptions
                         />
                     </div>
 
-                    <div className="flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800">
+                    <div className="flex flex-col gap-3 border-t border-slate-200 pt-4 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
                         <Button
                             type="link"
                             href={route("crm-campaigns.index")}

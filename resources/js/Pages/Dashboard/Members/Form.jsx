@@ -2,12 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import Input from "@/Components/Dashboard/Input";
 import Textarea from "@/Components/Dashboard/TextArea";
-import {
-    IconArrowLeft,
-    IconCrown,
-    IconDeviceFloppy,
-    IconInfoCircle,
-} from "@tabler/icons-react";
+import { IconArrowLeft, IconCrown, IconDeviceFloppy, IconInfoCircle } from "@tabler/icons-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -80,10 +75,7 @@ export default function Form({ mode = "create", member = null }) {
 
     useEffect(() => {
         if (data.province_id) {
-            if (
-                prevProvince.current &&
-                prevProvince.current !== data.province_id
-            ) {
+            if (prevProvince.current && prevProvince.current !== data.province_id) {
                 setData("regency_id", "");
                 setData("district_id", "");
                 setData("village_id", "");
@@ -118,10 +110,7 @@ export default function Form({ mode = "create", member = null }) {
 
     useEffect(() => {
         if (data.district_id) {
-            if (
-                prevDistrict.current &&
-                prevDistrict.current !== data.district_id
-            ) {
+            if (prevDistrict.current && prevDistrict.current !== data.district_id) {
                 setData("village_id", "");
             }
             fetchVillages(data.district_id);
@@ -135,23 +124,14 @@ export default function Form({ mode = "create", member = null }) {
     const submit = (event) => {
         event.preventDefault();
 
-        post(
-            isEdit ? route("members.update", member.id) : route("members.store"),
-            {
-                onSuccess: () =>
-                    toast.success(
-                        isEdit
-                            ? "Data member berhasil diperbarui"
-                            : "Member baru berhasil didaftarkan"
-                    ),
-                onError: () =>
-                    toast.error(
-                        isEdit
-                            ? "Gagal memperbarui data member"
-                            : "Gagal mendaftarkan member"
-                    ),
-            }
-        );
+        post(isEdit ? route("members.update", member.id) : route("members.store"), {
+            onSuccess: () =>
+                toast.success(
+                    isEdit ? "Data member berhasil diperbarui" : "Member baru berhasil didaftarkan"
+                ),
+            onError: () =>
+                toast.error(isEdit ? "Gagal memperbarui data member" : "Gagal mendaftarkan member"),
+        });
     };
 
     return (
@@ -188,7 +168,9 @@ export default function Form({ mode = "create", member = null }) {
                                     Cara kerja member
                                 </p>
                                 <p className="mt-1 text-xs leading-6 text-slate-600 dark:text-slate-300">
-                                    Member otomatis memakai pricing khusus member, earn/redeem poin dari loyalty settings, dan bisa menerima voucher personal di CRM.
+                                    Member otomatis memakai pricing khusus member, earn/redeem poin
+                                    dari loyalty settings, dan bisa menerima voucher personal di
+                                    CRM.
                                 </p>
                             </div>
                         </div>
@@ -215,9 +197,7 @@ export default function Form({ mode = "create", member = null }) {
                                 label="Nama Member"
                                 placeholder="Masukkan nama lengkap"
                                 errors={errors.name}
-                                onChange={(event) =>
-                                    setData("name", event.target.value)
-                                }
+                                onChange={(event) => setData("name", event.target.value)}
                                 value={data.name}
                             />
                             <Input
@@ -225,9 +205,7 @@ export default function Form({ mode = "create", member = null }) {
                                 label="No. Handphone"
                                 placeholder="08xxxxxxxxxx"
                                 errors={errors.no_telp}
-                                onChange={(event) =>
-                                    setData("no_telp", event.target.value)
-                                }
+                                onChange={(event) => setData("no_telp", event.target.value)}
                                 value={data.no_telp}
                             />
                         </div>
@@ -239,7 +217,8 @@ export default function Form({ mode = "create", member = null }) {
                                         Status Member
                                     </p>
                                     <p className="text-xs text-slate-500 dark:text-slate-400">
-                                        Nonaktifkan member jika benefit member perlu dihentikan tanpa menghapus histori.
+                                        Nonaktifkan member jika benefit member perlu dihentikan
+                                        tanpa menghapus histori.
                                     </p>
                                 </div>
                                 <label className="inline-flex items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -247,10 +226,7 @@ export default function Form({ mode = "create", member = null }) {
                                         type="checkbox"
                                         checked={data.is_loyalty_member}
                                         onChange={(event) =>
-                                            setData(
-                                                "is_loyalty_member",
-                                                event.target.checked
-                                            )
+                                            setData("is_loyalty_member", event.target.checked)
                                         }
                                         className="h-4 w-4 rounded border-slate-300 text-primary-500"
                                     />
@@ -270,10 +246,7 @@ export default function Form({ mode = "create", member = null }) {
                                     className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
                                 >
                                     {tierOptions.map((tier) => (
-                                        <option
-                                            key={tier.value}
-                                            value={tier.value}
-                                        >
+                                        <option key={tier.value} value={tier.value}>
                                             {tier.label}
                                         </option>
                                     ))}
@@ -299,17 +272,12 @@ export default function Form({ mode = "create", member = null }) {
                                 </label>
                                 <select
                                     value={data.province_id}
-                                    onChange={(event) =>
-                                        setData("province_id", event.target.value)
-                                    }
+                                    onChange={(event) => setData("province_id", event.target.value)}
                                     className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
                                     <option value="">Pilih Provinsi</option>
                                     {provinces.map((province) => (
-                                        <option
-                                            key={province.code}
-                                            value={province.code}
-                                        >
+                                        <option key={province.code} value={province.code}>
                                             {province.name}
                                         </option>
                                     ))}
@@ -327,9 +295,7 @@ export default function Form({ mode = "create", member = null }) {
                                 </label>
                                 <select
                                     value={data.regency_id}
-                                    onChange={(event) =>
-                                        setData("regency_id", event.target.value)
-                                    }
+                                    onChange={(event) => setData("regency_id", event.target.value)}
                                     disabled={!data.province_id}
                                     className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
@@ -355,9 +321,7 @@ export default function Form({ mode = "create", member = null }) {
                                 </label>
                                 <select
                                     value={data.district_id}
-                                    onChange={(event) =>
-                                        setData("district_id", event.target.value)
-                                    }
+                                    onChange={(event) => setData("district_id", event.target.value)}
                                     disabled={!data.regency_id}
                                     className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
@@ -381,9 +345,7 @@ export default function Form({ mode = "create", member = null }) {
                                 </label>
                                 <select
                                     value={data.village_id}
-                                    onChange={(event) =>
-                                        setData("village_id", event.target.value)
-                                    }
+                                    onChange={(event) => setData("village_id", event.target.value)}
                                     disabled={!data.district_id}
                                     className="mt-2 h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
@@ -407,9 +369,7 @@ export default function Form({ mode = "create", member = null }) {
                                 label="Alamat Detail"
                                 placeholder="Alamat lengkap member"
                                 errors={errors.address}
-                                onChange={(event) =>
-                                    setData("address", event.target.value)
-                                }
+                                onChange={(event) => setData("address", event.target.value)}
                                 value={data.address}
                                 rows={3}
                             />
@@ -432,8 +392,8 @@ export default function Form({ mode = "create", member = null }) {
                             {processing
                                 ? "Menyimpan..."
                                 : isEdit
-                                ? "Simpan Perubahan"
-                                : "Daftarkan Member"}
+                                  ? "Simpan Perubahan"
+                                  : "Daftarkan Member"}
                         </button>
                     </div>
                 </form>

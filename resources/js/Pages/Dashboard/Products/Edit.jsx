@@ -37,9 +37,7 @@ export default function Edit({ categories, product }) {
 
     useEffect(() => {
         if (product.category_id) {
-            setSelectedCategory(
-                categories.find((cat) => cat.id === product.category_id)
-            );
+            setSelectedCategory(categories.find((cat) => cat.id === product.category_id));
         }
     }, [product.category_id]);
 
@@ -71,43 +69,41 @@ export default function Edit({ categories, product }) {
             <div className="mb-6">
                 <Link
                     href={route("products.index")}
-                    className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-primary-600 mb-3"
+                    className="mb-3 inline-flex items-center gap-2 text-sm text-slate-500 hover:text-primary-600"
                 >
                     <IconArrowLeft size={16} />
                     Kembali ke Produk
                 </Link>
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">
                     <IconPackage size={28} className="text-primary-500" />
                     Edit Produk
                 </h1>
-                <p className="text-sm text-slate-500 mt-1">{product.title}</p>
+                <p className="mt-1 text-sm text-slate-500">{product.title}</p>
             </div>
 
             <form onSubmit={submit}>
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     {/* Left - Image */}
                     <div className="lg:col-span-1">
-                        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5">
-                            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+                        <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+                            <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <IconPhoto size={18} />
                                 Gambar Produk
                             </h3>
-                            <div className="aspect-square rounded-xl bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center overflow-hidden mb-4">
+                            <div className="mb-4 flex aspect-square items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
                                 {imagePreview ? (
                                     <img
                                         src={imagePreview}
                                         alt="Preview"
-                                        className="w-full h-full object-cover"
+                                        className="h-full w-full object-cover"
                                     />
                                 ) : (
-                                    <div className="text-center p-6">
+                                    <div className="p-6 text-center">
                                         <IconPhoto
                                             size={48}
-                                            className="mx-auto text-slate-400 mb-2"
+                                            className="mx-auto mb-2 text-slate-400"
                                         />
-                                        <p className="text-sm text-slate-500">
-                                            Belum ada gambar
-                                        </p>
+                                        <p className="text-sm text-slate-500">Belum ada gambar</p>
                                     </div>
                                 )}
                             </div>
@@ -122,13 +118,13 @@ export default function Edit({ categories, product }) {
                     </div>
 
                     {/* Right - Form */}
-                    <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5">
-                            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+                    <div className="space-y-6 lg:col-span-2">
+                        <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+                            <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <IconBarcode size={18} />
                                 Informasi Dasar
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div className="md:col-span-2">
                                     <InputSelect
                                         label="Kategori"
@@ -145,9 +141,7 @@ export default function Edit({ categories, product }) {
                                     type="text"
                                     label="Barcode"
                                     value={data.barcode}
-                                    onChange={(e) =>
-                                        setData("barcode", e.target.value)
-                                    }
+                                    onChange={(e) => setData("barcode", e.target.value)}
                                     errors={errors.barcode}
                                     placeholder="Kode produk"
                                 />
@@ -163,9 +157,7 @@ export default function Edit({ categories, product }) {
                                     type="text"
                                     label="Nama Produk"
                                     value={data.title}
-                                    onChange={(e) =>
-                                        setData("title", e.target.value)
-                                    }
+                                    onChange={(e) => setData("title", e.target.value)}
                                     errors={errors.title}
                                     placeholder="Nama produk"
                                 />
@@ -174,12 +166,7 @@ export default function Edit({ categories, product }) {
                                         label="Deskripsi"
                                         placeholder="Deskripsi produk"
                                         errors={errors.description}
-                                        onChange={(e) =>
-                                            setData(
-                                                "description",
-                                                e.target.value
-                                            )
-                                        }
+                                        onChange={(e) => setData("description", e.target.value)}
                                         value={data.description}
                                         rows={3}
                                     />
@@ -187,19 +174,17 @@ export default function Edit({ categories, product }) {
                             </div>
                         </div>
 
-                        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5">
-                            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-4 flex items-center gap-2">
+                        <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
+                            <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <IconCurrencyDollar size={18} />
                                 Harga Produk
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <Input
                                     type="number"
                                     label="Harga Beli"
                                     value={data.buy_price}
-                                    onChange={(e) =>
-                                        setData("buy_price", e.target.value)
-                                    }
+                                    onChange={(e) => setData("buy_price", e.target.value)}
                                     errors={errors.buy_price}
                                     placeholder="0"
                                 />
@@ -207,9 +192,7 @@ export default function Edit({ categories, product }) {
                                     type="number"
                                     label="Harga Jual"
                                     value={data.sell_price}
-                                    onChange={(e) =>
-                                        setData("sell_price", e.target.value)
-                                    }
+                                    onChange={(e) => setData("sell_price", e.target.value)}
                                     errors={errors.sell_price}
                                     placeholder="0"
                                 />
@@ -229,28 +212,26 @@ export default function Edit({ categories, product }) {
 
                             {/* Profit Estimation */}
                             {data.buy_price > 0 && data.sell_price > 0 && (
-                                <div className="mt-4 p-4 rounded-xl bg-success-50 dark:bg-success-950/30 border border-success-200 dark:border-success-900">
+                                <div className="mt-4 rounded-xl border border-success-200 bg-success-50 p-4 dark:border-success-900 dark:bg-success-950/30">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-sm text-success-700 dark:text-success-400 font-medium">
+                                            <p className="text-sm font-medium text-success-700 dark:text-success-400">
                                                 Estimasi Profit per Item
                                             </p>
-                                            <p className="text-2xl font-bold text-success-600 dark:text-success-500 mt-1">
+                                            <p className="mt-1 text-2xl font-bold text-success-600 dark:text-success-500">
                                                 + Rp{" "}
-                                                {(
-                                                    data.sell_price -
-                                                    data.buy_price
-                                                ).toLocaleString("id-ID")}
+                                                {(data.sell_price - data.buy_price).toLocaleString(
+                                                    "id-ID"
+                                                )}
                                             </p>
                                         </div>
                                         <div className="text-right">
-                                            <p className="text-sm text-success-700 dark:text-success-400 font-medium">
+                                            <p className="text-sm font-medium text-success-700 dark:text-success-400">
                                                 Margin
                                             </p>
-                                            <p className="text-xl font-bold text-success-600 dark:text-success-500 mt-1">
+                                            <p className="mt-1 text-xl font-bold text-success-600 dark:text-success-500">
                                                 {(
-                                                    ((data.sell_price -
-                                                        data.buy_price) /
+                                                    ((data.sell_price - data.buy_price) /
                                                         data.buy_price) *
                                                     100
                                                 ).toFixed(1)}
@@ -265,19 +246,17 @@ export default function Edit({ categories, product }) {
                         <div className="flex justify-end gap-3">
                             <Link
                                 href={route("products.index")}
-                                className="px-6 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium transition-colors"
+                                className="rounded-xl border border-slate-200 px-6 py-2.5 font-medium text-slate-600 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
                             >
                                 Batal
                             </Link>
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-medium transition-colors disabled:opacity-50"
+                                className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-6 py-2.5 font-medium text-white transition-colors hover:bg-primary-600 disabled:opacity-50"
                             >
                                 <IconDeviceFloppy size={18} />
-                                {processing
-                                    ? "Menyimpan..."
-                                    : "Simpan Perubahan"}
+                                {processing ? "Menyimpan..." : "Simpan Perubahan"}
                             </button>
                         </div>
                     </div>

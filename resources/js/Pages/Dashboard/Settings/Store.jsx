@@ -61,22 +61,28 @@ export default function Store({ settings }) {
                     </p>
                 </div>
 
-                <form onSubmit={submit} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-6">
-                    <div className="flex flex-col lg:flex-row gap-6">
+                <form
+                    onSubmit={submit}
+                    className="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900"
+                >
+                    <div className="flex flex-col gap-6 lg:flex-row">
                         {/* Logo */}
                         <div className="lg:w-1/3">
-                            <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 flex items-center gap-2">
+                            <label className="mb-3 block flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 <IconPhoto size={18} />
                                 Logo Toko
                             </label>
-                            <div className="w-32 h-32 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center overflow-hidden mb-3">
+                            <div className="mb-3 flex h-32 w-32 items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
                                 {logoPreview ? (
                                     <img
-                                        src={logoPreview.startsWith("http") || logoPreview.startsWith("/storage")
-                                            ? logoPreview
-                                            : `/storage/${logoPreview}`}
+                                        src={
+                                            logoPreview.startsWith("http") ||
+                                            logoPreview.startsWith("/storage")
+                                                ? logoPreview
+                                                : `/storage/${logoPreview}`
+                                        }
                                         alt="Logo"
-                                        className="w-full h-full object-cover"
+                                        className="h-full w-full object-cover"
                                     />
                                 ) : (
                                     <IconBuildingStore size={36} className="text-slate-300" />
@@ -94,14 +100,12 @@ export default function Store({ settings }) {
                                 }}
                             />
                             {errors.store_logo && (
-                                <p className="text-xs text-danger-500 mt-1">
-                                    {errors.store_logo}
-                                </p>
+                                <p className="mt-1 text-xs text-danger-500">{errors.store_logo}</p>
                             )}
                         </div>
 
                         {/* Info */}
-                        <div className="lg:flex-1 space-y-4">
+                        <div className="space-y-4 lg:flex-1">
                             <Input
                                 label="Nama Toko"
                                 value={data.store_name}
@@ -116,7 +120,7 @@ export default function Store({ settings }) {
                                 onChange={(e) => setData("store_address", e.target.value)}
                                 rows={3}
                             />
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <Input
                                     label="Kota/Kabupaten"
                                     value={data.store_city}
@@ -134,7 +138,7 @@ export default function Store({ settings }) {
                                     icon={<IconPhone size={16} />}
                                 />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <Input
                                     label="Email"
                                     type="email"
@@ -156,11 +160,11 @@ export default function Store({ settings }) {
                         </div>
                     </div>
 
-                    <div className="flex justify-end pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <div className="flex justify-end border-t border-slate-100 pt-4 dark:border-slate-800">
                         <button
                             type="submit"
                             disabled={processing}
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-medium transition-colors disabled:opacity-50"
+                            className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-5 py-2.5 font-medium text-white transition-colors hover:bg-primary-600 disabled:opacity-50"
                         >
                             <IconDeviceFloppy size={18} />
                             {processing ? "Menyimpan..." : "Simpan Profil"}

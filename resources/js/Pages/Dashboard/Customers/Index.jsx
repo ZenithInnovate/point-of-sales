@@ -20,7 +20,8 @@ import { useAuthorization } from "@/Utils/authorization";
 
 // Helpers for Premium Aesthetics
 const getTierGradient = (customer) => {
-    if (!customer.is_loyalty_member) return "from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700";
+    if (!customer.is_loyalty_member)
+        return "from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700";
     const tier = customer.loyalty_tier?.toLowerCase();
     if (tier === "platinum") return "from-purple-500 via-indigo-500 to-pink-500";
     if (tier === "gold") return "from-amber-400 via-orange-500 to-yellow-500";
@@ -57,39 +58,39 @@ const getTierBadgeClass = (customer) => {
 // Customer Card for Grid View
 function CustomerCard({ customer, canUpdate, canDelete }) {
     return (
-        <div className="relative overflow-hidden group bg-white dark:bg-slate-900 rounded-lg border border-slate-200/80 dark:border-slate-800/80 p-6 shadow-sm hover:shadow-xl hover:border-primary-300 dark:hover:border-primary-800 transition-all duration-300 flex flex-col h-full hover:-translate-y-1">
+        <div className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-slate-200/80 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary-300 hover:shadow-xl dark:border-slate-800/80 dark:bg-slate-900 dark:hover:border-primary-800">
             {/* Top Tier Line Indicator */}
-            <div className={`absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r ${getTierGradient(customer)}`} />
+            <div
+                className={`absolute left-0 right-0 top-0 h-[4px] bg-gradient-to-r ${getTierGradient(customer)}`}
+            />
 
             {/* Avatar & Name */}
-            <div className="flex items-start justify-between mb-5 mt-1">
+            <div className="mb-5 mt-1 flex items-start justify-between">
                 <div className="flex items-center gap-4">
                     {customer.avatar ? (
                         <img
                             src={customer.avatar}
                             alt={customer.name}
-                            className="w-14 h-14 rounded-lg object-cover border border-slate-200 dark:border-slate-700 flex-shrink-0 ring-4 ring-slate-50 dark:ring-slate-850 group-hover:ring-primary-100 dark:group-hover:ring-primary-950/30 transition-all duration-300"
+                            className="dark:ring-slate-850 h-14 w-14 flex-shrink-0 rounded-lg border border-slate-200 object-cover ring-4 ring-slate-50 transition-all duration-300 group-hover:ring-primary-100 dark:border-slate-700 dark:group-hover:ring-primary-950/30"
                         />
                     ) : (
-                        <div className={`w-14 h-14 rounded-lg bg-gradient-to-tr ${getAvatarGradient(customer)} flex items-center justify-center text-white text-xl font-bold flex-shrink-0 shadow-md ring-4 ring-slate-50 dark:ring-slate-850 group-hover:ring-primary-100 dark:group-hover:ring-primary-950/30 transition-all duration-300`}>
+                        <div
+                            className={`h-14 w-14 rounded-lg bg-gradient-to-tr ${getAvatarGradient(customer)} dark:ring-slate-850 flex flex-shrink-0 items-center justify-center text-xl font-bold text-white shadow-md ring-4 ring-slate-50 transition-all duration-300 group-hover:ring-primary-100 dark:group-hover:ring-primary-950/30`}
+                        >
                             {customer.name.charAt(0).toUpperCase()}
                         </div>
                     )}
                     <div>
-                        <h3 className="text-base font-bold text-slate-800 dark:text-slate-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                            <Link
-                                href={route("customers.show", customer.id)}
-                            >
-                                {customer.name}
-                            </Link>
+                        <h3 className="text-base font-bold text-slate-800 transition-colors group-hover:text-primary-600 dark:text-slate-100 dark:group-hover:text-primary-400">
+                            <Link href={route("customers.show", customer.id)}>{customer.name}</Link>
                         </h3>
                         <div className="mt-1.5 flex flex-wrap gap-1.5">
-                            <span className={`inline-flex rounded-lg px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${getTierBadgeClass(customer)}`}>
-                                {customer.is_loyalty_member
-                                    ? customer.loyalty_tier
-                                    : "non-member"}
+                            <span
+                                className={`inline-flex rounded-lg px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${getTierBadgeClass(customer)}`}
+                            >
+                                {customer.is_loyalty_member ? customer.loyalty_tier : "non-member"}
                             </span>
-                            <span className="inline-flex rounded-lg bg-primary-50 text-primary-700 border border-primary-100 dark:bg-primary-950/20 dark:text-primary-400 dark:border-primary-900/50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">
+                            <span className="inline-flex rounded-lg border border-primary-100 bg-primary-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-primary-700 dark:border-primary-900/50 dark:bg-primary-950/20 dark:text-primary-400">
                                 {customer.loyalty_points || 0} poin
                             </span>
                         </div>
@@ -98,32 +99,34 @@ function CustomerCard({ customer, canUpdate, canDelete }) {
             </div>
 
             {/* Contact Info */}
-            <div className="space-y-3 mb-6 bg-slate-50/50 dark:bg-slate-950/30 p-3.5 rounded-lg border border-slate-100 dark:border-slate-800/40">
+            <div className="mb-6 space-y-3 rounded-lg border border-slate-100 bg-slate-50/50 p-3.5 dark:border-slate-800/40 dark:bg-slate-950/30">
                 {customer.no_telp && (
-                    <div className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-350">
-                        <div className="p-1.5 rounded-lg bg-primary-50 dark:bg-primary-950/40 text-primary-600 dark:text-primary-400 flex-shrink-0">
+                    <div className="dark:text-slate-350 flex items-center gap-3 text-sm text-slate-600">
+                        <div className="flex-shrink-0 rounded-lg bg-primary-50 p-1.5 text-primary-600 dark:bg-primary-950/40 dark:text-primary-400">
                             <IconPhone size={14} />
                         </div>
                         <span className="font-medium">{customer.no_telp}</span>
                     </div>
                 )}
                 {customer.address && (
-                    <div className="flex items-start gap-3 text-sm text-slate-600 dark:text-slate-350">
-                        <div className="p-1.5 rounded-lg bg-accent-50 dark:bg-accent-950/40 text-accent-600 dark:text-accent-400 flex-shrink-0 mt-0.5">
+                    <div className="dark:text-slate-350 flex items-start gap-3 text-sm text-slate-600">
+                        <div className="mt-0.5 flex-shrink-0 rounded-lg bg-accent-50 p-1.5 text-accent-600 dark:bg-accent-950/40 dark:text-accent-400">
                             <IconMapPin size={14} />
                         </div>
-                        <span className="line-clamp-2 leading-relaxed font-medium">{customer.address}</span>
+                        <span className="line-clamp-2 font-medium leading-relaxed">
+                            {customer.address}
+                        </span>
                     </div>
                 )}
             </div>
 
             {/* Actions */}
             {(canUpdate || canDelete) && (
-                <div className="flex gap-2.5 pt-4 border-t border-slate-100 dark:border-slate-800 mt-auto">
+                <div className="mt-auto flex gap-2.5 border-t border-slate-100 pt-4 dark:border-slate-800">
                     {canUpdate && (
                         <Link
                             href={route("customers.edit", customer.id)}
-                            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-amber-50 text-amber-700 hover:bg-amber-100 active:scale-[0.98] dark:bg-amber-950/20 dark:text-amber-400 dark:hover:bg-amber-900/30 text-xs font-bold uppercase tracking-wider transition-all duration-200 border border-amber-200/40 dark:border-amber-900/30"
+                            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-amber-200/40 bg-amber-50 py-2.5 text-xs font-bold uppercase tracking-wider text-amber-700 transition-all duration-200 hover:bg-amber-100 active:scale-[0.98] dark:border-amber-900/30 dark:bg-amber-950/20 dark:text-amber-400 dark:hover:bg-amber-900/30"
                         >
                             <IconPencilCog size={15} />
                             <span>Edit</span>
@@ -134,7 +137,7 @@ function CustomerCard({ customer, canUpdate, canDelete }) {
                             type={"delete"}
                             icon={<IconTrash size={15} />}
                             className={
-                                "flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-rose-50 text-rose-700 hover:bg-rose-100 active:scale-[0.98] dark:bg-rose-950/20 dark:text-rose-400 dark:hover:bg-rose-900/30 text-xs font-bold uppercase tracking-wider transition-all duration-200 border border-rose-200/40 dark:border-rose-900/30"
+                                "flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-rose-200/40 bg-rose-50 py-2.5 text-xs font-bold uppercase tracking-wider text-rose-700 transition-all duration-200 hover:bg-rose-100 active:scale-[0.98] dark:border-rose-900/30 dark:bg-rose-950/20 dark:text-rose-400 dark:hover:bg-rose-900/30"
                             }
                             url={route("customers.destroy", customer.id)}
                             label="Hapus"
@@ -159,27 +162,21 @@ export default function Index({ customers }) {
 
             {/* Header */}
             <div className="mb-6">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
                             Pelanggan
                         </h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
-                            {customers.total || customers.data?.length || 0}{" "}
-                            pelanggan terdaftar
+                            {customers.total || customers.data?.length || 0} pelanggan terdaftar
                         </p>
                     </div>
                     {canCreateCustomers && (
                         <Button
                             type={"link"}
-                            icon={
-                                <IconCirclePlus
-                                    size={18}
-                                    strokeWidth={1.5}
-                                />
-                            }
+                            icon={<IconCirclePlus size={18} strokeWidth={1.5} />}
                             className={
-                                "bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30"
+                                "bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
                             }
                             label={"Tambah Pelanggan"}
                             href={route("customers.create")}
@@ -189,17 +186,14 @@ export default function Index({ customers }) {
             </div>
 
             {/* Toolbar */}
-            <div className="mb-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+            <div className="mb-4 flex flex-col items-stretch justify-between gap-3 sm:flex-row sm:items-center">
                 <div className="w-full sm:w-80">
-                    <Search
-                        url={route("customers.index")}
-                        placeholder="Cari pelanggan..."
-                    />
+                    <Search url={route("customers.index")} placeholder="Cari pelanggan..." />
                 </div>
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => setViewMode("grid")}
-                        className={`p-2.5 rounded-lg transition-colors ${
+                        className={`rounded-lg p-2.5 transition-colors ${
                             viewMode === "grid"
                                 ? "bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400"
                                 : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -210,7 +204,7 @@ export default function Index({ customers }) {
                     </button>
                     <button
                         onClick={() => setViewMode("list")}
-                        className={`p-2.5 rounded-lg transition-colors ${
+                        className={`rounded-lg p-2.5 transition-colors ${
                             viewMode === "list"
                                 ? "bg-primary-100 text-primary-600 dark:bg-primary-900/50 dark:text-primary-400"
                                 : "text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -226,7 +220,7 @@ export default function Index({ customers }) {
             {customers.data.length > 0 ? (
                 viewMode === "grid" ? (
                     /* Grid View */
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {customers.data.map((customer) => (
                             <CustomerCard
                                 key={customer.id}
@@ -253,13 +247,12 @@ export default function Index({ customers }) {
                             <Table.Tbody>
                                 {customers.data.map((customer, i) => (
                                     <tr
-                                        className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                                        className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
                                         key={customer.id}
                                     >
                                         <Table.Td className="text-center">
                                             {++i +
-                                                (customers.current_page - 1) *
-                                                    customers.per_page}
+                                                (customers.current_page - 1) * customers.per_page}
                                         </Table.Td>
                                         <Table.Td>
                                             <div className="flex items-center gap-3">
@@ -267,21 +260,16 @@ export default function Index({ customers }) {
                                                     <img
                                                         src={customer.avatar}
                                                         alt={customer.name}
-                                                        className="w-10 h-10 rounded-full object-cover border border-slate-200 dark:border-slate-700 flex-shrink-0"
+                                                        className="h-10 w-10 flex-shrink-0 rounded-full border border-slate-200 object-cover dark:border-slate-700"
                                                     />
                                                 ) : (
-                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
-                                                        {customer.name
-                                                            .charAt(0)
-                                                            .toUpperCase()}
+                                                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-accent-400 to-accent-600 text-sm font-semibold text-white">
+                                                        {customer.name.charAt(0).toUpperCase()}
                                                     </div>
                                                 )}
                                                 <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
                                                     <Link
-                                                        href={route(
-                                                            "customers.show",
-                                                            customer.id
-                                                        )}
+                                                        href={route("customers.show", customer.id)}
                                                         className="hover:text-primary-600"
                                                     >
                                                         {customer.name}
@@ -297,9 +285,7 @@ export default function Index({ customers }) {
                                                         : "non-member"}
                                                 </span>
                                                 <span className="text-xs text-slate-500 dark:text-slate-400">
-                                                    {customer.loyalty_points ||
-                                                        0}{" "}
-                                                    poin
+                                                    {customer.loyalty_points || 0} poin
                                                 </span>
                                             </div>
                                         </Table.Td>
@@ -309,7 +295,7 @@ export default function Index({ customers }) {
                                             </span>
                                         </Table.Td>
                                         <Table.Td>
-                                            <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-1">
+                                            <p className="line-clamp-1 text-sm text-slate-500 dark:text-slate-400">
                                                 {customer.address || "-"}
                                             </p>
                                         </Table.Td>
@@ -321,18 +307,13 @@ export default function Index({ customers }) {
                                                         icon={
                                                             <IconPencilCog
                                                                 size={16}
-                                                                strokeWidth={
-                                                                    1.5
-                                                                }
+                                                                strokeWidth={1.5}
                                                             />
                                                         }
                                                         className={
-                                                            "border bg-warning-100 border-warning-200 text-warning-600 hover:bg-warning-200 dark:bg-warning-900/50 dark:border-warning-800 dark:text-warning-400"
+                                                            "border border-warning-200 bg-warning-100 text-warning-600 hover:bg-warning-200 dark:border-warning-800 dark:bg-warning-900/50 dark:text-warning-400"
                                                         }
-                                                        href={route(
-                                                            "customers.edit",
-                                                            customer.id
-                                                        )}
+                                                        href={route("customers.edit", customer.id)}
                                                     />
                                                 )}
                                                 {canDeleteCustomers && (
@@ -341,13 +322,11 @@ export default function Index({ customers }) {
                                                         icon={
                                                             <IconTrash
                                                                 size={16}
-                                                                strokeWidth={
-                                                                    1.5
-                                                                }
+                                                                strokeWidth={1.5}
                                                             />
                                                         }
                                                         className={
-                                                            "border bg-danger-100 border-danger-200 text-danger-600 hover:bg-danger-200 dark:bg-danger-900/50 dark:border-danger-800 dark:text-danger-400"
+                                                            "border border-danger-200 bg-danger-100 text-danger-600 hover:bg-danger-200 dark:border-danger-800 dark:bg-danger-900/50 dark:text-danger-400"
                                                         }
                                                         url={route(
                                                             "customers.destroy",
@@ -365,35 +344,27 @@ export default function Index({ customers }) {
                 )
             ) : (
                 /* Empty State */
-                <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
-                    <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
-                        <IconDatabaseOff
-                            size={32}
-                            className="text-slate-400"
-                            strokeWidth={1.5}
-                        />
+                <div className="flex flex-col items-center justify-center rounded-lg border border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-900">
+                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                        <IconDatabaseOff size={32} className="text-slate-400" strokeWidth={1.5} />
                     </div>
-                    <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-1">
+                    <h3 className="mb-1 text-lg font-medium text-slate-800 dark:text-slate-200">
                         Belum Ada Pelanggan
                     </h3>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+                    <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
                         Tambahkan pelanggan pertama Anda.
                     </p>
                     <Button
                         type={"link"}
                         icon={<IconCirclePlus size={18} />}
-                        className={
-                            "bg-primary-500 hover:bg-primary-600 text-white"
-                        }
+                        className={"bg-primary-500 text-white hover:bg-primary-600"}
                         label={"Tambah Pelanggan"}
                         href={route("customers.create")}
                     />
                 </div>
             )}
 
-            {customers.last_page !== 1 && (
-                <Pagination links={customers.links} />
-            )}
+            {customers.last_page !== 1 && <Pagination links={customers.links} />}
         </>
     );
 }

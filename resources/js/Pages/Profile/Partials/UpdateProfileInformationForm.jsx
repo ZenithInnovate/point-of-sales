@@ -1,12 +1,12 @@
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { Link, useForm, usePage } from '@inertiajs/react';
-import { Transition } from '@headlessui/react';
-import { useEffect, useState } from 'react';
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import { Link, useForm, usePage } from "@inertiajs/react";
+import { Transition } from "@headlessui/react";
+import { useEffect, useState } from "react";
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
+export default function UpdateProfileInformation({ mustVerifyEmail, status, className = "" }) {
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful, reset } = useForm({
@@ -20,9 +20,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'), {
+        patch(route("profile.update"), {
             onSuccess: () => {
-                reset('avatar');
+                reset("avatar");
             },
             preserveScroll: true,
         });
@@ -30,7 +30,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
     useEffect(() => {
         return () => {
-            if (preview && preview.startsWith('blob:')) {
+            if (preview && preview.startsWith("blob:")) {
                 URL.revokeObjectURL(preview);
             }
         };
@@ -54,7 +54,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         id="name"
                         className="mt-1 block w-full"
                         value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
+                        onChange={(e) => setData("name", e.target.value)}
                         required
                         isFocused
                         autoComplete="name"
@@ -71,7 +71,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         type="email"
                         className="mt-1 block w-full"
                         value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
+                        onChange={(e) => setData("email", e.target.value)}
                         required
                         autoComplete="username"
                     />
@@ -82,13 +82,17 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 <div>
                     <InputLabel htmlFor="avatar" value="Avatar" />
 
-                    <div className="flex items-center gap-4 mt-2">
-                        <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                    <div className="mt-2 flex items-center gap-4">
+                        <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-gray-200">
                             {preview ? (
-                                <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+                                <img
+                                    src={preview}
+                                    alt="Preview"
+                                    className="h-full w-full object-cover"
+                                />
                             ) : (
                                 <span className="text-lg font-semibold text-gray-600">
-                                    {user.name?.charAt(0)?.toUpperCase() || '?'}
+                                    {user.name?.charAt(0)?.toUpperCase() || "?"}
                                 </span>
                             )}
                         </div>
@@ -99,7 +103,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                             onChange={(e) => {
                                 const file = e.target.files[0];
                                 if (file) {
-                                    setData('avatar', file);
+                                    setData("avatar", file);
                                     setPreview(URL.createObjectURL(file));
                                 }
                             }}
@@ -110,20 +114,20 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
-                        <p className="text-sm mt-2 text-gray-800">
+                        <p className="mt-2 text-sm text-gray-800">
                             Your email address is unverified.
                             <Link
-                                href={route('verification.send')}
+                                href={route("verification.send")}
                                 method="post"
                                 as="button"
-                                className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
                                 Click here to re-send the verification email.
                             </Link>
                         </p>
 
-                        {status === 'verification-link-sent' && (
-                            <div className="mt-2 font-medium text-sm text-green-600">
+                        {status === "verification-link-sent" && (
+                            <div className="mt-2 text-sm font-medium text-green-600">
                                 A new verification link has been sent to your email address.
                             </div>
                         )}

@@ -53,10 +53,17 @@ const agingBucketColor = (bucket) => {
 };
 
 export default function AgingIndex() {
-    const { payableAgingSummary, receivableAgingSummary, payableNotifications, receivableNotifications } = usePage().props;
+    const {
+        payableAgingSummary,
+        receivableAgingSummary,
+        payableNotifications,
+        receivableNotifications,
+    } = usePage().props;
 
-    const payableTotalOutstanding = payableAgingSummary?.reduce((s, b) => s + (b.remaining || 0), 0) || 0;
-    const receivableTotalOutstanding = receivableAgingSummary?.reduce((s, b) => s + (b.remaining || 0), 0) || 0;
+    const payableTotalOutstanding =
+        payableAgingSummary?.reduce((s, b) => s + (b.remaining || 0), 0) || 0;
+    const receivableTotalOutstanding =
+        receivableAgingSummary?.reduce((s, b) => s + (b.remaining || 0), 0) || 0;
 
     const payablesDueSoon = payableNotifications?.length || 0;
     const receivablesDueSoon = receivableNotifications?.length || 0;
@@ -66,97 +73,121 @@ export default function AgingIndex() {
             <Head title="Aging & Pengingat" />
             <div className="space-y-6">
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">
                         <IconChartBar size={28} className="text-primary-500" />
                         Aging & Pengingat
                     </h1>
                     <p className="text-sm text-slate-500 dark:text-slate-400">
-                        Ringkasan piutang dan hutang berdasarkan aging bucket, plus pengingat jatuh tempo.
+                        Ringkasan piutang dan hutang berdasarkan aging bucket, plus pengingat jatuh
+                        tempo.
                     </p>
                 </div>
 
                 {/* Summary Cards */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="p-2 rounded-lg bg-rose-50 dark:bg-rose-950/30">
+                        <div className="mb-3 flex items-center gap-2">
+                            <div className="rounded-lg bg-rose-50 p-2 dark:bg-rose-950/30">
                                 <IconTruck size={20} className="text-rose-500" />
                             </div>
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Total Hutang</p>
+                            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                Total Hutang
+                            </p>
                         </div>
                         <p className="text-2xl font-bold text-slate-900 dark:text-white">
                             {formatCurrency(payableTotalOutstanding)}
                         </p>
-                        <p className="text-xs text-slate-500 mt-1">{payablesDueSoon} akan jatuh tempo</p>
+                        <p className="mt-1 text-xs text-slate-500">
+                            {payablesDueSoon} akan jatuh tempo
+                        </p>
                     </div>
 
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="p-2 rounded-lg bg-primary-50 dark:bg-primary-950/30">
+                        <div className="mb-3 flex items-center gap-2">
+                            <div className="rounded-lg bg-primary-50 p-2 dark:bg-primary-950/30">
                                 <IconReceipt size={20} className="text-primary-500" />
                             </div>
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Total Piutang</p>
+                            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                Total Piutang
+                            </p>
                         </div>
                         <p className="text-2xl font-bold text-slate-900 dark:text-white">
                             {formatCurrency(receivableTotalOutstanding)}
                         </p>
-                        <p className="text-xs text-slate-500 mt-1">{receivablesDueSoon} akan jatuh tempo</p>
+                        <p className="mt-1 text-xs text-slate-500">
+                            {receivablesDueSoon} akan jatuh tempo
+                        </p>
                     </div>
 
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="p-2 rounded-lg bg-amber-50 dark:bg-amber-950/30">
+                        <div className="mb-3 flex items-center gap-2">
+                            <div className="rounded-lg bg-amber-50 p-2 dark:bg-amber-950/30">
                                 <IconAlertTriangle size={20} className="text-amber-500" />
                             </div>
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Hutang Overdue</p>
+                            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                Hutang Overdue
+                            </p>
                         </div>
                         <p className="text-2xl font-bold text-amber-600">
                             {formatCurrency(
-                                (payableAgingSummary?.find((b) => b.bucket === "90+")?.remaining || 0) +
-                                (payableAgingSummary?.find((b) => b.bucket === "61-90")?.remaining || 0)
+                                (payableAgingSummary?.find((b) => b.bucket === "90+")?.remaining ||
+                                    0) +
+                                    (payableAgingSummary?.find((b) => b.bucket === "61-90")
+                                        ?.remaining || 0)
                             )}
                         </p>
-                        <p className="text-xs text-slate-500 mt-1">61+ hari</p>
+                        <p className="mt-1 text-xs text-slate-500">61+ hari</p>
                     </div>
 
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-                        <div className="flex items-center gap-2 mb-3">
-                            <div className="p-2 rounded-lg bg-rose-50 dark:bg-rose-950/30">
+                        <div className="mb-3 flex items-center gap-2">
+                            <div className="rounded-lg bg-rose-50 p-2 dark:bg-rose-950/30">
                                 <IconReceipt size={20} className="text-rose-500" />
                             </div>
-                            <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Piutang Overdue</p>
+                            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                Piutang Overdue
+                            </p>
                         </div>
                         <p className="text-2xl font-bold text-rose-600">
                             {formatCurrency(
-                                (receivableAgingSummary?.find((b) => b.bucket === "90+")?.remaining || 0) +
-                                (receivableAgingSummary?.find((b) => b.bucket === "61-90")?.remaining || 0)
+                                (receivableAgingSummary?.find((b) => b.bucket === "90+")
+                                    ?.remaining || 0) +
+                                    (receivableAgingSummary?.find((b) => b.bucket === "61-90")
+                                        ?.remaining || 0)
                             )}
                         </p>
-                        <p className="text-xs text-slate-500 mt-1">61+ hari</p>
+                        <p className="mt-1 text-xs text-slate-500">61+ hari</p>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     {/* Payable Aging */}
                     <div className="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-                        <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-800">
-                            <h2 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                        <div className="border-b border-slate-100 px-5 py-4 dark:border-slate-800">
+                            <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-white">
                                 <IconTruck size={20} className="text-rose-500" />
                                 Aging Hutang Supplier
                             </h2>
                         </div>
                         <div className="p-5">
-                            <div className="space-y-3 mb-6">
+                            <div className="mb-6 space-y-3">
                                 {payableAgingSummary?.map((bucket) => (
-                                    <div key={bucket.bucket} className="flex items-center justify-between">
-                                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${agingBucketColor(bucket.bucket)}`}>
+                                    <div
+                                        key={bucket.bucket}
+                                        className="flex items-center justify-between"
+                                    >
+                                        <span
+                                            className={`rounded-full px-2.5 py-1 text-xs font-semibold ${agingBucketColor(bucket.bucket)}`}
+                                        >
                                             {agingBucketLabel(bucket.bucket)}
                                         </span>
                                         <div className="text-right">
                                             <p className="text-sm font-bold text-slate-800 dark:text-white">
                                                 {formatCurrency(bucket.remaining)}
                                             </p>
-                                            <p className="text-xs text-slate-500">{bucket.count} nota</p>
+                                            <p className="text-xs text-slate-500">
+                                                {bucket.count} nota
+                                            </p>
                                         </div>
                                     </div>
                                 ))}
@@ -164,7 +195,7 @@ export default function AgingIndex() {
 
                             {payableNotifications?.length > 0 && (
                                 <div>
-                                    <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-1.5">
+                                    <h3 className="mb-3 flex items-center gap-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200">
                                         <IconClock size={16} className="text-warning-500" />
                                         Akan Jatuh Tempo
                                     </h3>
@@ -173,14 +204,20 @@ export default function AgingIndex() {
                                             <Link
                                                 key={item.id}
                                                 href={route("payables.show", item.id)}
-                                                className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                                                className="flex items-center justify-between rounded-xl border border-slate-100 p-3 transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50"
                                             >
                                                 <div>
-                                                    <p className="text-sm font-medium text-slate-800 dark:text-white">{item.title}</p>
-                                                    <p className="text-xs text-slate-500">{item.time}</p>
+                                                    <p className="text-sm font-medium text-slate-800 dark:text-white">
+                                                        {item.title}
+                                                    </p>
+                                                    <p className="text-xs text-slate-500">
+                                                        {item.time}
+                                                    </p>
                                                 </div>
                                                 <div className="text-right">
-                                                    <p className="text-sm font-semibold text-warning-600">{item.subtitle}</p>
+                                                    <p className="text-sm font-semibold text-warning-600">
+                                                        {item.subtitle}
+                                                    </p>
                                                 </div>
                                             </Link>
                                         ))}
@@ -192,24 +229,31 @@ export default function AgingIndex() {
 
                     {/* Receivable Aging */}
                     <div className="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-                        <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-800">
-                            <h2 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                        <div className="border-b border-slate-100 px-5 py-4 dark:border-slate-800">
+                            <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-white">
                                 <IconReceipt size={20} className="text-primary-500" />
                                 Aging Piutang Pelanggan
                             </h2>
                         </div>
                         <div className="p-5">
-                            <div className="space-y-3 mb-6">
+                            <div className="mb-6 space-y-3">
                                 {receivableAgingSummary?.map((bucket) => (
-                                    <div key={bucket.bucket} className="flex items-center justify-between">
-                                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${agingBucketColor(bucket.bucket)}`}>
+                                    <div
+                                        key={bucket.bucket}
+                                        className="flex items-center justify-between"
+                                    >
+                                        <span
+                                            className={`rounded-full px-2.5 py-1 text-xs font-semibold ${agingBucketColor(bucket.bucket)}`}
+                                        >
                                             {agingBucketLabel(bucket.bucket)}
                                         </span>
                                         <div className="text-right">
                                             <p className="text-sm font-bold text-slate-800 dark:text-white">
                                                 {formatCurrency(bucket.remaining)}
                                             </p>
-                                            <p className="text-xs text-slate-500">{bucket.count} nota</p>
+                                            <p className="text-xs text-slate-500">
+                                                {bucket.count} nota
+                                            </p>
                                         </div>
                                     </div>
                                 ))}
@@ -217,7 +261,7 @@ export default function AgingIndex() {
 
                             {receivableNotifications?.length > 0 && (
                                 <div>
-                                    <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3 flex items-center gap-1.5">
+                                    <h3 className="mb-3 flex items-center gap-1.5 text-sm font-semibold text-slate-700 dark:text-slate-200">
                                         <IconClock size={16} className="text-warning-500" />
                                         Akan Jatuh Tempo
                                     </h3>
@@ -226,14 +270,20 @@ export default function AgingIndex() {
                                             <Link
                                                 key={item.id}
                                                 href={route("receivables.show", item.id)}
-                                                className="flex items-center justify-between p-3 rounded-xl border border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                                                className="flex items-center justify-between rounded-xl border border-slate-100 p-3 transition-colors hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/50"
                                             >
                                                 <div>
-                                                    <p className="text-sm font-medium text-slate-800 dark:text-white">{item.title}</p>
-                                                    <p className="text-xs text-slate-500">{item.time}</p>
+                                                    <p className="text-sm font-medium text-slate-800 dark:text-white">
+                                                        {item.title}
+                                                    </p>
+                                                    <p className="text-xs text-slate-500">
+                                                        {item.time}
+                                                    </p>
                                                 </div>
                                                 <div className="text-right">
-                                                    <p className="text-sm font-semibold text-warning-600">{item.subtitle}</p>
+                                                    <p className="text-sm font-semibold text-warning-600">
+                                                        {item.subtitle}
+                                                    </p>
                                                 </div>
                                             </Link>
                                         ))}

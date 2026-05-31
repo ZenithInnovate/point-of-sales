@@ -139,9 +139,7 @@ export default function Index({ rules, filters, summary = {}, recentAudits = [] 
                         </div>
                         <select
                             value={filters.status || ""}
-                            onChange={(event) =>
-                                handleFilterChange("status", event.target.value)
-                            }
+                            onChange={(event) => handleFilterChange("status", event.target.value)}
                             className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                         >
                             <option value="">Semua Status</option>
@@ -162,9 +160,7 @@ export default function Index({ rules, filters, summary = {}, recentAudits = [] 
                         </select>
                         <select
                             value={filters.kind || ""}
-                            onChange={(event) =>
-                                handleFilterChange("kind", event.target.value)
-                            }
+                            onChange={(event) => handleFilterChange("kind", event.target.value)}
                             className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                         >
                             <option value="">Semua Jenis</option>
@@ -208,7 +204,9 @@ export default function Index({ rules, filters, summary = {}, recentAudits = [] 
                                                     </p>
                                                     <p className="text-xs text-slate-500 dark:text-slate-400">
                                                         {rule.starts_at
-                                                            ? new Date(rule.starts_at).toLocaleString("id-ID")
+                                                            ? new Date(
+                                                                  rule.starts_at
+                                                              ).toLocaleString("id-ID")
                                                             : "Tanpa jadwal mulai"}
                                                     </p>
                                                 </div>
@@ -251,7 +249,10 @@ export default function Index({ rules, filters, summary = {}, recentAudits = [] 
                                                 {can("pricing-rules-delete") && (
                                                     <Button
                                                         type="delete"
-                                                        url={route("pricing-rules.destroy", rule.id)}
+                                                        url={route(
+                                                            "pricing-rules.destroy",
+                                                            rule.id
+                                                        )}
                                                         icon={<IconTrash size={16} />}
                                                         className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/30 dark:text-rose-300"
                                                     />
@@ -261,10 +262,7 @@ export default function Index({ rules, filters, summary = {}, recentAudits = [] 
                                     </tr>
                                 ))
                             ) : (
-                                <Table.Empty
-                                    colSpan={8}
-                                    message="Belum ada rule promo harga."
-                                >
+                                <Table.Empty colSpan={8} message="Belum ada rule promo harga.">
                                     <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                                         <IconChartInfographic
                                             size={28}

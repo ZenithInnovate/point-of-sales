@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
 import Button from "@/Components/Dashboard/Button";
-import {
-    IconArrowLeft,
-    IconPlus,
-    IconTrash,
-    IconTruckReturn,
-} from "@tabler/icons-react";
+import { IconArrowLeft, IconPlus, IconTrash, IconTruckReturn } from "@tabler/icons-react";
 import toast from "react-hot-toast";
 
 const formatCurrency = (value = 0) =>
@@ -78,7 +73,10 @@ export default function Create({ suppliers, goodsReceivings, products }) {
     };
 
     const removeItem = (index) => {
-        setData("items", data.items.filter((_, i) => i !== index));
+        setData(
+            "items",
+            data.items.filter((_, i) => i !== index)
+        );
     };
 
     const updateItem = (index, key, value) => {
@@ -130,21 +128,32 @@ export default function Create({ suppliers, goodsReceivings, products }) {
             <form onSubmit={submit} className="max-w-5xl">
                 <div className="space-y-6">
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">Informasi Retur</h2>
+                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
+                            Informasi Retur
+                        </h2>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                             <div>
-                                <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">Supplier</label>
+                                <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">
+                                    Supplier
+                                </label>
                                 <select
                                     value={data.supplier_id}
                                     onChange={(e) => {
-                                        setData({ supplier_id: e.target.value, goods_receiving_id: "", payable_id: "", items: [] });
+                                        setData({
+                                            supplier_id: e.target.value,
+                                            goods_receiving_id: "",
+                                            payable_id: "",
+                                            items: [],
+                                        });
                                         setSelectedGrId("");
                                     }}
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
                                     <option value="">Pilih Supplier</option>
                                     {suppliers.map((s) => (
-                                        <option key={s.id} value={s.id}>{s.name}</option>
+                                        <option key={s.id} value={s.id}>
+                                            {s.name}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
@@ -159,7 +168,7 @@ export default function Create({ suppliers, goodsReceivings, products }) {
                                         setData("goods_receiving_id", e.target.value);
                                     }}
                                     disabled={!data.supplier_id}
-                                    className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 disabled:opacity-50"
+                                    className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
                                     <option value="">Tidak terkait GR</option>
                                     {goodsReceivings.map((gr) => (
@@ -170,7 +179,9 @@ export default function Create({ suppliers, goodsReceivings, products }) {
                                 </select>
                             </div>
                             <div>
-                                <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">Catatan</label>
+                                <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">
+                                    Catatan
+                                </label>
                                 <input
                                     type="text"
                                     value={data.notes}
@@ -183,7 +194,9 @@ export default function Create({ suppliers, goodsReceivings, products }) {
                     </div>
 
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">Item Retur</h2>
+                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
+                            Item Retur
+                        </h2>
 
                         {selectedGr && (
                             <div className="mb-4">
@@ -202,13 +215,20 @@ export default function Create({ suppliers, goodsReceivings, products }) {
                                             >
                                                 <div>
                                                     <p className="font-medium text-slate-800 dark:text-slate-200">
-                                                        {grItem.product?.title || "Produk #" + grItem.product_id}
+                                                        {grItem.product?.title ||
+                                                            "Produk #" + grItem.product_id}
                                                     </p>
                                                     <p className="text-xs text-slate-500">
-                                                        {grItem.product?.sku || "-"} &bull; Harga: {formatCurrency(grItem.purchase_order_item?.unit_price || 0)}
+                                                        {grItem.product?.sku || "-"} &bull; Harga:{" "}
+                                                        {formatCurrency(
+                                                            grItem.purchase_order_item
+                                                                ?.unit_price || 0
+                                                        )}
                                                     </p>
                                                 </div>
-                                                <span className="text-xs text-primary-600">+ Tambah</span>
+                                                <span className="text-xs text-primary-600">
+                                                    + Tambah
+                                                </span>
                                             </button>
                                         ) : null;
                                     })}
@@ -235,10 +255,16 @@ export default function Create({ suppliers, goodsReceivings, products }) {
                                         className="flex w-full items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-4 py-3 text-left text-sm transition hover:border-primary-200 hover:bg-primary-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary-700 dark:hover:bg-primary-950/20"
                                     >
                                         <div>
-                                            <p className="font-medium text-slate-800 dark:text-slate-200">{product.title}</p>
-                                            <p className="text-xs text-slate-500">{product.sku || "-"} &bull; Stok: {product.stock}</p>
+                                            <p className="font-medium text-slate-800 dark:text-slate-200">
+                                                {product.title}
+                                            </p>
+                                            <p className="text-xs text-slate-500">
+                                                {product.sku || "-"} &bull; Stok: {product.stock}
+                                            </p>
                                         </div>
-                                        <span className="text-xs text-slate-500">{formatCurrency(product.buy_price)}</span>
+                                        <span className="text-xs text-slate-500">
+                                            {formatCurrency(product.buy_price)}
+                                        </span>
                                     </button>
                                 ))}
                             </div>
@@ -249,27 +275,50 @@ export default function Create({ suppliers, goodsReceivings, products }) {
                                 <table className="w-full text-sm">
                                     <thead>
                                         <tr className="border-b border-slate-200 dark:border-slate-700">
-                                            <th className="px-3 py-2 text-left font-semibold text-slate-700 dark:text-slate-200">Produk</th>
-                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">Qty</th>
-                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">Harga</th>
-                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">Subtotal</th>
-                                            <th className="px-3 py-2 text-left font-semibold text-slate-700 dark:text-slate-200">Alasan</th>
+                                            <th className="px-3 py-2 text-left font-semibold text-slate-700 dark:text-slate-200">
+                                                Produk
+                                            </th>
+                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">
+                                                Qty
+                                            </th>
+                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">
+                                                Harga
+                                            </th>
+                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">
+                                                Subtotal
+                                            </th>
+                                            <th className="px-3 py-2 text-left font-semibold text-slate-700 dark:text-slate-200">
+                                                Alasan
+                                            </th>
                                             <th className="w-16 px-3 py-2"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {data.items.map((item, index) => (
-                                            <tr key={index} className="border-b border-slate-100 dark:border-slate-800">
+                                            <tr
+                                                key={index}
+                                                className="border-b border-slate-100 dark:border-slate-800"
+                                            >
                                                 <td className="px-3 py-3">
-                                                    <p className="font-medium text-slate-800 dark:text-slate-200">{item.product_title}</p>
-                                                    <p className="text-xs text-slate-500">{item.product_sku}</p>
+                                                    <p className="font-medium text-slate-800 dark:text-slate-200">
+                                                        {item.product_title}
+                                                    </p>
+                                                    <p className="text-xs text-slate-500">
+                                                        {item.product_sku}
+                                                    </p>
                                                 </td>
                                                 <td className="px-3 py-3 text-right">
                                                     <input
                                                         type="number"
                                                         min="1"
                                                         value={item.qty_returned}
-                                                        onChange={(e) => updateItem(index, "qty_returned", e.target.value)}
+                                                        onChange={(e) =>
+                                                            updateItem(
+                                                                index,
+                                                                "qty_returned",
+                                                                e.target.value
+                                                            )
+                                                        }
                                                         className="h-10 w-20 rounded-lg border border-slate-200 bg-slate-50 px-3 text-right text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                                     />
                                                 </td>
@@ -279,18 +328,32 @@ export default function Create({ suppliers, goodsReceivings, products }) {
                                                         min="0"
                                                         step="100"
                                                         value={item.unit_price}
-                                                        onChange={(e) => updateItem(index, "unit_price", e.target.value)}
+                                                        onChange={(e) =>
+                                                            updateItem(
+                                                                index,
+                                                                "unit_price",
+                                                                e.target.value
+                                                            )
+                                                        }
                                                         className="h-10 w-28 rounded-lg border border-slate-200 bg-slate-50 px-3 text-right text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                                     />
                                                 </td>
                                                 <td className="px-3 py-3 text-right font-semibold text-slate-800 dark:text-slate-200">
-                                                    {formatCurrency(item.qty_returned * item.unit_price)}
+                                                    {formatCurrency(
+                                                        item.qty_returned * item.unit_price
+                                                    )}
                                                 </td>
                                                 <td className="px-3 py-3">
                                                     <input
                                                         type="text"
                                                         value={item.reason || ""}
-                                                        onChange={(e) => updateItem(index, "reason", e.target.value)}
+                                                        onChange={(e) =>
+                                                            updateItem(
+                                                                index,
+                                                                "reason",
+                                                                e.target.value
+                                                            )
+                                                        }
                                                         placeholder="Alasan retur"
                                                         className="h-10 w-full rounded-lg border border-slate-200 bg-slate-50 px-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                                     />
@@ -309,8 +372,15 @@ export default function Create({ suppliers, goodsReceivings, products }) {
                                     </tbody>
                                     <tfoot>
                                         <tr className="border-t-2 border-slate-200 dark:border-slate-700">
-                                            <td colSpan={3} className="px-3 py-3 text-right font-bold text-slate-800 dark:text-slate-200">Total</td>
-                                            <td className="px-3 py-3 text-right font-bold text-danger-600">{formatCurrency(total)}</td>
+                                            <td
+                                                colSpan={3}
+                                                className="px-3 py-3 text-right font-bold text-slate-800 dark:text-slate-200"
+                                            >
+                                                Total
+                                            </td>
+                                            <td className="px-3 py-3 text-right font-bold text-danger-600">
+                                                {formatCurrency(total)}
+                                            </td>
                                             <td colSpan={2}></td>
                                         </tr>
                                     </tfoot>
@@ -319,7 +389,8 @@ export default function Create({ suppliers, goodsReceivings, products }) {
                         ) : (
                             <div className="rounded-xl border border-dashed border-slate-200 p-8 text-center dark:border-slate-700">
                                 <p className="text-sm text-slate-500 dark:text-slate-400">
-                                    Pilih supplier, lalu tambahkan item dari GR atau cari produk di atas.
+                                    Pilih supplier, lalu tambahkan item dari GR atau cari produk di
+                                    atas.
                                 </p>
                             </div>
                         )}
@@ -335,7 +406,7 @@ export default function Create({ suppliers, goodsReceivings, products }) {
                         <Button
                             type="submit"
                             icon={<IconPlus size={18} />}
-                            className="bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30"
+                            className="bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
                             label={processing ? "Menyimpan..." : "Simpan Retur"}
                             disabled={processing}
                         />

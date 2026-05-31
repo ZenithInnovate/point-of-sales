@@ -54,10 +54,9 @@ export default function Index({ members, filters, tierOptions, summary }) {
         {
             label: "Repeat Rate",
             value: `${summary?.repeat_rate || 0}%`,
-            helper:
-                summary?.top_member?.name
-                    ? `Top member: ${summary.top_member.name}`
-                    : "Belum ada top member",
+            helper: summary?.top_member?.name
+                ? `Top member: ${summary.top_member.name}`
+                : "Belum ada top member",
         },
     ];
 
@@ -72,7 +71,8 @@ export default function Index({ members, filters, tierOptions, summary }) {
                             Member
                         </h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
-                            Kelola pendaftaran, status, dan performa member tanpa memisahkan data dari customer inti.
+                            Kelola pendaftaran, status, dan performa member tanpa memisahkan data
+                            dari customer inti.
                         </p>
                     </div>
                     <Link
@@ -122,9 +122,7 @@ export default function Index({ members, filters, tierOptions, summary }) {
 
                         <select
                             value={filters.tier || ""}
-                            onChange={(event) =>
-                                handleFilterChange("tier", event.target.value)
-                            }
+                            onChange={(event) => handleFilterChange("tier", event.target.value)}
                             className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                         >
                             <option value="">Semua Tier</option>
@@ -137,9 +135,7 @@ export default function Index({ members, filters, tierOptions, summary }) {
 
                         <select
                             value={filters.status || "active"}
-                            onChange={(event) =>
-                                handleFilterChange("status", event.target.value)
-                            }
+                            onChange={(event) => handleFilterChange("status", event.target.value)}
                             className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                         >
                             <option value="active">Member Aktif</option>
@@ -159,9 +155,7 @@ export default function Index({ members, filters, tierOptions, summary }) {
                                 <Table.Th>Total Belanja</Table.Th>
                                 <Table.Th>Transaksi</Table.Th>
                                 <Table.Th>Terakhir Belanja</Table.Th>
-                                <Table.Th className="w-28 text-center">
-                                    Aksi
-                                </Table.Th>
+                                <Table.Th className="w-28 text-center">Aksi</Table.Th>
                             </tr>
                         </Table.Thead>
                         <Table.Tbody>
@@ -187,23 +181,15 @@ export default function Index({ members, filters, tierOptions, summary }) {
                                                 {member.loyalty_tier || "regular"}
                                             </span>
                                             <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">
-                                                {member.is_loyalty_member
-                                                    ? "Aktif"
-                                                    : "Nonaktif"}
+                                                {member.is_loyalty_member ? "Aktif" : "Nonaktif"}
                                             </p>
                                         </Table.Td>
                                         <Table.Td>{member.loyalty_points || 0}</Table.Td>
                                         <Table.Td>
-                                            {formatCurrency(
-                                                member.loyalty_total_spent || 0
-                                            )}
+                                            {formatCurrency(member.loyalty_total_spent || 0)}
                                         </Table.Td>
-                                        <Table.Td>
-                                            {member.loyalty_transaction_count || 0}
-                                        </Table.Td>
-                                        <Table.Td>
-                                            {formatDate(member.last_purchase_at)}
-                                        </Table.Td>
+                                        <Table.Td>{member.loyalty_transaction_count || 0}</Table.Td>
+                                        <Table.Td>{formatDate(member.last_purchase_at)}</Table.Td>
                                         <Table.Td className="text-center">
                                             <Link
                                                 href={route("members.edit", member.id)}
@@ -239,7 +225,8 @@ export default function Index({ members, filters, tierOptions, summary }) {
                                     Top Member by Spending
                                 </p>
                                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                                    {summary.top_member.name} • {formatCurrency(summary.top_member.total_spent)}
+                                    {summary.top_member.name} •{" "}
+                                    {formatCurrency(summary.top_member.total_spent)}
                                 </p>
                             </div>
                         </div>
@@ -258,7 +245,9 @@ export default function Index({ members, filters, tierOptions, summary }) {
                                 Bantuan cepat
                             </p>
                             <p className="mt-1 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                                Daftarkan member baru dari halaman ini atau langsung dari POS. Untuk upgrade pelanggan biasa menjadi member, gunakan tombol upgrade di detail pelanggan atau picker pelanggan di POS.
+                                Daftarkan member baru dari halaman ini atau langsung dari POS. Untuk
+                                upgrade pelanggan biasa menjadi member, gunakan tombol upgrade di
+                                detail pelanggan atau picker pelanggan di POS.
                             </p>
                         </div>
                     </div>

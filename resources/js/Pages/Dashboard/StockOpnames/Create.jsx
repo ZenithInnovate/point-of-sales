@@ -53,7 +53,7 @@ export default function Create() {
                         <Button
                             type="submit"
                             icon={<IconClipboardCheck size={18} />}
-                            className="bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30"
+                            className="bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
                             label={processing ? "Menyimpan..." : "Buat Sesi"}
                             disabled={processing}
                         />

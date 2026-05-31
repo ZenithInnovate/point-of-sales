@@ -5,12 +5,7 @@ import Button from "@/Components/Dashboard/Button";
 import Table from "@/Components/Dashboard/Table";
 import Pagination from "@/Components/Dashboard/Pagination";
 import { useAuthorization } from "@/Utils/authorization";
-import {
-    IconCirclePlus,
-    IconClipboardCheck,
-    IconEye,
-    IconSearch,
-} from "@tabler/icons-react";
+import { IconCirclePlus, IconClipboardCheck, IconEye, IconSearch } from "@tabler/icons-react";
 
 function formatDateTime(value) {
     if (!value) return "-";
@@ -57,7 +52,7 @@ export default function Index({ stockOpnames, filters }) {
                         type="link"
                         href={route("stock-opnames.create")}
                         icon={<IconCirclePlus size={18} strokeWidth={1.5} />}
-                        className="bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30"
+                        className="bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
                         label="Buat Sesi Opname"
                     />
                 )}
@@ -68,9 +63,7 @@ export default function Index({ stockOpnames, filters }) {
                     <input
                         type="text"
                         value={filters.search || ""}
-                        onChange={(event) =>
-                            handleFilterChange("search", event.target.value)
-                        }
+                        onChange={(event) => handleFilterChange("search", event.target.value)}
                         placeholder="Cari kode sesi atau catatan..."
                         className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 pr-11 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                     />
@@ -81,9 +74,7 @@ export default function Index({ stockOpnames, filters }) {
 
                 <select
                     value={filters.status || ""}
-                    onChange={(event) =>
-                        handleFilterChange("status", event.target.value)
-                    }
+                    onChange={(event) => handleFilterChange("status", event.target.value)}
                     className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 >
                     <option value="">Semua Status</option>
@@ -95,17 +86,13 @@ export default function Index({ stockOpnames, filters }) {
                     <input
                         type="date"
                         value={filters.date_from || ""}
-                        onChange={(event) =>
-                            handleFilterChange("date_from", event.target.value)
-                        }
+                        onChange={(event) => handleFilterChange("date_from", event.target.value)}
                         className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                     />
                     <input
                         type="date"
                         value={filters.date_to || ""}
-                        onChange={(event) =>
-                            handleFilterChange("date_to", event.target.value)
-                        }
+                        onChange={(event) => handleFilterChange("date_to", event.target.value)}
                         className="h-11 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                     />
                 </div>
@@ -188,9 +175,7 @@ export default function Index({ stockOpnames, filters }) {
                 </Table>
             </Table.Card>
 
-            {stockOpnames.last_page > 1 && (
-                <Pagination links={stockOpnames.links} />
-            )}
+            {stockOpnames.last_page > 1 && <Pagination links={stockOpnames.links} />}
         </>
     );
 }

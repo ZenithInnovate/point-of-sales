@@ -43,16 +43,10 @@ export default function useBarcodeScanner(onScan, options = {}) {
             const activeElement = document.activeElement;
             if (activeElement) {
                 const tagName = activeElement.tagName.toLowerCase();
-                const inputType = activeElement
-                    .getAttribute("type")
-                    ?.toLowerCase();
+                const inputType = activeElement.getAttribute("type")?.toLowerCase();
 
                 if (tagName === "textarea") return;
-                if (
-                    tagName === "input" &&
-                    ignoreInputs.includes(inputType || "text")
-                )
-                    return;
+                if (tagName === "input" && ignoreInputs.includes(inputType || "text")) return;
             }
 
             const now = Date.now();

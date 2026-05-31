@@ -103,10 +103,7 @@ export default function Menu() {
                 {
                     title: "Riwayat Transaksi",
                     href: route("transactions.history"),
-                    active:
-                        url === "/dashboard/transactions/history"
-                            ? true
-                            : false,
+                    active: url === "/dashboard/transactions/history" ? true : false,
                     icon: <IconClockHour6 size={20} strokeWidth={1.5} />,
                     permissions: hasAnyPermission(["transactions-access"]),
                 },
@@ -147,9 +144,7 @@ export default function Menu() {
                     title: "Mutasi Stok",
                     href: route("stock-mutations.index"),
                     active: url.startsWith("/dashboard/stock-mutations"),
-                    icon: (
-                        <IconChartArrowsVertical size={20} strokeWidth={1.5} />
-                    ),
+                    icon: <IconChartArrowsVertical size={20} strokeWidth={1.5} />,
                     permissions: hasAnyPermission(["stock-mutations-access"]),
                 },
             ],
@@ -241,9 +236,7 @@ export default function Menu() {
                     title: "Laporan Penjualan",
                     href: route("reports.sales.index"),
                     active: url.startsWith("/dashboard/reports/sales"),
-                    icon: (
-                        <IconChartArrowsVertical size={20} strokeWidth={1.5} />
-                    ),
+                    icon: <IconChartArrowsVertical size={20} strokeWidth={1.5} />,
                     permissions: hasAnyPermission(["reports-access"]),
                 },
                 {
@@ -313,13 +306,8 @@ export default function Menu() {
                         {
                             title: "Tambah Data Pengguna",
                             href: route("users.create"),
-                            icon: (
-                                <IconCirclePlus size={20} strokeWidth={1.5} />
-                            ),
-                            active:
-                                url === "/dashboard/users/create"
-                                    ? true
-                                    : false,
+                            icon: <IconCirclePlus size={20} strokeWidth={1.5} />,
+                            active: url === "/dashboard/users/create" ? true : false,
                             permissions: hasAnyPermission(["users-create"]),
                         },
                     ],
@@ -399,7 +387,5 @@ export default function Menu() {
         );
     }
 
-    return menuNavigation.filter(
-        (section) => section.title !== "SaaS Management"
-    );
+    return menuNavigation.filter((section) => section.title !== "SaaS Management");
 }

@@ -60,7 +60,10 @@ export default function Create({ suppliers, products }) {
 
     const updateItem = (index, key, value) => {
         const items = [...data.items];
-        items[index] = { ...items[index], [key]: key === "qty_ordered" ? parseInt(value) || 0 : Number(value) || 0 };
+        items[index] = {
+            ...items[index],
+            [key]: key === "qty_ordered" ? parseInt(value) || 0 : Number(value) || 0,
+        };
         setData("items", items);
     };
 
@@ -97,10 +100,14 @@ export default function Create({ suppliers, products }) {
             <form onSubmit={submit} className="max-w-5xl">
                 <div className="space-y-6">
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">Informasi PO</h2>
+                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
+                            Informasi PO
+                        </h2>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                             <div>
-                                <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">Supplier</label>
+                                <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">
+                                    Supplier
+                                </label>
                                 <select
                                     value={data.supplier_id}
                                     onChange={(e) => setData("supplier_id", e.target.value)}
@@ -108,12 +115,16 @@ export default function Create({ suppliers, products }) {
                                 >
                                     <option value="">Pilih Supplier</option>
                                     {suppliers.map((s) => (
-                                        <option key={s.id} value={s.id}>{s.name}</option>
+                                        <option key={s.id} value={s.id}>
+                                            {s.name}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
                             <div>
-                                <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">Nomor Dokumen</label>
+                                <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">
+                                    Nomor Dokumen
+                                </label>
                                 <input
                                     type="text"
                                     value={data.document_number}
@@ -123,7 +134,9 @@ export default function Create({ suppliers, products }) {
                                 />
                             </div>
                             <div>
-                                <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">Catatan</label>
+                                <label className="mb-1 block text-sm font-semibold text-slate-700 dark:text-slate-200">
+                                    Catatan
+                                </label>
                                 <input
                                     type="text"
                                     value={data.notes}
@@ -131,13 +144,17 @@ export default function Create({ suppliers, products }) {
                                     placeholder="Catatan PO"
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
-                                {errors.notes && <p className="mt-1 text-xs text-danger-500">{errors.notes}</p>}
+                                {errors.notes && (
+                                    <p className="mt-1 text-xs text-danger-500">{errors.notes}</p>
+                                )}
                             </div>
                         </div>
                     </div>
 
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">Item Pembelian</h2>
+                        <h2 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">
+                            Item Pembelian
+                        </h2>
                         <div className="mb-4 flex gap-3">
                             <input
                                 type="text"
@@ -157,8 +174,12 @@ export default function Create({ suppliers, products }) {
                                         className="flex w-full items-center justify-between rounded-lg border border-slate-100 bg-slate-50 px-4 py-3 text-left text-sm transition hover:border-primary-200 hover:bg-primary-50 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary-700 dark:hover:bg-primary-950/20"
                                     >
                                         <div>
-                                            <p className="font-medium text-slate-800 dark:text-slate-200">{product.title}</p>
-                                            <p className="text-xs text-slate-500">{product.sku || "-"} &bull; Stok: {product.stock}</p>
+                                            <p className="font-medium text-slate-800 dark:text-slate-200">
+                                                {product.title}
+                                            </p>
+                                            <p className="text-xs text-slate-500">
+                                                {product.sku || "-"} &bull; Stok: {product.stock}
+                                            </p>
                                         </div>
                                         <span className="text-xs text-slate-500 dark:text-slate-400">
                                             {formatCurrency(product.buy_price)}
@@ -172,26 +193,47 @@ export default function Create({ suppliers, products }) {
                                 <table className="w-full text-sm">
                                     <thead>
                                         <tr className="border-b border-slate-200 dark:border-slate-700">
-                                            <th className="px-3 py-2 text-left font-semibold text-slate-700 dark:text-slate-200">Produk</th>
-                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">Qty</th>
-                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">Harga</th>
-                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">Subtotal</th>
+                                            <th className="px-3 py-2 text-left font-semibold text-slate-700 dark:text-slate-200">
+                                                Produk
+                                            </th>
+                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">
+                                                Qty
+                                            </th>
+                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">
+                                                Harga
+                                            </th>
+                                            <th className="px-3 py-2 text-right font-semibold text-slate-700 dark:text-slate-200">
+                                                Subtotal
+                                            </th>
                                             <th className="w-16 px-3 py-2"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {data.items.map((item, index) => (
-                                            <tr key={index} className="border-b border-slate-100 dark:border-slate-800">
+                                            <tr
+                                                key={index}
+                                                className="border-b border-slate-100 dark:border-slate-800"
+                                            >
                                                 <td className="px-3 py-3">
-                                                    <p className="font-medium text-slate-800 dark:text-slate-200">{item.product_title}</p>
-                                                    <p className="text-xs text-slate-500">{item.product_sku}</p>
+                                                    <p className="font-medium text-slate-800 dark:text-slate-200">
+                                                        {item.product_title}
+                                                    </p>
+                                                    <p className="text-xs text-slate-500">
+                                                        {item.product_sku}
+                                                    </p>
                                                 </td>
                                                 <td className="px-3 py-3 text-right">
                                                     <input
                                                         type="number"
                                                         min="1"
                                                         value={item.qty_ordered}
-                                                        onChange={(e) => updateItem(index, "qty_ordered", e.target.value)}
+                                                        onChange={(e) =>
+                                                            updateItem(
+                                                                index,
+                                                                "qty_ordered",
+                                                                e.target.value
+                                                            )
+                                                        }
                                                         className="h-10 w-20 rounded-lg border border-slate-200 bg-slate-50 px-3 text-right text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                                     />
                                                 </td>
@@ -201,12 +243,20 @@ export default function Create({ suppliers, products }) {
                                                         min="0"
                                                         step="100"
                                                         value={item.unit_price}
-                                                        onChange={(e) => updateItem(index, "unit_price", e.target.value)}
+                                                        onChange={(e) =>
+                                                            updateItem(
+                                                                index,
+                                                                "unit_price",
+                                                                e.target.value
+                                                            )
+                                                        }
                                                         className="h-10 w-28 rounded-lg border border-slate-200 bg-slate-50 px-3 text-right text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                                     />
                                                 </td>
                                                 <td className="px-3 py-3 text-right font-medium text-slate-800 dark:text-slate-200">
-                                                    {formatCurrency(item.qty_ordered * item.unit_price)}
+                                                    {formatCurrency(
+                                                        item.qty_ordered * item.unit_price
+                                                    )}
                                                 </td>
                                                 <td className="px-3 py-3 text-center">
                                                     <button
@@ -222,8 +272,15 @@ export default function Create({ suppliers, products }) {
                                     </tbody>
                                     <tfoot>
                                         <tr className="border-t-2 border-slate-200 dark:border-slate-700">
-                                            <td colSpan={3} className="px-3 py-3 text-right font-bold text-slate-800 dark:text-slate-200">Total</td>
-                                            <td className="px-3 py-3 text-right font-bold text-primary-600 dark:text-primary-400">{formatCurrency(total)}</td>
+                                            <td
+                                                colSpan={3}
+                                                className="px-3 py-3 text-right font-bold text-slate-800 dark:text-slate-200"
+                                            >
+                                                Total
+                                            </td>
+                                            <td className="px-3 py-3 text-right font-bold text-primary-600 dark:text-primary-400">
+                                                {formatCurrency(total)}
+                                            </td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
@@ -231,8 +288,13 @@ export default function Create({ suppliers, products }) {
                             </div>
                         ) : (
                             <div className="rounded-xl border border-dashed border-slate-200 p-8 text-center dark:border-slate-700">
-                                <IconPackage size={40} className="mx-auto text-slate-300 dark:text-slate-600" />
-                                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">Cari produk di atas untuk ditambahkan ke PO.</p>
+                                <IconPackage
+                                    size={40}
+                                    className="mx-auto text-slate-300 dark:text-slate-600"
+                                />
+                                <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+                                    Cari produk di atas untuk ditambahkan ke PO.
+                                </p>
                             </div>
                         )}
                     </div>
@@ -247,7 +309,7 @@ export default function Create({ suppliers, products }) {
                         <Button
                             type="submit"
                             icon={<IconPlus size={18} />}
-                            className="bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30"
+                            className="bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
                             label={processing ? "Menyimpan..." : "Simpan PO"}
                             disabled={processing}
                         />

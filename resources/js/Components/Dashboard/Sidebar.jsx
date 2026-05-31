@@ -12,57 +12,41 @@ export default function Sidebar({ sidebarOpen }) {
     const storeName = storeProfile?.name || "KASIR";
     const storeLogo = storeProfile?.logo || null;
     const storeInitial =
-        storeName?.charAt(0)?.toUpperCase() ||
-        auth?.user?.name?.charAt(0)?.toUpperCase() ||
-        "K";
+        storeName?.charAt(0)?.toUpperCase() || auth?.user?.name?.charAt(0)?.toUpperCase() || "K";
 
     return (
         <div
-            className={`
-                ${sidebarOpen ? "translate-x-0 w-[260px]" : "-translate-x-full w-[260px]"}
-                md:translate-x-0 ${sidebarOpen ? "md:w-[260px]" : "md:w-[80px]"}
-                fixed md:relative inset-y-0 left-0 z-40
-                flex h-screen flex-col overflow-hidden md:sticky md:top-0 md:self-stretch md:shrink-0
-                border-r border-slate-200 dark:border-slate-800
-                bg-white dark:bg-slate-900
-                transition-all duration-300 ease-in-out
-            `}
+            className={` ${sidebarOpen ? "w-[260px] translate-x-0" : "w-[260px] -translate-x-full"} md:translate-x-0 ${sidebarOpen ? "md:w-[260px]" : "md:w-[80px]"} fixed inset-y-0 left-0 z-40 flex h-screen flex-col overflow-hidden border-r border-slate-200 bg-white transition-all duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-900 md:relative md:sticky md:top-0 md:shrink-0 md:self-stretch`}
         >
             {/* Logo */}
-            <div className="flex items-center justify-center h-16 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex h-16 items-center justify-center border-b border-slate-100 dark:border-slate-800">
                 {sidebarOpen ? (
                     <div className="flex items-center gap-2">
                         {storeLogo ? (
                             <img
                                 src={storeLogo}
                                 alt={storeName}
-                                className="w-10 h-10  object-cover"
+                                className="h-10 w-10 object-cover"
                             />
                         ) : (
-                            <div className="w-10 h-10  bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
-                                <span className="text-white font-bold text-sm">
-                                    {storeInitial}
-                                </span>
+                            <div className="flex h-10 w-10 items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700">
+                                <span className="text-sm font-bold text-white">{storeInitial}</span>
                             </div>
                         )}
-                        <span className="text-xl font-bold text-slate-800 dark:text-white truncate">
+                        <span className="truncate text-xl font-bold text-slate-800 dark:text-white">
                             {storeName}
                         </span>
                     </div>
+                ) : storeLogo ? (
+                    <img
+                        src={storeLogo}
+                        alt={storeName}
+                        className="h-9 w-9 rounded-md object-cover"
+                    />
                 ) : (
-                    storeLogo ? (
-                        <img
-                            src={storeLogo}
-                            alt={storeName}
-                            className="w-9 h-9 rounded-md object-cover"
-                        />
-                    ) : (
-                        <div className="w-9 h-9 rounded-md bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">
-                                {storeInitial}
-                            </span>
-                        </div>
-                    )
+                    <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-to-br from-primary-500 to-primary-700">
+                        <span className="text-sm font-bold text-white">{storeInitial}</span>
+                    </div>
                 )}
             </div>
 
@@ -86,13 +70,7 @@ export default function Sidebar({ sidebarOpen }) {
                             )}
 
                             {/* Menu Items */}
-                            <div
-                                className={
-                                    sidebarOpen
-                                        ? ""
-                                        : "flex flex-col items-center"
-                                }
-                            >
+                            <div className={sidebarOpen ? "" : "flex flex-col items-center"}>
                                 {section.details.map((detail, idx) => {
                                     if (!detail.permissions) return null;
 
@@ -128,8 +106,8 @@ export default function Sidebar({ sidebarOpen }) {
 
             {/* Version/Footer */}
             {sidebarOpen && (
-                <div className="p-4 border-t border-slate-100 dark:border-slate-800">
-                    <p className="text-[10px] text-slate-400 dark:text-slate-600 text-center">
+                <div className="border-t border-slate-100 p-4 dark:border-slate-800">
+                    <p className="text-center text-[10px] text-slate-400 dark:text-slate-600">
                         AkarPOS v1.0.0
                     </p>
                 </div>

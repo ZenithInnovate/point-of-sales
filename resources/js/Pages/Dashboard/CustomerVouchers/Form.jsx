@@ -1,11 +1,7 @@
 import React from "react";
 import { Head, useForm } from "@inertiajs/react";
 import Button from "@/Components/Dashboard/Button";
-import {
-    IconArrowLeft,
-    IconCreditCard,
-    IconDeviceFloppy,
-} from "@tabler/icons-react";
+import { IconArrowLeft, IconCreditCard, IconDeviceFloppy } from "@tabler/icons-react";
 
 function InputError({ message }) {
     if (!message) return null;
@@ -20,16 +16,10 @@ export default function Form({ mode = "create", voucher = null, customers = [] }
         code: voucher?.code ?? "",
         name: voucher?.name ?? "",
         discount_type: voucher?.discount_type ?? "fixed_amount",
-        discount_value: voucher?.discount_value
-            ? String(voucher.discount_value)
-            : "",
-        minimum_order: voucher?.minimum_order
-            ? String(voucher.minimum_order)
-            : "0",
+        discount_value: voucher?.discount_value ? String(voucher.discount_value) : "",
+        minimum_order: voucher?.minimum_order ? String(voucher.minimum_order) : "0",
         is_active: Boolean(voucher?.is_active ?? true),
-        starts_at: voucher?.starts_at
-            ? new Date(voucher.starts_at).toISOString().slice(0, 16)
-            : "",
+        starts_at: voucher?.starts_at ? new Date(voucher.starts_at).toISOString().slice(0, 16) : "",
         expires_at: voucher?.expires_at
             ? new Date(voucher.expires_at).toISOString().slice(0, 16)
             : "",
@@ -49,11 +39,7 @@ export default function Form({ mode = "create", voucher = null, customers = [] }
 
     return (
         <>
-            <Head
-                title={
-                    isEdit ? "Edit Voucher Customer" : "Buat Voucher Customer"
-                }
-            />
+            <Head title={isEdit ? "Edit Voucher Customer" : "Buat Voucher Customer"} />
 
             <div className="w-full">
                 <div className="mb-6">
@@ -65,9 +51,7 @@ export default function Form({ mode = "create", voucher = null, customers = [] }
                         label="Kembali ke voucher customer"
                     />
                     <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-                        {isEdit
-                            ? "Edit Voucher Customer"
-                            : "Buat Voucher Customer"}
+                        {isEdit ? "Edit Voucher Customer" : "Buat Voucher Customer"}
                     </h1>
                     <p className="text-sm text-slate-500 dark:text-slate-400">
                         Distribusikan voucher promosi untuk pelanggan tertentu.
@@ -97,9 +81,7 @@ export default function Form({ mode = "create", voucher = null, customers = [] }
                                 </label>
                                 <select
                                     value={data.customer_id}
-                                    onChange={(event) =>
-                                        setData("customer_id", event.target.value)
-                                    }
+                                    onChange={(event) => setData("customer_id", event.target.value)}
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
                                     <option value="">Pilih pelanggan</option>
@@ -123,10 +105,7 @@ export default function Form({ mode = "create", voucher = null, customers = [] }
                                     type="text"
                                     value={data.code}
                                     onChange={(event) =>
-                                        setData(
-                                            "code",
-                                            event.target.value.toUpperCase()
-                                        )
+                                        setData("code", event.target.value.toUpperCase())
                                     }
                                     placeholder="Kosongkan untuk generate otomatis"
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
@@ -141,9 +120,7 @@ export default function Form({ mode = "create", voucher = null, customers = [] }
                                 <input
                                     type="text"
                                     value={data.name}
-                                    onChange={(event) =>
-                                        setData("name", event.target.value)
-                                    }
+                                    onChange={(event) => setData("name", event.target.value)}
                                     placeholder="Contoh: Voucher Member Mei"
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
@@ -231,9 +208,7 @@ export default function Form({ mode = "create", voucher = null, customers = [] }
                                 <input
                                     type="datetime-local"
                                     value={data.starts_at}
-                                    onChange={(event) =>
-                                        setData("starts_at", event.target.value)
-                                    }
+                                    onChange={(event) => setData("starts_at", event.target.value)}
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
                                 <InputError message={errors.starts_at} />
@@ -246,9 +221,7 @@ export default function Form({ mode = "create", voucher = null, customers = [] }
                                 <input
                                     type="datetime-local"
                                     value={data.expires_at}
-                                    onChange={(event) =>
-                                        setData("expires_at", event.target.value)
-                                    }
+                                    onChange={(event) => setData("expires_at", event.target.value)}
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
                                 <InputError message={errors.expires_at} />
@@ -261,9 +234,7 @@ export default function Form({ mode = "create", voucher = null, customers = [] }
                                 <textarea
                                     rows="4"
                                     value={data.notes}
-                                    onChange={(event) =>
-                                        setData("notes", event.target.value)
-                                    }
+                                    onChange={(event) => setData("notes", event.target.value)}
                                     className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
                                 <InputError message={errors.notes} />

@@ -33,9 +33,7 @@ function MetricCard({ title, value, icon: Icon }) {
                 <Icon size={18} />
                 <span>{title}</span>
             </div>
-            <p className="mt-3 text-xl font-semibold text-slate-900 dark:text-white">
-                {value}
-            </p>
+            <p className="mt-3 text-xl font-semibold text-slate-900 dark:text-white">{value}</p>
         </div>
     );
 }
@@ -53,9 +51,7 @@ export default function Show({ cashierShift, canForceClose = false }) {
 
         return (
             can("cashier-shifts-close") &&
-            (cashierShift.user?.id === auth?.user?.id ||
-                auth?.super ||
-                canForceClose)
+            (cashierShift.user?.id === auth?.user?.id || auth?.super || canForceClose)
         );
     }, [
         auth?.super,
@@ -67,9 +63,8 @@ export default function Show({ cashierShift, canForceClose = false }) {
     ]);
 
     const actualCashNumber = Number(actualCash || 0);
-    const difference = actualCash === ""
-        ? null
-        : actualCashNumber - Number(cashierShift.expected_cash || 0);
+    const difference =
+        actualCash === "" ? null : actualCashNumber - Number(cashierShift.expected_cash || 0);
 
     const handleCloseShift = (event) => {
         event.preventDefault();
@@ -119,10 +114,26 @@ export default function Show({ cashierShift, canForceClose = false }) {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                    <MetricCard title="Modal Awal" value={formatCurrency(cashierShift.opening_cash)} icon={IconWallet} />
-                    <MetricCard title="Expected Cash" value={formatCurrency(cashierShift.expected_cash)} icon={IconCashBanknote} />
-                    <MetricCard title="Penjualan Tunai" value={formatCurrency(cashierShift.cash_sales_total)} icon={IconReceipt} />
-                    <MetricCard title="Refund Tunai" value={formatCurrency(cashierShift.cash_refund_total)} icon={IconRotateClockwise2} />
+                    <MetricCard
+                        title="Modal Awal"
+                        value={formatCurrency(cashierShift.opening_cash)}
+                        icon={IconWallet}
+                    />
+                    <MetricCard
+                        title="Expected Cash"
+                        value={formatCurrency(cashierShift.expected_cash)}
+                        icon={IconCashBanknote}
+                    />
+                    <MetricCard
+                        title="Penjualan Tunai"
+                        value={formatCurrency(cashierShift.cash_sales_total)}
+                        icon={IconReceipt}
+                    />
+                    <MetricCard
+                        title="Refund Tunai"
+                        value={formatCurrency(cashierShift.cash_refund_total)}
+                        icon={IconRotateClockwise2}
+                    />
                 </div>
 
                 <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
@@ -132,47 +143,87 @@ export default function Show({ cashierShift, canForceClose = false }) {
                         </h2>
                         <div className="mt-5 grid gap-4 md:grid-cols-2">
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Kasir</p>
-                                <p className="mt-2 text-sm text-slate-900 dark:text-white">{cashierShift.user?.name || "-"}</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Kasir
+                                </p>
+                                <p className="mt-2 text-sm text-slate-900 dark:text-white">
+                                    {cashierShift.user?.name || "-"}
+                                </p>
                             </div>
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Dibuka Oleh</p>
-                                <p className="mt-2 text-sm text-slate-900 dark:text-white">{cashierShift.opened_by?.name || "-"}</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Dibuka Oleh
+                                </p>
+                                <p className="mt-2 text-sm text-slate-900 dark:text-white">
+                                    {cashierShift.opened_by?.name || "-"}
+                                </p>
                             </div>
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Waktu Tutup</p>
-                                <p className="mt-2 text-sm text-slate-900 dark:text-white">{formatDateTime(cashierShift.closed_at)}</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Waktu Tutup
+                                </p>
+                                <p className="mt-2 text-sm text-slate-900 dark:text-white">
+                                    {formatDateTime(cashierShift.closed_at)}
+                                </p>
                             </div>
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Ditutup Oleh</p>
-                                <p className="mt-2 text-sm text-slate-900 dark:text-white">{cashierShift.closed_by?.name || "-"}</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Ditutup Oleh
+                                </p>
+                                <p className="mt-2 text-sm text-slate-900 dark:text-white">
+                                    {cashierShift.closed_by?.name || "-"}
+                                </p>
                             </div>
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Total Transaksi</p>
-                                <p className="mt-2 text-sm text-slate-900 dark:text-white">{cashierShift.transactions_count}</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Total Transaksi
+                                </p>
+                                <p className="mt-2 text-sm text-slate-900 dark:text-white">
+                                    {cashierShift.transactions_count}
+                                </p>
                             </div>
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Total Retur</p>
-                                <p className="mt-2 text-sm text-slate-900 dark:text-white">{cashierShift.sales_returns_count}</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Total Retur
+                                </p>
+                                <p className="mt-2 text-sm text-slate-900 dark:text-white">
+                                    {cashierShift.sales_returns_count}
+                                </p>
                             </div>
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Penjualan Non Tunai</p>
-                                <p className="mt-2 text-sm text-slate-900 dark:text-white">{formatCurrency(cashierShift.non_cash_sales_total)}</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Penjualan Non Tunai
+                                </p>
+                                <p className="mt-2 text-sm text-slate-900 dark:text-white">
+                                    {formatCurrency(cashierShift.non_cash_sales_total)}
+                                </p>
                             </div>
                             <div>
-                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Refund Non Tunai</p>
-                                <p className="mt-2 text-sm text-slate-900 dark:text-white">{formatCurrency(cashierShift.non_cash_refund_total)}</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Refund Non Tunai
+                                </p>
+                                <p className="mt-2 text-sm text-slate-900 dark:text-white">
+                                    {formatCurrency(cashierShift.non_cash_refund_total)}
+                                </p>
                             </div>
                         </div>
 
                         <div className="mt-5 grid gap-4 md:grid-cols-2">
                             <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60">
-                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Catatan Shift</p>
-                                <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{cashierShift.notes || "Tidak ada catatan pembukaan."}</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Catatan Shift
+                                </p>
+                                <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">
+                                    {cashierShift.notes || "Tidak ada catatan pembukaan."}
+                                </p>
                             </div>
                             <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60">
-                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Catatan Closing</p>
-                                <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">{cashierShift.close_notes || "Tidak ada catatan penutupan."}</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                    Catatan Closing
+                                </p>
+                                <p className="mt-2 text-sm text-slate-700 dark:text-slate-300">
+                                    {cashierShift.close_notes || "Tidak ada catatan penutupan."}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -184,19 +235,31 @@ export default function Show({ cashierShift, canForceClose = false }) {
                             </h2>
                             <div className="mt-4 space-y-3">
                                 <div className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800/60">
-                                    <span className="text-sm text-slate-500 dark:text-slate-400">Expected Cash</span>
-                                    <span className="font-semibold text-slate-900 dark:text-white">{formatCurrency(cashierShift.expected_cash)}</span>
-                                </div>
-                                <div className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800/60">
-                                    <span className="text-sm text-slate-500 dark:text-slate-400">Actual Cash</span>
+                                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                                        Expected Cash
+                                    </span>
                                     <span className="font-semibold text-slate-900 dark:text-white">
-                                        {cashierShift.actual_cash === null ? "-" : formatCurrency(cashierShift.actual_cash)}
+                                        {formatCurrency(cashierShift.expected_cash)}
                                     </span>
                                 </div>
                                 <div className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800/60">
-                                    <span className="text-sm text-slate-500 dark:text-slate-400">Selisih</span>
+                                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                                        Actual Cash
+                                    </span>
                                     <span className="font-semibold text-slate-900 dark:text-white">
-                                        {cashierShift.cash_difference === null ? "-" : formatCurrency(cashierShift.cash_difference)}
+                                        {cashierShift.actual_cash === null
+                                            ? "-"
+                                            : formatCurrency(cashierShift.actual_cash)}
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-xl bg-slate-50 px-4 py-3 dark:bg-slate-800/60">
+                                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                                        Selisih
+                                    </span>
+                                    <span className="font-semibold text-slate-900 dark:text-white">
+                                        {cashierShift.cash_difference === null
+                                            ? "-"
+                                            : formatCurrency(cashierShift.cash_difference)}
                                     </span>
                                 </div>
                             </div>
@@ -212,7 +275,9 @@ export default function Show({ cashierShift, canForceClose = false }) {
                                 </p>
                                 <form onSubmit={handleCloseShift} className="mt-4 space-y-4">
                                     <div>
-                                        <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Kas Fisik Aktual</label>
+                                        <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                            Kas Fisik Aktual
+                                        </label>
                                         <input
                                             type="number"
                                             min="0"
@@ -221,11 +286,15 @@ export default function Show({ cashierShift, canForceClose = false }) {
                                             className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                         />
                                         {errors?.actual_cash && (
-                                            <p className="mt-2 text-xs text-rose-500">{errors.actual_cash}</p>
+                                            <p className="mt-2 text-xs text-rose-500">
+                                                {errors.actual_cash}
+                                            </p>
                                         )}
                                     </div>
                                     <div>
-                                        <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Catatan Closing</label>
+                                        <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                            Catatan Closing
+                                        </label>
                                         <textarea
                                             rows={4}
                                             value={closeNotes}

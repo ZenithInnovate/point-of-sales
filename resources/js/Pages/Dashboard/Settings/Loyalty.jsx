@@ -82,10 +82,7 @@ export default function Loyalty({ settings }) {
                                         type="checkbox"
                                         checked={data.enable_redeem}
                                         onChange={(event) =>
-                                            setData(
-                                                "enable_redeem",
-                                                event.target.checked
-                                            )
+                                            setData("enable_redeem", event.target.checked)
                                         }
                                         className="h-4 w-4 rounded border-slate-300 text-primary-500"
                                     />
@@ -100,10 +97,7 @@ export default function Loyalty({ settings }) {
                                         min="1"
                                         value={data.earn_rate_amount}
                                         onChange={(event) =>
-                                            setData(
-                                                "earn_rate_amount",
-                                                event.target.value
-                                            )
+                                            setData("earn_rate_amount", event.target.value)
                                         }
                                         className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                     />
@@ -123,10 +117,7 @@ export default function Loyalty({ settings }) {
                                         min="1"
                                         value={data.redeem_point_value}
                                         onChange={(event) =>
-                                            setData(
-                                                "redeem_point_value",
-                                                event.target.value
-                                            )
+                                            setData("redeem_point_value", event.target.value)
                                         }
                                         className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                     />

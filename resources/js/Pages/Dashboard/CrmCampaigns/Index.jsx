@@ -15,13 +15,23 @@ const statusBadge = (status) => {
         cancelled: "bg-rose-100 text-rose-700 dark:bg-rose-950/30 dark:text-rose-300",
     };
 
-    return <span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${classes[status] || classes.draft}`}>{status}</span>;
+    return (
+        <span
+            className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${classes[status] || classes.draft}`}
+        >
+            {status}
+        </span>
+    );
 };
 
 export default function Index({ campaigns, filters }) {
     const { can } = useAuthorization();
     const handleFilterChange = (key, value) => {
-        router.get(route("crm-campaigns.index"), { ...filters, [key]: value }, { preserveState: true, replace: true });
+        router.get(
+            route("crm-campaigns.index"),
+            { ...filters, [key]: value },
+            { preserveState: true, replace: true }
+        );
     };
 
     return (
@@ -30,9 +40,12 @@ export default function Index({ campaigns, filters }) {
             <div className="w-full">
                 <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">CRM Campaigns</h1>
+                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+                            CRM Campaigns
+                        </h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
-                            Kelola promo broadcast, reminder, dan share invoice berbasis audience CRM.
+                            Kelola promo broadcast, reminder, dan share invoice berbasis audience
+                            CRM.
                         </p>
                     </div>
                     {can("crm-campaigns-create") && (
@@ -40,7 +53,7 @@ export default function Index({ campaigns, filters }) {
                             type="link"
                             href={route("crm-campaigns.create")}
                             icon={<IconCirclePlus size={18} />}
-                            className="bg-primary-500 text-white hover:bg-primary-600 shadow-lg shadow-primary-500/30"
+                            className="bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
                             label="Buat Campaign"
                         />
                     )}
@@ -89,7 +102,10 @@ export default function Index({ campaigns, filters }) {
                                 campaigns.data.map((campaign) => (
                                     <tr key={campaign.id}>
                                         <Table.Td>
-                                            <Link href={route("crm-campaigns.show", campaign.id)} className="font-semibold text-slate-800 hover:text-primary-600 dark:text-slate-100">
+                                            <Link
+                                                href={route("crm-campaigns.show", campaign.id)}
+                                                className="font-semibold text-slate-800 hover:text-primary-600 dark:text-slate-100"
+                                            >
                                                 {campaign.name}
                                             </Link>
                                             <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -103,7 +119,10 @@ export default function Index({ campaigns, filters }) {
                                             <div className="flex items-center justify-center gap-2">
                                                 {can("crm-campaigns-update") && (
                                                     <Link
-                                                        href={route("crm-campaigns.edit", campaign.id)}
+                                                        href={route(
+                                                            "crm-campaigns.edit",
+                                                            campaign.id
+                                                        )}
                                                         className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-amber-200 bg-amber-50 text-amber-600 hover:bg-amber-100 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-300"
                                                     >
                                                         <IconPencil size={16} />
@@ -112,7 +131,10 @@ export default function Index({ campaigns, filters }) {
                                                 {can("crm-campaigns-delete") && (
                                                     <Button
                                                         type="delete"
-                                                        url={route("crm-campaigns.destroy", campaign.id)}
+                                                        url={route(
+                                                            "crm-campaigns.destroy",
+                                                            campaign.id
+                                                        )}
                                                         icon={<IconTrash size={16} />}
                                                         className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-rose-200 bg-rose-50 text-rose-600 hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/30 dark:text-rose-300"
                                                     />

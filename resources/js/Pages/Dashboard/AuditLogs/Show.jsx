@@ -155,9 +155,7 @@ export default function Show({ auditLog }) {
                 </div>
 
                 <div className="space-y-3">
-                    <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                        Meta
-                    </h2>
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Meta</h2>
                     <KeyValueTable data={auditLog.meta || {}} />
                 </div>
             </div>

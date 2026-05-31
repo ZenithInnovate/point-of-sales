@@ -33,14 +33,9 @@ export default function ThermalReceipt({
     };
 
     const items = transaction?.details ?? [];
-    const promoDiscount = items.reduce(
-        (sum, item) => sum + Number(item.discount_total || 0),
-        0
-    );
+    const promoDiscount = items.reduce((sum, item) => sum + Number(item.discount_total || 0), 0);
     const loyaltyDiscount = Number(transaction?.loyalty_discount_total || 0);
-    const voucherDiscount = Number(
-        transaction?.customer_voucher_discount || 0
-    );
+    const voucherDiscount = Number(transaction?.customer_voucher_discount || 0);
 
     // Calculate totals
     const subtotal =
@@ -61,8 +56,7 @@ export default function ThermalReceipt({
         midtrans: "MIDTRANS",
         xendit: "XENDIT",
     };
-    const paymentMethod =
-        paymentLabels[transaction?.payment_method?.toLowerCase()] || "TUNAI";
+    const paymentMethod = paymentLabels[transaction?.payment_method?.toLowerCase()] || "TUNAI";
 
     // Line separator
     const line = "=".repeat(32);
@@ -75,13 +69,9 @@ export default function ThermalReceipt({
         });
 
         return (
-            <div className="flex items-end justify-center gap-[2px] mt-2">
+            <div className="mt-2 flex items-end justify-center gap-[2px]">
                 {bars.map((w, i) => (
-                    <span
-                        key={i}
-                        style={{ width: `${w}px` }}
-                        className="h-10 bg-black block"
-                    />
+                    <span key={i} style={{ width: `${w}px` }} className="block h-10 bg-black" />
                 ))}
             </div>
         );
@@ -93,7 +83,7 @@ export default function ThermalReceipt({
             style={{ width: "80mm", padding: "4mm" }}
         >
             {/* Store Header */}
-            <div className="text-center mb-2">
+            <div className="mb-2 text-center">
                 <p className="text-sm font-bold">{storeName}</p>
                 {storeAddress && <p className="text-xs">{storeAddress}</p>}
                 {storePhone && <p className="text-xs">Telp: {storePhone}</p>}
@@ -130,28 +120,23 @@ export default function ThermalReceipt({
                 {items.map((item, index) => {
                     const qty = Number(item.qty) || 1;
                     const itemTotal = Number(item.price) || 0;
-                    const unitPrice =
-                        Number(item.unit_price || 0) || itemTotal / qty;
-                    const baseUnitPrice =
-                        Number(item.base_unit_price || 0) || unitPrice;
+                    const unitPrice = Number(item.unit_price || 0) || itemTotal / qty;
+                    const baseUnitPrice = Number(item.base_unit_price || 0) || unitPrice;
 
                     return (
                         <div key={item.id || index} className="mb-1">
-                            <p className="font-medium truncate">
-                                {item.product?.title}
-                            </p>
-                            {Number(item.discount_total || 0) > 0 &&
-                                baseUnitPrice > unitPrice && (
-                                    <div className="flex justify-between text-[10px] text-slate-500">
-                                        <span>
-                                            Promo:{" "}
-                                            {item.pricing_group_label ||
-                                                item.pricing_rule_name ||
-                                                "Promo"}
-                                        </span>
-                                        <span>{formatPrice(baseUnitPrice)}</span>
-                                    </div>
-                                )}
+                            <p className="truncate font-medium">{item.product?.title}</p>
+                            {Number(item.discount_total || 0) > 0 && baseUnitPrice > unitPrice && (
+                                <div className="flex justify-between text-[10px] text-slate-500">
+                                    <span>
+                                        Promo:{" "}
+                                        {item.pricing_group_label ||
+                                            item.pricing_rule_name ||
+                                            "Promo"}
+                                    </span>
+                                    <span>{formatPrice(baseUnitPrice)}</span>
+                                </div>
+                            )}
                             <div className="flex justify-between">
                                 <span>
                                     {qty}x @ {formatPrice(unitPrice)}
@@ -201,7 +186,7 @@ export default function ThermalReceipt({
                         <span>{formatPrice(shipping)}</span>
                     </div>
                 )}
-                <div className="flex justify-between font-bold text-sm">
+                <div className="flex justify-between text-sm font-bold">
                     <span>TOTAL</span>
                     <span>{formatPrice(total)}</span>
                 </div>
@@ -226,11 +211,11 @@ export default function ThermalReceipt({
             <pre className="whitespace-pre-wrap">{line}</pre>
 
             {/* Footer */}
-            <div className="text-center mt-2">
+            <div className="mt-2 text-center">
                 <p className="text-xs">Terima kasih</p>
                 <p className="text-xs">Barang yang sudah dibeli</p>
                 <p className="text-xs">tidak dapat ditukar/dikembalikan</p>
-                <p className="text-xs mt-1">#{transaction?.invoice}</p>
+                <p className="mt-1 text-xs">#{transaction?.invoice}</p>
                 <SimpleBarcode value={transaction?.invoice} />
             </div>
 
@@ -277,14 +262,9 @@ export function ThermalReceipt58mm({
     };
 
     const items = transaction?.details ?? [];
-    const promoDiscount = items.reduce(
-        (sum, item) => sum + Number(item.discount_total || 0),
-        0
-    );
+    const promoDiscount = items.reduce((sum, item) => sum + Number(item.discount_total || 0), 0);
     const loyaltyDiscount = Number(transaction?.loyalty_discount_total || 0);
-    const voucherDiscount = Number(
-        transaction?.customer_voucher_discount || 0
-    );
+    const voucherDiscount = Number(transaction?.customer_voucher_discount || 0);
     const line = "-".repeat(24);
 
     const SimpleBarcode = ({ value }) => {
@@ -294,13 +274,9 @@ export function ThermalReceipt58mm({
         });
 
         return (
-            <div className="flex items-end gap-[2px] mt-2 justify-center">
+            <div className="mt-2 flex items-end justify-center gap-[2px]">
                 {bars.map((w, i) => (
-                    <span
-                        key={i}
-                        style={{ width: `${w}px` }}
-                        className="h-8 bg-black block"
-                    />
+                    <span key={i} style={{ width: `${w}px` }} className="block h-8 bg-black" />
                 ))}
             </div>
         );
@@ -325,22 +301,18 @@ export function ThermalReceipt58mm({
 
             {items.map((item, i) => {
                 const qty = Number(item.qty) || 1;
-                const unitPrice =
-                    Number(item.unit_price || 0) ||
-                    Number(item.price || 0) / qty;
-                const baseUnitPrice =
-                    Number(item.base_unit_price || 0) || unitPrice;
+                const unitPrice = Number(item.unit_price || 0) || Number(item.price || 0) / qty;
+                const baseUnitPrice = Number(item.base_unit_price || 0) || unitPrice;
 
                 return (
                     <div key={i} className="mb-1">
                         <p className="truncate">{item.product?.title}</p>
-                        {Number(item.discount_total || 0) > 0 &&
-                            baseUnitPrice > unitPrice && (
-                                <div className="flex justify-between text-[9px] text-slate-500">
-                                    <span>Promo</span>
-                                    <span>{formatPrice(baseUnitPrice)}</span>
-                                </div>
-                            )}
+                        {Number(item.discount_total || 0) > 0 && baseUnitPrice > unitPrice && (
+                            <div className="flex justify-between text-[9px] text-slate-500">
+                                <span>Promo</span>
+                                <span>{formatPrice(baseUnitPrice)}</span>
+                            </div>
+                        )}
                         <div className="flex justify-between">
                             <span>
                                 {item.qty}x @ {formatPrice(unitPrice)}

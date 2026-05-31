@@ -22,7 +22,9 @@ export default function Form({ mode = "create", segment = null }) {
             min_transaction_count: String(segment?.rule_config?.min_transaction_count ?? 5),
             recent_days: String(segment?.rule_config?.recent_days ?? 45),
             inactivity_days_min: String(segment?.rule_config?.inactivity_days_min ?? 30),
-            require_outstanding_receivable: Boolean(segment?.rule_config?.require_outstanding_receivable ?? true),
+            require_outstanding_receivable: Boolean(
+                segment?.rule_config?.require_outstanding_receivable ?? true
+            ),
             overdue_only: Boolean(segment?.rule_config?.overdue_only ?? false),
         },
     });
@@ -62,7 +64,8 @@ export default function Form({ mode = "create", segment = null }) {
                         {isEdit ? "Edit Segment Customer" : "Buat Segment Customer"}
                     </h1>
                     <p className="text-sm text-slate-500 dark:text-slate-400">
-                        Kelompokkan customer secara manual atau otomatis berdasarkan perilaku bisnis.
+                        Kelompokkan customer secara manual atau otomatis berdasarkan perilaku
+                        bisnis.
                     </p>
                 </div>
 
@@ -77,7 +80,8 @@ export default function Form({ mode = "create", segment = null }) {
                                     Informasi Segment
                                 </h2>
                                 <p className="text-sm text-slate-500 dark:text-slate-400">
-                                    Segment manual bisa diatur per customer, segment otomatis dihitung oleh sistem.
+                                    Segment manual bisa diatur per customer, segment otomatis
+                                    dihitung oleh sistem.
                                 </p>
                             </div>
                         </div>
@@ -144,12 +148,18 @@ export default function Form({ mode = "create", segment = null }) {
                                     </label>
                                     <select
                                         value={data.auto_rule_type}
-                                        onChange={(event) => setData("auto_rule_type", event.target.value)}
+                                        onChange={(event) =>
+                                            setData("auto_rule_type", event.target.value)
+                                        }
                                         className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                     >
                                         <option value="spending">Spending</option>
-                                        <option value="purchase_frequency">Purchase Frequency</option>
-                                        <option value="receivable_behavior">Receivable Behavior</option>
+                                        <option value="purchase_frequency">
+                                            Purchase Frequency
+                                        </option>
+                                        <option value="receivable_behavior">
+                                            Receivable Behavior
+                                        </option>
                                     </select>
                                 </div>
 
@@ -162,7 +172,9 @@ export default function Form({ mode = "create", segment = null }) {
                                             type="number"
                                             min="0"
                                             value={data.rule_config.min_total_spent}
-                                            onChange={(event) => setRuleConfig("min_total_spent", event.target.value)}
+                                            onChange={(event) =>
+                                                setRuleConfig("min_total_spent", event.target.value)
+                                            }
                                             className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                         />
                                     </div>
@@ -178,7 +190,12 @@ export default function Form({ mode = "create", segment = null }) {
                                                 type="number"
                                                 min="0"
                                                 value={data.rule_config.min_transaction_count}
-                                                onChange={(event) => setRuleConfig("min_transaction_count", event.target.value)}
+                                                onChange={(event) =>
+                                                    setRuleConfig(
+                                                        "min_transaction_count",
+                                                        event.target.value
+                                                    )
+                                                }
                                                 className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                             />
                                         </div>
@@ -209,12 +226,19 @@ export default function Form({ mode = "create", segment = null }) {
                                 )}
 
                                 {data.auto_rule_type === "receivable_behavior" && (
-                                    <div className="md:col-span-2 space-y-3">
+                                    <div className="space-y-3 md:col-span-2">
                                         <label className="inline-flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-800">
                                             <input
                                                 type="checkbox"
-                                                checked={data.rule_config.require_outstanding_receivable}
-                                                onChange={(event) => setRuleConfig("require_outstanding_receivable", event.target.checked)}
+                                                checked={
+                                                    data.rule_config.require_outstanding_receivable
+                                                }
+                                                onChange={(event) =>
+                                                    setRuleConfig(
+                                                        "require_outstanding_receivable",
+                                                        event.target.checked
+                                                    )
+                                                }
                                             />
                                             <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                                                 Harus punya piutang outstanding
@@ -224,7 +248,12 @@ export default function Form({ mode = "create", segment = null }) {
                                             <input
                                                 type="checkbox"
                                                 checked={data.rule_config.overdue_only}
-                                                onChange={(event) => setRuleConfig("overdue_only", event.target.checked)}
+                                                onChange={(event) =>
+                                                    setRuleConfig(
+                                                        "overdue_only",
+                                                        event.target.checked
+                                                    )
+                                                }
                                             />
                                             <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                                                 Hanya piutang overdue
@@ -236,7 +265,7 @@ export default function Form({ mode = "create", segment = null }) {
                         </div>
                     )}
 
-                    <div className="flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800">
+                    <div className="flex flex-col gap-3 border-t border-slate-200 pt-4 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
                         <Button
                             type="link"
                             href={route("customer-segments.index")}

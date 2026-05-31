@@ -37,36 +37,29 @@ export default function Navbar({ toggleSidebar, themeSwitcher, darkMode }) {
     }, []);
 
     return (
-        <header
-            className="sticky top-0 z-30 h-16 flex items-center justify-between px-4 md:px-6
-            bg-white dark:bg-slate-900
-            border-b border-slate-200 dark:border-slate-800
-            transition-colors duration-200"
-        >
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900 md:px-6">
             {/* Left Section */}
             <div className="flex items-center gap-4">
                 {/* Sidebar Toggle */}
                 <button
                     onClick={toggleSidebar}
-                    className="flex p-2 rounded-lg text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                    className="flex rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
                     title="Toggle Sidebar"
                 >
                     <IconMenu2 size={20} strokeWidth={1.5} />
                 </button>
 
                 {/* Mobile Logo */}
-                <div className="md:hidden flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">K</span>
+                <div className="flex items-center gap-2 md:hidden">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-700">
+                        <span className="text-xs font-bold text-white">K</span>
                     </div>
-                    <span className="text-lg font-bold text-slate-800 dark:text-white">
-                        KASIR
-                    </span>
+                    <span className="text-lg font-bold text-slate-800 dark:text-white">KASIR</span>
                 </div>
 
                 {/* Current Page Title */}
-                <div className="hidden md:flex items-center">
-                    <div className="w-px h-6 bg-slate-200 dark:bg-slate-700 mr-4" />
+                <div className="hidden items-center md:flex">
+                    <div className="mr-4 h-6 w-px bg-slate-200 dark:bg-slate-700" />
                     <h1 className="text-base font-semibold text-slate-800 dark:text-slate-200">
                         {getCurrentTitle()}
                     </h1>
@@ -78,15 +71,11 @@ export default function Navbar({ toggleSidebar, themeSwitcher, darkMode }) {
                 {/* Theme Toggle */}
                 <button
                     onClick={themeSwitcher}
-                    className="p-2.5 rounded-xl text-slate-500 hover:text-slate-700 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                    className="rounded-xl p-2.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
                     title={darkMode ? "Light Mode" : "Dark Mode"}
                 >
                     {darkMode ? (
-                        <IconSun
-                            size={20}
-                            strokeWidth={1.5}
-                            className="text-amber-500"
-                        />
+                        <IconSun size={20} strokeWidth={1.5} className="text-amber-500" />
                     ) : (
                         <IconMoon size={20} strokeWidth={1.5} />
                     )}
@@ -96,7 +85,7 @@ export default function Navbar({ toggleSidebar, themeSwitcher, darkMode }) {
                 <Notification />
 
                 {/* Divider */}
-                <div className="w-px h-8 bg-slate-200 dark:bg-slate-700 mx-1" />
+                <div className="mx-1 h-8 w-px bg-slate-200 dark:bg-slate-700" />
 
                 {/* User Dropdown */}
                 <AuthDropdown auth={auth} isMobile={isMobile} />

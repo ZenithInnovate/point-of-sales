@@ -36,19 +36,13 @@ function SummaryCard({ label, value, tone = "default" }) {
 
     return (
         <div className={`rounded-2xl border p-4 ${toneClasses[tone]}`}>
-            <p className="text-xs font-medium uppercase tracking-wide opacity-80">
-                {label}
-            </p>
+            <p className="text-xs font-medium uppercase tracking-wide opacity-80">{label}</p>
             <p className="mt-2 text-2xl font-bold">{value}</p>
         </div>
     );
 }
 
-export default function Show({
-    stockOpname,
-    availableProducts,
-    productFilters,
-}) {
+export default function Show({ stockOpname, availableProducts, productFilters }) {
     const { can } = useAuthorization();
     const canEditStockOpname = can("stock-opnames-create");
     const canFinalizeStockOpname = can("stock-opnames-finalize");
@@ -57,9 +51,7 @@ export default function Show({
     const [localItems, setLocalItems] = useState(stockOpname.items);
     const [savingItemId, setSavingItemId] = useState(null);
     const [showProductModal, setShowProductModal] = useState(false);
-    const [productSearchInput, setProductSearchInput] = useState(
-        productFilters.search || ""
-    );
+    const [productSearchInput, setProductSearchInput] = useState(productFilters.search || "");
 
     const notesForm = useForm({
         notes: stockOpname.notes || "",
@@ -81,20 +73,15 @@ export default function Show({
         [productFilters]
     );
     const isWaitingSearch =
-        showProductModal &&
-        productSearchInput.trim() !== (filters.product_search || "").trim();
+        showProductModal && productSearchInput.trim() !== (filters.product_search || "").trim();
 
     const summary = useMemo(() => {
         const totalItems = localItems.length;
         const countedItems = localItems.filter(
             (item) => item.physical_stock !== null && item.physical_stock !== ""
         );
-        const matchedItems = countedItems.filter(
-            (item) => Number(item.difference || 0) === 0
-        );
-        const differentItems = countedItems.filter(
-            (item) => Number(item.difference || 0) !== 0
-        );
+        const matchedItems = countedItems.filter((item) => Number(item.difference || 0) === 0);
+        const differentItems = countedItems.filter((item) => Number(item.difference || 0) !== 0);
         const totalAdjustment = countedItems.reduce(
             (carry, item) => carry + Number(item.difference || 0),
             0
@@ -105,9 +92,7 @@ export default function Show({
             matchedItems: matchedItems.length,
             differentItems: differentItems.length,
             totalAdjustment,
-            hasMissingReasons: differentItems.some(
-                (item) => !item.adjustment_reason
-            ),
+            hasMissingReasons: differentItems.some((item) => !item.adjustment_reason),
         };
     }, [localItems]);
 
@@ -212,8 +197,7 @@ export default function Show({
         router.patch(
             route("stock-opnames.items.update", [stockOpname.id, item.id]),
             {
-                physical_stock:
-                    item.physical_stock === "" ? null : item.physical_stock,
+                physical_stock: item.physical_stock === "" ? null : item.physical_stock,
                 adjustment_reason: item.adjustment_reason || "",
             },
             {
@@ -232,8 +216,7 @@ export default function Show({
             {
                 preserveScroll: true,
                 onSuccess: () => toast.success("Stock opname difinalisasi"),
-                onError: () =>
-                    toast.error("Gagal finalize. Periksa item yang belum valid."),
+                onError: () => toast.error("Gagal finalize. Periksa item yang belum valid."),
             }
         );
     };
@@ -283,12 +266,10 @@ export default function Show({
                         <Button
                             type="button"
                             icon={<IconCheck size={18} />}
-                            className="bg-success-500 hover:bg-success-600 text-white shadow-lg shadow-success-500/20 disabled:opacity-50"
+                            className="bg-success-500 text-white shadow-lg shadow-success-500/20 hover:bg-success-600 disabled:opacity-50"
                             label="Finalize Stock Opname"
                             onClick={finalize}
-                            disabled={
-                                localItems.length === 0 || summary.hasMissingReasons
-                            }
+                            disabled={localItems.length === 0 || summary.hasMissingReasons}
                         />
                     )}
                 </div>
@@ -296,16 +277,8 @@ export default function Show({
 
             <div className="mb-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                 <SummaryCard label="Total Item" value={summary.totalItems} />
-                <SummaryCard
-                    label="Item Sesuai"
-                    value={summary.matchedItems}
-                    tone="success"
-                />
-                <SummaryCard
-                    label="Item Selisih"
-                    value={summary.differentItems}
-                    tone="warning"
-                />
+                <SummaryCard label="Item Sesuai" value={summary.matchedItems} tone="success" />
+                <SummaryCard label="Item Selisih" value={summary.differentItems} tone="warning" />
                 <SummaryCard
                     label="Total Adjustment"
                     value={
@@ -328,7 +301,7 @@ export default function Show({
                                 <Button
                                     type="button"
                                     icon={<IconPlus size={18} />}
-                                    className="bg-primary-500 hover:bg-primary-600 text-white"
+                                    className="bg-primary-500 text-white hover:bg-primary-600"
                                     label="Tambah Produk"
                                     onClick={() => setShowProductModal(true)}
                                 />
@@ -472,9 +445,7 @@ export default function Show({
                         <textarea
                             value={notesForm.data.notes}
                             disabled={!canManageDraft}
-                            onChange={(event) =>
-                                notesForm.setData("notes", event.target.value)
-                            }
+                            onChange={(event) => notesForm.setData("notes", event.target.value)}
                             rows={4}
                             className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                             placeholder="Catatan sesi stock opname"
@@ -484,7 +455,7 @@ export default function Show({
                                 <Button
                                     type="submit"
                                     icon={<IconDeviceFloppy size={18} />}
-                                    className="bg-primary-500 hover:bg-primary-600 text-white"
+                                    className="bg-primary-500 text-white hover:bg-primary-600"
                                     label="Simpan Catatan"
                                 />
                             </div>
@@ -529,9 +500,7 @@ export default function Show({
                             type="text"
                             autoFocus
                             value={productSearchInput}
-                            onChange={(event) =>
-                                setProductSearchInput(event.target.value)
-                            }
+                            onChange={(event) => setProductSearchInput(event.target.value)}
                             placeholder="Cari nama produk, barcode, atau SKU..."
                             className="h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 pr-11 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                         />
@@ -546,7 +515,7 @@ export default function Show({
                         </div>
                     ) : filters.product_search ? (
                         availableProducts.length > 0 ? (
-                            <div className="max-h-[420px] space-y-3 overflow-y-auto pr-1 dashboard-scrollbar">
+                            <div className="dashboard-scrollbar max-h-[420px] space-y-3 overflow-y-auto pr-1">
                                 {availableProducts.map((product) => (
                                     <button
                                         key={product.id}
@@ -559,7 +528,8 @@ export default function Show({
                                                 {product.title}
                                             </p>
                                             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                                                {product.category?.name || "-"} • {product.barcode || product.sku || "-"}
+                                                {product.category?.name || "-"} •{" "}
+                                                {product.barcode || product.sku || "-"}
                                             </p>
                                             <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                                                 Stok sistem: {product.stock}
@@ -578,7 +548,8 @@ export default function Show({
                         )
                     ) : (
                         <div className="rounded-xl border border-dashed border-slate-200 p-6 text-center text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400">
-                            Ketik kata kunci, lalu tunggu sebentar untuk menampilkan hasil pencarian produk.
+                            Ketik kata kunci, lalu tunggu sebentar untuk menampilkan hasil pencarian
+                            produk.
                         </div>
                     )}
                 </div>

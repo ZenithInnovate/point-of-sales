@@ -67,7 +67,7 @@ export default function BarcodeLabel({
 
     return (
         <div
-            className="barcode-label bg-white border border-slate-300 p-2 flex flex-col items-center justify-center"
+            className="barcode-label flex flex-col items-center justify-center border border-slate-300 bg-white p-2"
             style={{
                 width: currentSize.width,
                 height: currentSize.height,
@@ -76,7 +76,7 @@ export default function BarcodeLabel({
         >
             {/* Product Name */}
             <p
-                className="text-center font-semibold text-slate-800 leading-tight mb-1 line-clamp-2"
+                className="mb-1 line-clamp-2 text-center font-semibold leading-tight text-slate-800"
                 style={{ fontSize: size === "50x30" ? "10px" : "12px" }}
             >
                 {product.title}
@@ -88,7 +88,7 @@ export default function BarcodeLabel({
             {/* Price */}
             {showPrice && (
                 <p
-                    className="font-bold text-slate-900 mt-1"
+                    className="mt-1 font-bold text-slate-900"
                     style={{ fontSize: size === "50x30" ? "12px" : "14px" }}
                 >
                     {formatPrice(product.sell_price)}
@@ -98,7 +98,7 @@ export default function BarcodeLabel({
             {/* Ongkir */}
             {showOngkir && ongkirAmount > 0 && (
                 <p
-                    className="text-slate-500 mt-0.5"
+                    className="mt-0.5 text-slate-500"
                     style={{ fontSize: size === "50x30" ? "8px" : "10px" }}
                 >
                     + Ongkir {formatPrice(ongkirAmount)}
@@ -120,9 +120,7 @@ export function BarcodeLabelGrid({
     copies = 1,
 }) {
     // Generate array with copies
-    const labelsToRender = products.flatMap((product) =>
-        Array(copies).fill(product)
-    );
+    const labelsToRender = products.flatMap((product) => Array(copies).fill(product));
 
     const gridCols = {
         "50x30": "repeat(4, 50mm)",

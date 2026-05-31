@@ -3,17 +3,7 @@ import React from "react";
 import { useForm } from "@inertiajs/react";
 import Swal from "sweetalert2";
 
-export default function Button({
-    className,
-    icon,
-    label,
-    type,
-    href,
-    added,
-    url,
-    id,
-    ...props
-}) {
+export default function Button({ className, icon, label, type, href, added, url, id, ...props }) {
     const { delete: destroy } = useForm();
 
     const deleteData = async (url) => {
@@ -49,29 +39,15 @@ export default function Button({
     return (
         <>
             {type === "link" && (
-                <Link
-                    href={href}
-                    className={`${baseStyles} ${sizeStyles} ${className}`}
-                >
+                <Link href={href} className={`${baseStyles} ${sizeStyles} ${className}`}>
                     {icon}{" "}
-                    <span
-                        className={`${added === true ? "hidden lg:block" : ""}`}
-                    >
-                        {label}
-                    </span>
+                    <span className={`${added === true ? "hidden lg:block" : ""}`}>{label}</span>
                 </Link>
             )}
             {type === "button" && (
-                <button
-                    className={`${baseStyles} ${sizeStyles} ${className}`}
-                    {...props}
-                >
+                <button className={`${baseStyles} ${sizeStyles} ${className}`} {...props}>
                     {icon}{" "}
-                    <span
-                        className={`${added === true ? "hidden md:block" : ""}`}
-                    >
-                        {label}
-                    </span>
+                    <span className={`${added === true ? "hidden md:block" : ""}`}>{label}</span>
                 </button>
             )}
             {type === "submit" && (
@@ -81,11 +57,7 @@ export default function Button({
                     {...props}
                 >
                     {icon}{" "}
-                    <span
-                        className={`${added === true ? "hidden lg:block" : ""}`}
-                    >
-                        {label}
-                    </span>
+                    <span className={`${added === true ? "hidden lg:block" : ""}`}>{label}</span>
                 </button>
             )}
             {type === "delete" && (
@@ -98,10 +70,7 @@ export default function Button({
                 </button>
             )}
             {type === "modal" && (
-                <button
-                    className={`${baseStyles} ${smallStyles} ${className}`}
-                    {...props}
-                >
+                <button className={`${baseStyles} ${smallStyles} ${className}`} {...props}>
                     {icon}
                 </button>
             )}
@@ -115,16 +84,9 @@ export default function Button({
                 </Link>
             )}
             {type === "bulk" && (
-                <button
-                    {...props}
-                    className={`${baseStyles} ${sizeStyles} ${className}`}
-                >
+                <button {...props} className={`${baseStyles} ${sizeStyles} ${className}`}>
                     {icon}{" "}
-                    <span
-                        className={`${added === true ? "hidden lg:block" : ""}`}
-                    >
-                        {label}
-                    </span>
+                    <span className={`${added === true ? "hidden lg:block" : ""}`}>{label}</span>
                 </button>
             )}
         </>

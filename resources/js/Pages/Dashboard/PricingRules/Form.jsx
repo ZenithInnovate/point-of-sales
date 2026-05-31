@@ -38,13 +38,9 @@ function CardSection({ title, description, children }) {
     return (
         <section className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
             <div className="mb-4">
-                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                    {title}
-                </h2>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">{title}</h2>
                 {description && (
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                        {description}
-                    </p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">{description}</p>
                 )}
             </div>
             {children}
@@ -77,12 +73,8 @@ export default function Form({
                 ? String(rule.discount_value)
                 : "",
         preview_quantity_multiplier: String(rule?.preview_quantity_multiplier ?? 1),
-        starts_at: rule?.starts_at
-            ? new Date(rule.starts_at).toISOString().slice(0, 16)
-            : "",
-        ends_at: rule?.ends_at
-            ? new Date(rule.ends_at).toISOString().slice(0, 16)
-            : "",
+        starts_at: rule?.starts_at ? new Date(rule.starts_at).toISOString().slice(0, 16) : "",
+        ends_at: rule?.ends_at ? new Date(rule.ends_at).toISOString().slice(0, 16) : "",
         notes: rule?.notes ?? "",
         qty_breaks: rule?.qty_breaks?.length
             ? rule.qty_breaks.map((item) => ({
@@ -194,9 +186,7 @@ export default function Form({
                                 <input
                                     type="text"
                                     value={data.name}
-                                    onChange={(event) =>
-                                        setData("name", event.target.value)
-                                    }
+                                    onChange={(event) => setData("name", event.target.value)}
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
                                 <InputError message={errors.name} />
@@ -207,9 +197,7 @@ export default function Form({
                                 </label>
                                 <select
                                     value={data.kind}
-                                    onChange={(event) =>
-                                        setData("kind", event.target.value)
-                                    }
+                                    onChange={(event) => setData("kind", event.target.value)}
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
                                     {kindOptions.map((option) => (
@@ -228,9 +216,7 @@ export default function Form({
                                     type="number"
                                     min="0"
                                     value={data.priority}
-                                    onChange={(event) =>
-                                        setData("priority", event.target.value)
-                                    }
+                                    onChange={(event) => setData("priority", event.target.value)}
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
                             </div>
@@ -243,10 +229,7 @@ export default function Form({
                                     min="1"
                                     value={data.preview_quantity_multiplier}
                                     onChange={(event) =>
-                                        setData(
-                                            "preview_quantity_multiplier",
-                                            event.target.value
-                                        )
+                                        setData("preview_quantity_multiplier", event.target.value)
                                     }
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
@@ -265,9 +248,7 @@ export default function Form({
                                 </label>
                                 <select
                                     value={data.target_type}
-                                    onChange={(event) =>
-                                        setData("target_type", event.target.value)
-                                    }
+                                    onChange={(event) => setData("target_type", event.target.value)}
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 >
                                     {targetOptions.map((option) => (
@@ -369,10 +350,7 @@ export default function Form({
                                                                           value !== tier.value
                                                                   );
 
-                                                            setData(
-                                                                "eligible_loyalty_tiers",
-                                                                next
-                                                            );
+                                                            setData("eligible_loyalty_tiers", next);
                                                         }}
                                                     />
                                                     {tier.label}
@@ -385,8 +363,7 @@ export default function Form({
                         </div>
                     </CardSection>
 
-                    {(data.kind === "standard_discount" ||
-                        data.kind === "qty_break") && (
+                    {(data.kind === "standard_discount" || data.kind === "qty_break") && (
                         <CardSection
                             title="Diskon Rule"
                             description="Tentukan tipe diskon yang dipakai rule ini."
@@ -439,7 +416,7 @@ export default function Form({
                                 {data.qty_breaks.map((row, index) => (
                                     <div
                                         key={`qty-break-${index}`}
-                                        className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 md:grid-cols-4 dark:border-slate-700 dark:bg-slate-800"
+                                        className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800 md:grid-cols-4"
                                     >
                                         <input
                                             type="number"
@@ -542,7 +519,7 @@ export default function Form({
                                 {data.bundle_items.map((row, index) => (
                                     <div
                                         key={`bundle-item-${index}`}
-                                        className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 md:grid-cols-[1fr_160px_48px] dark:border-slate-700 dark:bg-slate-800"
+                                        className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800 md:grid-cols-[1fr_160px_48px]"
                                     >
                                         <select
                                             value={row.product_id}
@@ -614,7 +591,7 @@ export default function Form({
                                 {data.buy_get_items.map((row, index) => (
                                     <div
                                         key={`buy-get-item-${index}`}
-                                        className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 md:grid-cols-[160px_1fr_140px_48px] dark:border-slate-700 dark:bg-slate-800"
+                                        className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800 md:grid-cols-[160px_1fr_140px_48px]"
                                     >
                                         <select
                                             value={row.role}
@@ -704,9 +681,7 @@ export default function Form({
                                 <input
                                     type="datetime-local"
                                     value={data.starts_at}
-                                    onChange={(event) =>
-                                        setData("starts_at", event.target.value)
-                                    }
+                                    onChange={(event) => setData("starts_at", event.target.value)}
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
                             </div>
@@ -717,9 +692,7 @@ export default function Form({
                                 <input
                                     type="datetime-local"
                                     value={data.ends_at}
-                                    onChange={(event) =>
-                                        setData("ends_at", event.target.value)
-                                    }
+                                    onChange={(event) => setData("ends_at", event.target.value)}
                                     className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
                             </div>
@@ -730,9 +703,7 @@ export default function Form({
                                 <textarea
                                     rows="3"
                                     value={data.notes}
-                                    onChange={(event) =>
-                                        setData("notes", event.target.value)
-                                    }
+                                    onChange={(event) => setData("notes", event.target.value)}
                                     className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                 />
                             </div>
@@ -740,9 +711,7 @@ export default function Form({
                                 <input
                                     type="checkbox"
                                     checked={data.is_active}
-                                    onChange={(event) =>
-                                        setData("is_active", event.target.checked)
-                                    }
+                                    onChange={(event) => setData("is_active", event.target.checked)}
                                 />
                                 Aktifkan rule ini
                             </label>
@@ -760,9 +729,7 @@ export default function Form({
                                 className="inline-flex items-center gap-2 rounded-xl border border-primary-200 bg-primary-50 px-4 py-2 text-sm font-medium text-primary-700 dark:border-primary-900/50 dark:bg-primary-950/40 dark:text-primary-300"
                             >
                                 <IconChartInfographic size={16} />
-                                {previewState.loading
-                                    ? "Memuat preview..."
-                                    : "Jalankan Preview"}
+                                {previewState.loading ? "Memuat preview..." : "Jalankan Preview"}
                             </button>
                         </div>
 
@@ -774,7 +741,10 @@ export default function Form({
                                             Base subtotal
                                         </p>
                                         <p className="mt-1 text-lg font-semibold text-slate-900 dark:text-white">
-                                            Rp {Number(previewState.data.summary.base_subtotal || 0).toLocaleString("id-ID")}
+                                            Rp{" "}
+                                            {Number(
+                                                previewState.data.summary.base_subtotal || 0
+                                            ).toLocaleString("id-ID")}
                                         </p>
                                     </div>
                                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
@@ -782,7 +752,10 @@ export default function Form({
                                             Promo discount
                                         </p>
                                         <p className="mt-1 text-lg font-semibold text-rose-600 dark:text-rose-300">
-                                            Rp {Number(previewState.data.summary.promo_discount_total || 0).toLocaleString("id-ID")}
+                                            Rp{" "}
+                                            {Number(
+                                                previewState.data.summary.promo_discount_total || 0
+                                            ).toLocaleString("id-ID")}
                                         </p>
                                     </div>
                                     <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800">
@@ -790,7 +763,10 @@ export default function Form({
                                             After promo
                                         </p>
                                         <p className="mt-1 text-lg font-semibold text-slate-900 dark:text-white">
-                                            Rp {Number(previewState.data.summary.subtotal_after_promo || 0).toLocaleString("id-ID")}
+                                            Rp{" "}
+                                            {Number(
+                                                previewState.data.summary.subtotal_after_promo || 0
+                                            ).toLocaleString("id-ID")}
                                         </p>
                                     </div>
                                 </div>
@@ -810,7 +786,10 @@ export default function Form({
                                                         {group.label}
                                                     </span>
                                                     <span className="text-rose-600 dark:text-rose-300">
-                                                        -Rp {Number(group.discount_total || 0).toLocaleString("id-ID")}
+                                                        -Rp{" "}
+                                                        {Number(
+                                                            group.discount_total || 0
+                                                        ).toLocaleString("id-ID")}
                                                     </span>
                                                 </div>
                                             ))}
@@ -821,7 +800,7 @@ export default function Form({
                         )}
                     </CardSection>
 
-                    <div className="flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800">
+                    <div className="flex flex-col gap-3 border-t border-slate-200 pt-4 dark:border-slate-800 sm:flex-row sm:items-center sm:justify-between">
                         <Button
                             type="link"
                             href={route("pricing-rules.index")}

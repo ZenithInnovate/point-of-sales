@@ -40,27 +40,27 @@ export default function Email({ settings }) {
             <div className="space-y-6">
                 {/* Header */}
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">
                         <IconMail size={28} className="text-primary-500" />
                         Pengaturan Email / SMTP
                     </h1>
                     <p className="text-sm text-slate-500 dark:text-slate-400">
-                        Atur mail server SMTP eksternal kustom untuk pengiriman email transaksi khusus tenant Anda
+                        Atur mail server SMTP eksternal kustom untuk pengiriman email transaksi
+                        khusus tenant Anda
                     </p>
                 </div>
 
                 <form onSubmit={submit} className="space-y-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                         {/* Left - SMTP Server Settings */}
-                        <div className="lg:col-span-2 space-y-6">
-                            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
-                                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <div className="space-y-6 lg:col-span-2">
+                            <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+                                <h3 className="mb-2 flex items-center gap-2 border-b border-slate-100 pb-3 text-sm font-semibold text-slate-700 dark:border-slate-800 dark:text-slate-300">
                                     <IconServer size={18} className="text-primary-500" />
                                     Konfigurasi Server SMTP
                                 </h3>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                                     <div className="md:col-span-2">
                                         <Input
                                             type="text"
@@ -83,7 +83,7 @@ export default function Email({ settings }) {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                     <Input
                                         type="text"
                                         label="SMTP Username"
@@ -103,31 +103,36 @@ export default function Email({ settings }) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                                    <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
                                         Enkripsi Koneksi
                                     </label>
                                     <select
                                         value={data.mail_encryption}
                                         onChange={(e) => setData("mail_encryption", e.target.value)}
-                                        className="w-full h-11 px-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 transition-all text-sm"
+                                        className="h-11 w-full rounded-xl border-2 border-slate-200 bg-white px-4 text-sm text-slate-900 transition-all focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                                     >
-                                        <option value="tls">TLS (Direkomendasikan - Port 587)</option>
+                                        <option value="tls">
+                                            TLS (Direkomendasikan - Port 587)
+                                        </option>
                                         <option value="ssl">SSL (Port 465)</option>
-                                        <option value="none">Tanpa Enkripsi (Port 25 / 8025)</option>
+                                        <option value="none">
+                                            Tanpa Enkripsi (Port 25 / 8025)
+                                        </option>
                                     </select>
                                     {errors.mail_encryption && (
-                                        <p className="mt-1 text-sm text-danger-500">{errors.mail_encryption}</p>
+                                        <p className="mt-1 text-sm text-danger-500">
+                                            {errors.mail_encryption}
+                                        </p>
                                     )}
                                 </div>
                             </div>
                         </div>
 
                         {/* Right - Sender Details & Info */}
-                        <div className="lg:col-span-1 space-y-6">
-                            
+                        <div className="space-y-6 lg:col-span-1">
                             {/* Sender Info Card */}
-                            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 space-y-4">
-                                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                            <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+                                <h3 className="mb-2 flex items-center gap-2 border-b border-slate-100 pb-3 text-sm font-semibold text-slate-700 dark:border-slate-800 dark:text-slate-300">
                                     <IconUser size={18} className="text-primary-500" />
                                     Default Pengirim
                                 </h3>
@@ -152,24 +157,27 @@ export default function Email({ settings }) {
                             </div>
 
                             {/* Informative Alert */}
-                            <div className="bg-primary-50 dark:bg-primary-950/20 rounded-2xl p-5 border border-primary-200 dark:border-primary-900/50 space-y-3">
-                                <h4 className="text-sm font-bold text-primary-800 dark:text-primary-300 flex items-center gap-2">
+                            <div className="space-y-3 rounded-2xl border border-primary-200 bg-primary-50 p-5 dark:border-primary-900/50 dark:bg-primary-950/20">
+                                <h4 className="flex items-center gap-2 text-sm font-bold text-primary-800 dark:text-primary-300">
                                     <IconInfoCircle size={18} />
                                     Cara Kerja SMTP SaaS
                                 </h4>
-                                <p className="text-xs text-primary-700 dark:text-primary-400 leading-relaxed">
-                                    Jika Anda memasukkan konfigurasi SMTP di atas, seluruh pengiriman email (seperti struk nota transaksi, email CRM, dan penyetelan ulang kata sandi) akan dikirim langsung menggunakan server email pribadi toko Anda.
+                                <p className="text-xs leading-relaxed text-primary-700 dark:text-primary-400">
+                                    Jika Anda memasukkan konfigurasi SMTP di atas, seluruh
+                                    pengiriman email (seperti struk nota transaksi, email CRM, dan
+                                    penyetelan ulang kata sandi) akan dikirim langsung menggunakan
+                                    server email pribadi toko Anda.
                                 </p>
-                                <p className="text-xs text-primary-700 dark:text-primary-400 leading-relaxed font-semibold">
-                                    * Kosongkan jika ingin menggunakan Server SMTP Global bawaan aplikasi.
+                                <p className="text-xs font-semibold leading-relaxed text-primary-700 dark:text-primary-400">
+                                    * Kosongkan jika ingin menggunakan Server SMTP Global bawaan
+                                    aplikasi.
                                 </p>
                             </div>
                         </div>
-
                     </div>
 
                     {/* Submit Button */}
-                    <div className="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-800">
+                    <div className="flex justify-end border-t border-slate-200 pt-4 dark:border-slate-800">
                         <Button
                             type="submit"
                             variant="primary"

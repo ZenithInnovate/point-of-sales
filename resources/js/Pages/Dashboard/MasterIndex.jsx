@@ -16,32 +16,26 @@ import {
 function StatCard({ title, value, subtitle, icon: Icon, gradient }) {
     return (
         <div
-            className={`
-            relative overflow-hidden rounded-lg p-5
-            bg-gradient-to-br ${gradient}
-            text-white shadow-lg border-b-4 border-black/10
-        `}
+            className={`relative overflow-hidden rounded-lg bg-gradient-to-br p-5 ${gradient} border-b-4 border-black/10 text-white shadow-lg`}
         >
             {/* Background Pattern */}
-            <div className="absolute top-0 right-0 w-28 h-28 opacity-15">
+            <div className="absolute right-0 top-0 h-28 w-28 opacity-15">
                 <Icon
                     size={112}
                     strokeWidth={0.5}
-                    className="transform translate-x-6 -translate-y-6"
+                    className="-translate-y-6 translate-x-6 transform"
                 />
             </div>
 
             <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                    <div className="p-2 rounded-lg bg-white/20">
+                <div className="mb-3 flex items-center gap-2">
+                    <div className="rounded-lg bg-white/20 p-2">
                         <Icon size={18} strokeWidth={1.5} />
                     </div>
-                    <span className="text-sm font-medium opacity-90">
-                        {title}
-                    </span>
+                    <span className="text-sm font-medium opacity-90">{title}</span>
                 </div>
 
-                <p className="text-3xl font-bold font-mono leading-tight">{value}</p>
+                <p className="font-mono text-3xl font-bold leading-tight">{value}</p>
                 <p className="mt-2 text-xs opacity-75">{subtitle}</p>
             </div>
         </div>
@@ -51,19 +45,17 @@ function StatCard({ title, value, subtitle, icon: Icon, gradient }) {
 // Widget List Container Component
 function WidgetList({ title, subtitle, icon: Icon, children, emptyMessage }) {
     return (
-        <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden shadow-sm">
-            <div className="p-5 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-100 p-5 dark:border-slate-800">
                 <div className="flex items-center gap-2">
-                    <div className="p-2 rounded-lg bg-primary-50 dark:bg-primary-950/40 text-primary-500">
+                    <div className="rounded-lg bg-primary-50 p-2 text-primary-500 dark:bg-primary-950/40">
                         <Icon size={18} />
                     </div>
                     <div>
                         <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
                             {title}
                         </h3>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">
-                            {subtitle}
-                        </p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">{subtitle}</p>
                     </div>
                 </div>
             </div>
@@ -85,9 +77,9 @@ export default function MasterIndex({ stats, recentTenants = [], recentAuditLogs
 
             <div className="space-y-6">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">
                             <IconBuildingStore size={28} className="text-primary-500" />
                             Pusat Kontrol SaaS
                         </h1>
@@ -97,7 +89,7 @@ export default function MasterIndex({ stats, recentTenants = [], recentAuditLogs
                     </div>
                     <Link
                         href={route("tenants.create")}
-                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary-500 hover:bg-primary-600 text-white text-sm font-bold transition-all shadow-lg shadow-primary-500/20 active:scale-[0.98]"
+                        className="inline-flex items-center gap-2 rounded-lg bg-primary-500 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-primary-500/20 transition-all hover:bg-primary-600 active:scale-[0.98]"
                     >
                         <IconBuildingStore size={18} />
                         <span>Daftarkan Tenant Baru</span>
@@ -105,7 +97,7 @@ export default function MasterIndex({ stats, recentTenants = [], recentAuditLogs
                 </div>
 
                 {/* SaaS Metrics Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <StatCard
                         title="Total Tenant POS"
                         value={stats.total_tenants}
@@ -137,7 +129,7 @@ export default function MasterIndex({ stats, recentTenants = [], recentAuditLogs
                 </div>
 
                 {/* Main Content Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
                     {/* Recent Tenant Registrations */}
                     <WidgetList
                         title="Registrasi Tenant Terbaru"
@@ -150,10 +142,10 @@ export default function MasterIndex({ stats, recentTenants = [], recentAuditLogs
                                 {recentTenants.map((t) => (
                                     <div
                                         key={t.id}
-                                        className="py-3.5 first:pt-0 last:pb-0 flex items-center justify-between gap-4"
+                                        className="flex items-center justify-between gap-4 py-3.5 first:pt-0 last:pb-0"
                                     >
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-850 flex items-center justify-center font-bold text-slate-700 dark:text-slate-350">
+                                            <div className="dark:border-slate-850 dark:text-slate-350 flex h-10 w-10 items-center justify-center rounded-lg border border-slate-100 bg-slate-50 font-bold text-slate-700 dark:bg-slate-950">
                                                 {t.name.charAt(0).toUpperCase()}
                                             </div>
                                             <div>
@@ -164,24 +156,24 @@ export default function MasterIndex({ stats, recentTenants = [], recentAuditLogs
                                                     href={`http://${t.domain}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="text-xs text-primary-500 hover:underline flex items-center gap-0.5"
+                                                    className="flex items-center gap-0.5 text-xs text-primary-500 hover:underline"
                                                 >
                                                     {t.domain}
                                                     <IconArrowUpRight size={10} />
                                                 </a>
                                             </div>
                                         </div>
-                                        <div className="text-right flex flex-col items-end gap-1">
+                                        <div className="flex flex-col items-end gap-1 text-right">
                                             <span
-                                                className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
+                                                className={`rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
                                                     t.status === "active"
-                                                        ? "bg-success-50 text-success-700 border border-success-100 dark:bg-success-950/20 dark:text-success-400 dark:border-success-900/50"
-                                                        : "bg-danger-50 text-danger-700 border border-danger-100 dark:bg-danger-950/20 dark:text-danger-400 dark:border-danger-900/50"
+                                                        ? "border border-success-100 bg-success-50 text-success-700 dark:border-success-900/50 dark:bg-success-950/20 dark:text-success-400"
+                                                        : "border border-danger-100 bg-danger-50 text-danger-700 dark:border-danger-900/50 dark:bg-danger-950/20 dark:text-danger-400"
                                                 }`}
                                             >
                                                 {t.status}
                                             </span>
-                                            <span className="text-[10px] text-slate-450 dark:text-slate-500">
+                                            <span className="text-slate-450 text-[10px] dark:text-slate-500">
                                                 {t.created_at}
                                             </span>
                                         </div>
@@ -203,19 +195,21 @@ export default function MasterIndex({ stats, recentTenants = [], recentAuditLogs
                                 {recentAuditLogs.map((log, index) => (
                                     <div
                                         key={index}
-                                        className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/40"
+                                        className="flex items-start gap-3 rounded-lg border border-slate-100 bg-slate-50 p-3 dark:border-slate-800/40 dark:bg-slate-800/40"
                                     >
-                                        <div className="p-1.5 rounded bg-primary-100 dark:bg-primary-950/40 text-primary-600 dark:text-primary-400 mt-0.5">
+                                        <div className="mt-0.5 rounded bg-primary-100 p-1.5 text-primary-600 dark:bg-primary-950/40 dark:text-primary-400">
                                             <IconActivity size={14} />
                                         </div>
-                                        <div className="flex-1 min-w-0">
+                                        <div className="min-w-0 flex-1">
                                             <p className="text-xs font-bold text-slate-800 dark:text-slate-200">
                                                 {log.description}
                                             </p>
-                                            <div className="flex items-center gap-1.5 mt-1 text-[10px] text-slate-450 dark:text-slate-500 font-medium">
-                                                <span className="text-slate-600 dark:text-slate-350">{log.username}</span>
+                                            <div className="text-slate-450 mt-1 flex items-center gap-1.5 text-[10px] font-medium dark:text-slate-500">
+                                                <span className="dark:text-slate-350 text-slate-600">
+                                                    {log.username}
+                                                </span>
                                                 <span>•</span>
-                                                <span className="font-mono bg-slate-100 dark:bg-slate-900 px-1 py-0.2 rounded border border-slate-200/50 dark:border-slate-800">
+                                                <span className="py-0.2 rounded border border-slate-200/50 bg-slate-100 px-1 font-mono dark:border-slate-800 dark:bg-slate-900">
                                                     {log.module}
                                                 </span>
                                                 <span>•</span>

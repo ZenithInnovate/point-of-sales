@@ -5,12 +5,7 @@ import Button from "@/Components/Dashboard/Button";
 import Table from "@/Components/Dashboard/Table";
 import Pagination from "@/Components/Dashboard/Pagination";
 import { useAuthorization } from "@/Utils/authorization";
-import {
-    IconCirclePlus,
-    IconEye,
-    IconSearch,
-    IconTruckDelivery,
-} from "@tabler/icons-react";
+import { IconCirclePlus, IconEye, IconSearch, IconTruckDelivery } from "@tabler/icons-react";
 
 const formatDateTime = (value) =>
     value
@@ -48,7 +43,7 @@ export default function Index({ receivings, filters }) {
                         type="link"
                         href={route("goods-receivings.create")}
                         icon={<IconCirclePlus size={18} />}
-                        className="bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30"
+                        className="bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
                         label="Terima Barang"
                     />
                 )}
@@ -84,7 +79,10 @@ export default function Index({ receivings, filters }) {
                     <Table.Tbody>
                         {receivings.data.length > 0 ? (
                             receivings.data.map((gr) => (
-                                <tr key={gr.id} className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                <tr
+                                    key={gr.id}
+                                    className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                >
                                     <Table.Td>
                                         <p className="font-semibold text-slate-800 dark:text-slate-200">
                                             {gr.document_number}
@@ -92,7 +90,10 @@ export default function Index({ receivings, filters }) {
                                     </Table.Td>
                                     <Table.Td>
                                         <Link
-                                            href={route("purchase-orders.show", gr.purchase_order_id)}
+                                            href={route(
+                                                "purchase-orders.show",
+                                                gr.purchase_order_id
+                                            )}
                                             className="text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400"
                                         >
                                             {gr.purchase_order?.document_number || "-"}
@@ -112,11 +113,14 @@ export default function Index({ receivings, filters }) {
                                 </tr>
                             ))
                         ) : (
-                            <Table.Empty colSpan={6} message={
-                                <div className="text-slate-500 dark:text-slate-400">
-                                    Belum ada penerimaan barang.
-                                </div>
-                            }>
+                            <Table.Empty
+                                colSpan={6}
+                                message={
+                                    <div className="text-slate-500 dark:text-slate-400">
+                                        Belum ada penerimaan barang.
+                                    </div>
+                                }
+                            >
                                 <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                                     <IconTruckDelivery size={28} className="text-slate-400" />
                                 </div>

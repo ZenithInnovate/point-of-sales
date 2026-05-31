@@ -51,46 +51,38 @@ const formatDateTime = (value) =>
 const coverageStatusConfig = {
     critical: {
         label: "Kritis",
-        className:
-            "bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300",
+        className: "bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300",
     },
     low: {
         label: "Rendah",
-        className:
-            "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300",
+        className: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300",
     },
     healthy: {
         label: "Sehat",
-        className:
-            "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
+        className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
     },
     no_movement: {
         label: "Tidak Bergerak",
-        className:
-            "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
+        className: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
     },
 };
 
 const promoStatusConfig = {
     active: {
         label: "Aktif",
-        className:
-            "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
+        className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300",
     },
     scheduled: {
         label: "Terjadwal",
-        className:
-            "bg-sky-100 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300",
+        className: "bg-sky-100 text-sky-700 dark:bg-sky-950/50 dark:text-sky-300",
     },
     expired: {
         label: "Berakhir",
-        className:
-            "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300",
+        className: "bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300",
     },
     inactive: {
         label: "Nonaktif",
-        className:
-            "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
+        className: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
     },
 };
 
@@ -111,16 +103,14 @@ const crmCampaignTypeLabel = {
 function SummaryCard({ title, value, description, icon: Icon, gradient }) {
     return (
         <div
-            className={`relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br ${gradient} text-white shadow-lg`}
+            className={`relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 ${gradient} text-white shadow-lg`}
         >
             <div className="relative z-10">
                 <div className="mb-2 flex items-center gap-2">
                     <div className="rounded-xl bg-white/20 p-2">
                         <Icon size={18} />
                     </div>
-                    <span className="text-sm font-medium opacity-90">
-                        {title}
-                    </span>
+                    <span className="text-sm font-medium opacity-90">{title}</span>
                 </div>
                 <p className="text-2xl font-bold">{value}</p>
                 <p className="mt-1 text-sm opacity-80">{description}</p>
@@ -136,9 +126,7 @@ function EmptyState({ message }) {
                 <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                     <IconDatabaseOff size={24} className="text-slate-400" />
                 </div>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                    {message}
-                </p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{message}</p>
             </div>
         </div>
     );
@@ -148,12 +136,8 @@ function ChartCard({ title, subtitle, chartRef, hasData }) {
     return (
         <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
             <div className="mb-4">
-                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                    {title}
-                </h2>
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                    {subtitle}
-                </p>
+                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">{title}</h2>
+                <p className="text-sm text-slate-500 dark:text-slate-400">{subtitle}</p>
             </div>
             {hasData ? (
                 <div className="h-72">
@@ -304,8 +288,7 @@ export default function Insights({
         return () => salesDayChart.current?.destroy();
     }, [dayChartData]);
 
-    const handleChange = (field, value) =>
-        setFilterData((prev) => ({ ...prev, [field]: value }));
+    const handleChange = (field, value) => setFilterData((prev) => ({ ...prev, [field]: value }));
 
     const applyFilters = (event) => {
         event.preventDefault();
@@ -328,8 +311,7 @@ export default function Insights({
         });
     };
 
-    const marginRows =
-        marginView === "product" ? marginByProduct : marginByCategory;
+    const marginRows = marginView === "product" ? marginByProduct : marginByCategory;
     const repeatSummary = repeatCustomerMetrics?.summary || {};
     const topRepeatCustomers = repeatCustomerMetrics?.top_customers || [];
     const stockCoverageSummary = stockCoverage?.summary || {};
@@ -351,15 +333,12 @@ export default function Insights({
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">
-                            <IconChartBar
-                                size={28}
-                                className="text-primary-500"
-                            />
+                            <IconChartBar size={28} className="text-primary-500" />
                             Advanced Sales Insights
                         </h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
-                            Insight operasional penjualan, margin, produk, dan
-                            performa kasir dalam satu dashboard.
+                            Insight operasional penjualan, margin, produk, dan performa kasir dalam
+                            satu dashboard.
                         </p>
                     </div>
                     <button
@@ -525,17 +504,14 @@ export default function Insights({
                     <SummaryCard
                         title="Member Revenue Share"
                         value={`${formatPercentage(repeatSummary.member_revenue_share ?? 0)}%`}
-                        description={formatCurrency(
-                            repeatSummary.member_revenue_total ?? 0
-                        )}
+                        description={formatCurrency(repeatSummary.member_revenue_total ?? 0)}
                         icon={IconCoin}
                         gradient="from-teal-500 to-teal-700"
                     />
                     <SummaryCard
                         title="Stok Perlu Perhatian"
                         value={(
-                            (stockCoverageSummary.critical ?? 0) +
-                            (stockCoverageSummary.low ?? 0)
+                            (stockCoverageSummary.critical ?? 0) + (stockCoverageSummary.low ?? 0)
                         ).toLocaleString("id-ID")}
                         description={`${stockCoverageSummary.window_days ?? 0} hari jendela analisa`}
                         icon={IconClock}
@@ -570,12 +546,19 @@ export default function Insights({
                                         </Table.Td>
                                         <Table.Td>{item.category_name || "-"}</Table.Td>
                                         <Table.Td className="text-right">{item.qty_sold}</Table.Td>
-                                        <Table.Td className="text-right">{formatCurrency(item.revenue_total)}</Table.Td>
-                                        <Table.Td className="text-right">{formatCurrency(item.profit_total)}</Table.Td>
+                                        <Table.Td className="text-right">
+                                            {formatCurrency(item.revenue_total)}
+                                        </Table.Td>
+                                        <Table.Td className="text-right">
+                                            {formatCurrency(item.profit_total)}
+                                        </Table.Td>
                                     </tr>
                                 ))
                             ) : (
-                                <Table.Empty colSpan={5} message="Belum ada data top selling pada periode ini." />
+                                <Table.Empty
+                                    colSpan={5}
+                                    message="Belum ada data top selling pada periode ini."
+                                />
                             )}
                         </Table.Tbody>
                     </Table>
@@ -608,12 +591,17 @@ export default function Insights({
                                         </Table.Td>
                                         <Table.Td>{item.current_stock}</Table.Td>
                                         <Table.Td className="text-right">{item.qty_sold}</Table.Td>
-                                        <Table.Td className="text-right">{formatCurrency(item.revenue_total)}</Table.Td>
+                                        <Table.Td className="text-right">
+                                            {formatCurrency(item.revenue_total)}
+                                        </Table.Td>
                                         <Table.Td>{formatDateTime(item.last_sold_at)}</Table.Td>
                                     </tr>
                                 ))
                             ) : (
-                                <Table.Empty colSpan={5} message="Belum ada data low performing pada periode ini." />
+                                <Table.Empty
+                                    colSpan={5}
+                                    message="Belum ada data low performing pada periode ini."
+                                />
                             )}
                         </Table.Tbody>
                     </Table>
@@ -649,7 +637,9 @@ export default function Insights({
                     <Table>
                         <Table.Thead>
                             <tr>
-                                <Table.Th>{marginView === "product" ? "Produk" : "Kategori"}</Table.Th>
+                                <Table.Th>
+                                    {marginView === "product" ? "Produk" : "Kategori"}
+                                </Table.Th>
                                 <Table.Th className="text-right">Qty</Table.Th>
                                 <Table.Th className="text-right">Omzet</Table.Th>
                                 <Table.Th className="text-right">Profit</Table.Th>
@@ -666,13 +656,22 @@ export default function Insights({
                                                 : item.category_name}
                                         </Table.Td>
                                         <Table.Td className="text-right">{item.qty_sold}</Table.Td>
-                                        <Table.Td className="text-right">{formatCurrency(item.revenue_total)}</Table.Td>
-                                        <Table.Td className="text-right">{formatCurrency(item.profit_total)}</Table.Td>
-                                        <Table.Td className="text-right">{item.margin_percentage}%</Table.Td>
+                                        <Table.Td className="text-right">
+                                            {formatCurrency(item.revenue_total)}
+                                        </Table.Td>
+                                        <Table.Td className="text-right">
+                                            {formatCurrency(item.profit_total)}
+                                        </Table.Td>
+                                        <Table.Td className="text-right">
+                                            {item.margin_percentage}%
+                                        </Table.Td>
                                     </tr>
                                 ))
                             ) : (
-                                <Table.Empty colSpan={5} message="Belum ada data margin pada periode ini." />
+                                <Table.Empty
+                                    colSpan={5}
+                                    message="Belum ada data margin pada periode ini."
+                                />
                             )}
                         </Table.Tbody>
                     </Table>
@@ -695,15 +694,28 @@ export default function Insights({
                                 cashierPerformance.map((item) => (
                                     <tr key={item.cashier_id}>
                                         <Table.Td>{item.cashier_name}</Table.Td>
-                                        <Table.Td className="text-right">{item.orders_count}</Table.Td>
-                                        <Table.Td className="text-right">{item.items_sold}</Table.Td>
-                                        <Table.Td className="text-right">{formatCurrency(item.revenue_total)}</Table.Td>
-                                        <Table.Td className="text-right">{formatCurrency(item.profit_total)}</Table.Td>
-                                        <Table.Td className="text-right">{formatCurrency(item.average_basket)}</Table.Td>
+                                        <Table.Td className="text-right">
+                                            {item.orders_count}
+                                        </Table.Td>
+                                        <Table.Td className="text-right">
+                                            {item.items_sold}
+                                        </Table.Td>
+                                        <Table.Td className="text-right">
+                                            {formatCurrency(item.revenue_total)}
+                                        </Table.Td>
+                                        <Table.Td className="text-right">
+                                            {formatCurrency(item.profit_total)}
+                                        </Table.Td>
+                                        <Table.Td className="text-right">
+                                            {formatCurrency(item.average_basket)}
+                                        </Table.Td>
                                     </tr>
                                 ))
                             ) : (
-                                <Table.Empty colSpan={6} message="Belum ada data performa kasir pada periode ini." />
+                                <Table.Empty
+                                    colSpan={6}
+                                    message="Belum ada data performa kasir pada periode ini."
+                                />
                             )}
                         </Table.Tbody>
                     </Table>
@@ -716,9 +728,7 @@ export default function Insights({
                                 Repeat Revenue
                             </p>
                             <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
-                                {formatCurrency(
-                                    repeatSummary.repeat_revenue_total ?? 0
-                                )}
+                                {formatCurrency(repeatSummary.repeat_revenue_total ?? 0)}
                             </p>
                         </div>
                         <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60">
@@ -726,9 +736,7 @@ export default function Insights({
                                 Revenue Member
                             </p>
                             <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
-                                {formatCurrency(
-                                    repeatSummary.member_revenue_total ?? 0
-                                )}
+                                {formatCurrency(repeatSummary.member_revenue_total ?? 0)}
                             </p>
                         </div>
                         <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60">
@@ -736,9 +744,7 @@ export default function Insights({
                                 Revenue Non-Member
                             </p>
                             <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
-                                {formatCurrency(
-                                    repeatSummary.non_member_revenue_total ?? 0
-                                )}
+                                {formatCurrency(repeatSummary.non_member_revenue_total ?? 0)}
                             </p>
                         </div>
                     </div>
@@ -779,9 +785,7 @@ export default function Insights({
                                                         : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"
                                                 }`}
                                             >
-                                                {item.is_loyalty_member
-                                                    ? "Member"
-                                                    : "Non-member"}
+                                                {item.is_loyalty_member ? "Member" : "Non-member"}
                                             </span>
                                         </Table.Td>
                                         <Table.Td className="text-right">
@@ -793,9 +797,7 @@ export default function Insights({
                                         <Table.Td className="text-right">
                                             {formatCurrency(item.average_basket)}
                                         </Table.Td>
-                                        <Table.Td>
-                                            {formatDateTime(item.last_purchase_at)}
-                                        </Table.Td>
+                                        <Table.Td>{formatDateTime(item.last_purchase_at)}</Table.Td>
                                     </tr>
                                 ))
                             ) : (
@@ -827,9 +829,7 @@ export default function Insights({
                             </p>
                         </div>
                         <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60">
-                            <p className="text-sm text-slate-500 dark:text-slate-400">
-                                Stok Sehat
-                            </p>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">Stok Sehat</p>
                             <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
                                 {(stockCoverageSummary.healthy ?? 0).toLocaleString("id-ID")}
                             </p>
@@ -859,9 +859,8 @@ export default function Insights({
                             {stockCoverageProducts.length > 0 ? (
                                 stockCoverageProducts.map((item) => {
                                     const status =
-                                        coverageStatusConfig[
-                                            item.coverage_status
-                                        ] || coverageStatusConfig.no_movement;
+                                        coverageStatusConfig[item.coverage_status] ||
+                                        coverageStatusConfig.no_movement;
 
                                     return (
                                         <tr key={item.product_id}>
@@ -871,8 +870,7 @@ export default function Insights({
                                                         {item.product_title}
                                                     </p>
                                                     <p className="text-xs text-slate-500 dark:text-slate-400">
-                                                        {item.category_name ||
-                                                            "-"}
+                                                        {item.category_name || "-"}
                                                     </p>
                                                 </div>
                                             </Table.Td>
@@ -890,9 +888,7 @@ export default function Insights({
                                                 {item.qty_sold}
                                             </Table.Td>
                                             <Table.Td className="text-right">
-                                                {formatPercentage(
-                                                    item.average_daily_qty
-                                                )}
+                                                {formatPercentage(item.average_daily_qty)}
                                             </Table.Td>
                                             <Table.Td className="text-right">
                                                 {item.coverage_days === null
@@ -901,11 +897,7 @@ export default function Insights({
                                                           item.coverage_days
                                                       )} hari`}
                                             </Table.Td>
-                                            <Table.Td>
-                                                {formatDateTime(
-                                                    item.last_sold_at
-                                                )}
-                                            </Table.Td>
+                                            <Table.Td>{formatDateTime(item.last_sold_at)}</Table.Td>
                                         </tr>
                                     );
                                 })
@@ -940,17 +932,15 @@ export default function Insights({
                             </div>
                         </div>
                         <div className="mb-4 flex flex-wrap gap-2">
-                            {Object.entries(promoSummary.by_kind || {}).map(
-                                ([key, count]) => (
-                                    <span
-                                        key={key}
-                                        className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                                    >
-                                        {promoKindLabel[key] || key}:{" "}
-                                        {Number(count).toLocaleString("id-ID")}
-                                    </span>
-                                )
-                            )}
+                            {Object.entries(promoSummary.by_kind || {}).map(([key, count]) => (
+                                <span
+                                    key={key}
+                                    className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                                >
+                                    {promoKindLabel[key] || key}:{" "}
+                                    {Number(count).toLocaleString("id-ID")}
+                                </span>
+                            ))}
                         </div>
                         <Table>
                             <Table.Thead>
@@ -962,16 +952,13 @@ export default function Insights({
                                 </tr>
                             </Table.Thead>
                             <Table.Tbody>
-                                {[...promoActiveRules, ...promoScheduledRules]
-                                    .slice(0, 8)
-                                    .length > 0 ? (
+                                {[...promoActiveRules, ...promoScheduledRules].slice(0, 8).length >
+                                0 ? (
                                     [...promoActiveRules, ...promoScheduledRules]
                                         .slice(0, 8)
                                         .map((item) => {
                                             const status =
-                                                promoStatusConfig[
-                                                    item.status_label
-                                                ] ||
+                                                promoStatusConfig[item.status_label] ||
                                                 promoStatusConfig.inactive;
 
                                             return (
@@ -989,9 +976,7 @@ export default function Insights({
                                                         </div>
                                                     </Table.Td>
                                                     <Table.Td>
-                                                        {promoKindLabel[
-                                                            item.kind
-                                                        ] || item.kind}
+                                                        {promoKindLabel[item.kind] || item.kind}
                                                     </Table.Td>
                                                     <Table.Td>
                                                         <span
@@ -1003,14 +988,10 @@ export default function Insights({
                                                     <Table.Td>
                                                         <div className="text-sm text-slate-600 dark:text-slate-300">
                                                             <div>
-                                                                {formatDateTime(
-                                                                    item.starts_at
-                                                                )}
+                                                                {formatDateTime(item.starts_at)}
                                                             </div>
                                                             <div>
-                                                                {formatDateTime(
-                                                                    item.ends_at
-                                                                )}
+                                                                {formatDateTime(item.ends_at)}
                                                             </div>
                                                         </div>
                                                     </Table.Td>
@@ -1039,8 +1020,7 @@ export default function Insights({
                                             {audit.description}
                                         </p>
                                         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                                            {audit.event} •{" "}
-                                            {formatDateTime(audit.created_at)}
+                                            {audit.event} • {formatDateTime(audit.created_at)}
                                         </p>
                                     </div>
                                 ))
@@ -1067,7 +1047,9 @@ export default function Insights({
                                     Saldo Poin
                                 </p>
                                 <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
-                                    {(loyaltySummary.points_balance_total ?? 0).toLocaleString("id-ID")}
+                                    {(loyaltySummary.points_balance_total ?? 0).toLocaleString(
+                                        "id-ID"
+                                    )}
                                 </p>
                             </div>
                             <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60">
@@ -1088,17 +1070,17 @@ export default function Insights({
                             </div>
                         </div>
                         <div className="mb-4 flex flex-wrap gap-2">
-                            {Object.entries(
-                                loyaltySummary.tier_distribution || {}
-                            ).map(([tier, count]) => (
-                                <span
-                                    key={tier}
-                                    className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                                >
-                                    {tier.toUpperCase()}:{" "}
-                                    {Number(count).toLocaleString("id-ID")}
-                                </span>
-                            ))}
+                            {Object.entries(loyaltySummary.tier_distribution || {}).map(
+                                ([tier, count]) => (
+                                    <span
+                                        key={tier}
+                                        className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                                    >
+                                        {tier.toUpperCase()}:{" "}
+                                        {Number(count).toLocaleString("id-ID")}
+                                    </span>
+                                )
+                            )}
                         </div>
                         <div className="mb-4 grid gap-3 md:grid-cols-3">
                             <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60">
@@ -1106,10 +1088,9 @@ export default function Insights({
                                     Voucher Aktif
                                 </p>
                                 <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
-                                    {(
-                                        loyaltySummary.voucher_summary
-                                            ?.active ?? 0
-                                    ).toLocaleString("id-ID")}
+                                    {(loyaltySummary.voucher_summary?.active ?? 0).toLocaleString(
+                                        "id-ID"
+                                    )}
                                 </p>
                             </div>
                             <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60">
@@ -1117,10 +1098,9 @@ export default function Insights({
                                     Voucher Digunakan
                                 </p>
                                 <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
-                                    {(
-                                        loyaltySummary.voucher_summary?.used ??
-                                        0
-                                    ).toLocaleString("id-ID")}
+                                    {(loyaltySummary.voucher_summary?.used ?? 0).toLocaleString(
+                                        "id-ID"
+                                    )}
                                 </p>
                             </div>
                             <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60">
@@ -1128,10 +1108,7 @@ export default function Insights({
                                     Nominal Voucher
                                 </p>
                                 <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
-                                    {formatCurrency(
-                                        loyaltySummary.voucher_discount_total ??
-                                            0
-                                    )}
+                                    {formatCurrency(loyaltySummary.voucher_discount_total ?? 0)}
                                 </p>
                             </div>
                         </div>
@@ -1155,22 +1132,15 @@ export default function Insights({
                                                     .toUpperCase()}
                                             </Table.Td>
                                             <Table.Td className="text-right">
-                                                {member.loyalty_points.toLocaleString(
-                                                    "id-ID"
-                                                )}
+                                                {member.loyalty_points.toLocaleString("id-ID")}
                                             </Table.Td>
                                             <Table.Td className="text-right">
-                                                {formatCurrency(
-                                                    member.loyalty_total_spent
-                                                )}
+                                                {formatCurrency(member.loyalty_total_spent)}
                                             </Table.Td>
                                         </tr>
                                     ))
                                 ) : (
-                                    <Table.Empty
-                                        colSpan={4}
-                                        message="Belum ada member loyalty."
-                                    />
+                                    <Table.Empty colSpan={4} message="Belum ada member loyalty." />
                                 )}
                             </Table.Tbody>
                         </Table>
@@ -1203,46 +1173,32 @@ export default function Insights({
                                 Queue Ready
                             </p>
                             <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
-                                {(
-                                    crmSummary.queue_ready_to_send ?? 0
-                                ).toLocaleString("id-ID")}
+                                {(crmSummary.queue_ready_to_send ?? 0).toLocaleString("id-ID")}
                             </p>
                         </div>
                         <div className="rounded-2xl bg-slate-50 p-4 dark:bg-slate-800/60">
-                            <p className="text-sm text-slate-500 dark:text-slate-400">
-                                Queue Sent
-                            </p>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">Queue Sent</p>
                             <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
-                                {(crmSummary.queue_sent ?? 0).toLocaleString(
-                                    "id-ID"
-                                )}
+                                {(crmSummary.queue_sent ?? 0).toLocaleString("id-ID")}
                             </p>
                         </div>
                     </div>
                     <div className="mb-4 flex flex-wrap gap-2">
                         <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                             Manual Segment:{" "}
-                            {Number(
-                                crmSummary.segments_manual ?? 0
-                            ).toLocaleString("id-ID")}
+                            {Number(crmSummary.segments_manual ?? 0).toLocaleString("id-ID")}
                         </span>
                         <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                             Auto Segment:{" "}
-                            {Number(
-                                crmSummary.segments_auto ?? 0
-                            ).toLocaleString("id-ID")}
+                            {Number(crmSummary.segments_auto ?? 0).toLocaleString("id-ID")}
                         </span>
                         <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                             Memberships:{" "}
-                            {Number(
-                                crmSummary.memberships_total ?? 0
-                            ).toLocaleString("id-ID")}
+                            {Number(crmSummary.memberships_total ?? 0).toLocaleString("id-ID")}
                         </span>
                         <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                             Campaign Processed:{" "}
-                            {Number(
-                                crmSummary.campaigns_processed ?? 0
-                            ).toLocaleString("id-ID")}
+                            {Number(crmSummary.campaigns_processed ?? 0).toLocaleString("id-ID")}
                         </span>
                     </div>
                     <Table>
@@ -1261,9 +1217,7 @@ export default function Insights({
                                     <tr key={campaign.id}>
                                         <Table.Td>{campaign.name}</Table.Td>
                                         <Table.Td>
-                                            {crmCampaignTypeLabel[
-                                                campaign.type
-                                            ] || campaign.type}
+                                            {crmCampaignTypeLabel[campaign.type] || campaign.type}
                                         </Table.Td>
                                         <Table.Td>{campaign.status}</Table.Td>
                                         <Table.Td className="text-right">
@@ -1271,8 +1225,7 @@ export default function Insights({
                                         </Table.Td>
                                         <Table.Td>
                                             {formatDateTime(
-                                                campaign.processed_at ||
-                                                    campaign.created_at
+                                                campaign.processed_at || campaign.created_at
                                             )}
                                         </Table.Td>
                                     </tr>

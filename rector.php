@@ -6,6 +6,7 @@ use Rector\Config\RectorConfig;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
 
 return RectorConfig::configure()
+    ->withoutParallel()
     ->withPaths([
         __DIR__ . '/app',
         __DIR__ . '/bootstrap',

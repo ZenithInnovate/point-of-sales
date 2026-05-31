@@ -69,15 +69,11 @@ export default function LazyImage({
     }
 
     return (
-        <div
-            ref={imgRef}
-            className={`relative overflow-hidden ${className}`}
-            {...props}
-        >
+        <div ref={imgRef} className={`relative overflow-hidden ${className}`} {...props}>
             {/* Placeholder / Skeleton */}
             {!isLoaded && (
                 <div
-                    className={`absolute inset-0 bg-slate-200 dark:bg-slate-700 animate-pulse ${placeholderClass}`}
+                    className={`absolute inset-0 animate-pulse bg-slate-200 dark:bg-slate-700 ${placeholderClass}`}
                 />
             )}
 
@@ -88,7 +84,7 @@ export default function LazyImage({
                     alt={alt}
                     onLoad={handleLoad}
                     onError={handleError}
-                    className={`w-full h-full object-cover transition-opacity duration-300 ${
+                    className={`h-full w-full object-cover transition-opacity duration-300 ${
                         isLoaded ? "opacity-100" : "opacity-0"
                     }`}
                 />
@@ -100,12 +96,7 @@ export default function LazyImage({
 /**
  * ProductImage - Specialized lazy image for products
  */
-export function ProductImage({
-    image,
-    title = "Product",
-    className = "",
-    size = "md",
-}) {
+export function ProductImage({ image, title = "Product", className = "", size = "md" }) {
     const sizes = {
         sm: "w-12 h-12",
         md: "w-16 h-16",
@@ -121,11 +112,8 @@ export function ProductImage({
             alt={title}
             className={`rounded-lg ${sizes[size]} ${className}`}
             fallback={
-                <div className="w-full h-full flex items-center justify-center">
-                    <IconPhoto
-                        size={size === "sm" ? 16 : 24}
-                        className="text-slate-400"
-                    />
+                <div className="flex h-full w-full items-center justify-center">
+                    <IconPhoto size={size === "sm" ? 16 : 24} className="text-slate-400" />
                 </div>
             }
         />
@@ -142,7 +130,7 @@ export function CategoryImage({ image, name = "Category", className = "" }) {
         <LazyImage
             src={src}
             alt={name}
-            className={`w-full aspect-video rounded-xl ${className}`}
+            className={`aspect-video w-full rounded-xl ${className}`}
             fallback={<IconPhoto size={32} className="text-slate-400" />}
         />
     );

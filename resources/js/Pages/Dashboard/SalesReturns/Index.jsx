@@ -62,7 +62,7 @@ export default function Index({ salesReturns, filters }) {
 
                 <form
                     onSubmit={submit}
-                    className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 md:grid-cols-2 xl:grid-cols-5 dark:border-slate-800 dark:bg-slate-900"
+                    className="grid gap-4 rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 md:grid-cols-2 xl:grid-cols-5"
                 >
                     <input
                         type="text"
@@ -158,9 +158,7 @@ export default function Index({ salesReturns, filters }) {
                                         <td className="px-4 py-4">
                                             {item.transaction?.invoice || "-"}
                                         </td>
-                                        <td className="px-4 py-4">
-                                            {formatDate(item.created_at)}
-                                        </td>
+                                        <td className="px-4 py-4">{formatDate(item.created_at)}</td>
                                         <td className="px-4 py-4">
                                             {item.customer?.name || "Umum"}
                                         </td>
@@ -170,9 +168,7 @@ export default function Index({ salesReturns, filters }) {
                                                 : "Refund Tunai"}
                                         </td>
                                         <td className="px-4 py-4 text-right font-medium text-slate-900 dark:text-white">
-                                            {formatCurrency(
-                                                item.total_return_amount
-                                            )}
+                                            {formatCurrency(item.total_return_amount)}
                                         </td>
                                         <td className="px-4 py-4 text-center">
                                             <span
@@ -189,10 +185,7 @@ export default function Index({ salesReturns, filters }) {
                                         </td>
                                         <td className="px-4 py-4 text-center">
                                             <Link
-                                                href={route(
-                                                    "sales-returns.show",
-                                                    item.id
-                                                )}
+                                                href={route("sales-returns.show", item.id)}
                                                 className="inline-flex rounded-lg bg-primary-50 px-3 py-2 text-xs font-semibold text-primary-700 hover:bg-primary-100 dark:bg-primary-950/40 dark:text-primary-300"
                                             >
                                                 Lihat
@@ -214,9 +207,7 @@ export default function Index({ salesReturns, filters }) {
                     </table>
                 </div>
 
-                {salesReturns.links?.length > 3 && (
-                    <Pagination links={salesReturns.links} />
-                )}
+                {salesReturns.links?.length > 3 && <Pagination links={salesReturns.links} />}
             </div>
         </>
     );

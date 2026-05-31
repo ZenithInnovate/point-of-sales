@@ -1,10 +1,5 @@
 import { Head, Link, useForm } from "@inertiajs/react";
-import {
-    IconShoppingCart,
-    IconMail,
-    IconLoader2,
-    IconArrowLeft,
-} from "@tabler/icons-react";
+import { IconShoppingCart, IconMail, IconLoader2, IconArrowLeft } from "@tabler/icons-react";
 import AuthBotGuardFields from "@/Components/AuthBotGuardFields";
 
 export default function ForgotPassword({ status, botGuard }) {
@@ -26,15 +21,12 @@ export default function ForgotPassword({ status, botGuard }) {
         <>
             <Head title="Lupa Password" />
 
-            <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950">
-                <div className="flex-1 flex items-center justify-center p-8">
+            <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
+                <div className="flex flex-1 items-center justify-center p-8">
                     <div className="w-full max-w-md">
                         <div className="mb-8">
-                            <Link
-                                href="/"
-                                className="inline-flex items-center gap-3 mb-6"
-                            >
-                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
+                            <Link href="/" className="mb-6 inline-flex items-center gap-3">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-600">
                                     <IconShoppingCart size={24} className="text-white" />
                                 </div>
                                 <span className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -56,11 +48,7 @@ export default function ForgotPassword({ status, botGuard }) {
                         )}
 
                         <form onSubmit={submit} className="space-y-5">
-                            <AuthBotGuardFields
-                                botGuard={botGuard}
-                                data={data}
-                                setData={setData}
-                            />
+                            <AuthBotGuardFields botGuard={botGuard} data={data} setData={setData} />
                             {errors.human && (
                                 <div className="rounded-xl bg-danger-50 px-4 py-3 text-sm text-danger-600 dark:bg-danger-950/40 dark:text-danger-300">
                                     {errors.human}
@@ -79,11 +67,11 @@ export default function ForgotPassword({ status, botGuard }) {
                                         type="email"
                                         value={data.email}
                                         onChange={(e) => setData("email", e.target.value)}
-                                        className={`w-full h-12 pl-12 pr-4 rounded-xl border-2 ${
+                                        className={`h-12 w-full rounded-xl border-2 pl-12 pr-4 ${
                                             errors.email
                                                 ? "border-danger-500 focus:border-danger-500"
-                                                : "border-slate-200 dark:border-slate-700 focus:border-primary-500"
-                                        } bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:ring-4 focus:ring-primary-500/20 transition-all`}
+                                                : "border-slate-200 focus:border-primary-500 dark:border-slate-700"
+                                        } bg-white text-slate-900 placeholder-slate-400 transition-all focus:ring-4 focus:ring-primary-500/20 dark:bg-slate-800 dark:text-white`}
                                         placeholder="nama@email.com"
                                     />
                                 </div>
@@ -119,14 +107,15 @@ export default function ForgotPassword({ status, botGuard }) {
                     </div>
                 </div>
 
-                <div className="hidden lg:flex flex-1 bg-gradient-to-br from-primary-500 to-primary-700 items-center justify-center p-12">
+                <div className="hidden flex-1 items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-12 lg:flex">
                     <div className="max-w-md text-center text-white">
-                        <div className="w-24 h-24 rounded-2xl bg-white/20 flex items-center justify-center mx-auto mb-8">
+                        <div className="mx-auto mb-8 flex h-24 w-24 items-center justify-center rounded-2xl bg-white/20">
                             <IconMail size={48} />
                         </div>
-                        <h2 className="text-3xl font-bold mb-4">Pemulihan Akun Aman</h2>
+                        <h2 className="mb-4 text-3xl font-bold">Pemulihan Akun Aman</h2>
                         <p className="text-lg opacity-90">
-                            Link reset password membantu memulihkan akses akun tanpa membuka jalur bypass ke dashboard.
+                            Link reset password membantu memulihkan akses akun tanpa membuka jalur
+                            bypass ke dashboard.
                         </p>
                     </div>
                 </div>

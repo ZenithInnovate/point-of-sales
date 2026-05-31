@@ -20,22 +20,17 @@ const cleanPath = (urlStr) => {
     return path;
 };
 
-export default function LinkItem({
-    href,
-    icon,
-    access,
-    title,
-    sidebarOpen,
-    ...props
-}) {
+export default function LinkItem({ href, icon, access, title, sidebarOpen, ...props }) {
     const { url } = usePage();
     const { auth } = usePage().props;
 
     const currentPath = cleanPath(url);
     const targetPath = cleanPath(href);
-    
+
     // Exact match or subpath match (e.g. nested detail/edit screens)
-    const isActive = currentPath === targetPath || (targetPath !== "/dashboard" && currentPath.startsWith(targetPath + "/"));
+    const isActive =
+        currentPath === targetPath ||
+        (targetPath !== "/dashboard" && currentPath.startsWith(targetPath + "/"));
     const canAccess = isSuperAdmin(auth) || access === true;
 
     if (!canAccess) return null;
@@ -58,7 +53,9 @@ export default function LinkItem({
             >
                 <span
                     className={`transition-colors duration-200 ${
-                        isActive ? "text-primary-600 dark:text-primary-400" : "text-slate-400 dark:text-slate-500"
+                        isActive
+                            ? "text-primary-600 dark:text-primary-400"
+                            : "text-slate-400 dark:text-slate-500"
                     }`}
                 >
                     {icon}
@@ -72,15 +69,11 @@ export default function LinkItem({
     return (
         <Link
             href={href}
-            className={`
-                w-full flex justify-center py-3
-                transition-all duration-200 ease-in-out
-                ${
-                    isActive
-                        ? "text-primary-600 dark:text-primary-400 bg-primary-50/80 dark:bg-primary-950/40 border-l-4 border-primary-600 dark:border-primary-500"
-                        : "text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/40 border-l-4 border-transparent"
-                }
-            `}
+            className={`flex w-full justify-center py-3 transition-all duration-200 ease-in-out ${
+                isActive
+                    ? "border-l-4 border-primary-600 bg-primary-50/80 text-primary-600 dark:border-primary-500 dark:bg-primary-950/40 dark:text-primary-400"
+                    : "border-l-4 border-transparent text-slate-400 hover:bg-slate-50 hover:text-slate-700 dark:text-slate-500 dark:hover:bg-slate-800/40 dark:hover:text-slate-200"
+            } `}
             title={title}
             {...props}
         >
@@ -88,4 +81,3 @@ export default function LinkItem({
         </Link>
     );
 }
-

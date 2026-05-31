@@ -33,35 +33,29 @@ const formatCurrency = (value = 0) =>
 function StatCard({ title, value, subtitle, icon: Icon, gradient, trend }) {
     return (
         <div
-            className={`
-            relative overflow-hidden rounded-2xl p-5
-            bg-gradient-to-br ${gradient}
-            text-white shadow-lg
-        `}
+            className={`relative overflow-hidden rounded-2xl bg-gradient-to-br p-5 ${gradient} text-white shadow-lg`}
         >
             {/* Background Pattern */}
-            <div className="absolute top-0 right-0 w-32 h-32 opacity-20">
+            <div className="absolute right-0 top-0 h-32 w-32 opacity-20">
                 <Icon
                     size={128}
                     strokeWidth={0.5}
-                    className="transform translate-x-8 -translate-y-8"
+                    className="-translate-y-8 translate-x-8 transform"
                 />
             </div>
 
             <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                    <div className="p-2 rounded-xl bg-white/20">
+                <div className="mb-3 flex items-center gap-2">
+                    <div className="rounded-xl bg-white/20 p-2">
                         <Icon size={20} strokeWidth={1.5} />
                     </div>
-                    <span className="text-sm font-medium opacity-90">
-                        {title}
-                    </span>
+                    <span className="text-sm font-medium opacity-90">{title}</span>
                 </div>
 
                 <p className="text-3xl font-bold">{value}</p>
 
                 {subtitle && (
-                    <p className="mt-2 text-sm opacity-80 flex items-center gap-1">
+                    <p className="mt-2 flex items-center gap-1 text-sm opacity-80">
                         {trend === "up" && <IconArrowUpRight size={14} />}
                         {trend === "down" && <IconArrowDownRight size={14} />}
                         {subtitle}
@@ -78,30 +72,28 @@ function TargetCard({ title, current, target, icon: Icon }) {
     const isAchieved = percentage >= 100;
 
     return (
-        <div className="relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br from-indigo-500 to-indigo-700 text-white shadow-lg">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 to-indigo-700 p-5 text-white shadow-lg">
             {/* Background Pattern */}
-            <div className="absolute top-0 right-0 w-32 h-32 opacity-20">
+            <div className="absolute right-0 top-0 h-32 w-32 opacity-20">
                 <Icon
                     size={128}
                     strokeWidth={0.5}
-                    className="transform translate-x-8 -translate-y-8"
+                    className="-translate-y-8 translate-x-8 transform"
                 />
             </div>
 
             <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                    <div className="p-2 rounded-xl bg-white/20">
+                <div className="mb-3 flex items-center gap-2">
+                    <div className="rounded-xl bg-white/20 p-2">
                         <Icon size={20} strokeWidth={1.5} />
                     </div>
-                    <span className="text-sm font-medium opacity-90">
-                        {title}
-                    </span>
+                    <span className="text-sm font-medium opacity-90">{title}</span>
                 </div>
 
                 <p className="text-2xl font-bold">{percentage.toFixed(0)}%</p>
 
                 {/* Progress Bar */}
-                <div className="mt-3 w-full h-2 bg-white/30 rounded-full overflow-hidden">
+                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/30">
                     <div
                         className={`h-full rounded-full transition-all duration-500 ${
                             isAchieved ? "bg-green-400" : "bg-white"
@@ -121,23 +113,21 @@ function TargetCard({ title, current, target, icon: Icon }) {
 // Info Card Component
 function InfoCard({ title, value, subtitle, icon: Icon }) {
     return (
-        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-700">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 transition-all hover:border-slate-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700">
             <div className="flex items-center justify-between">
                 <div>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                        {title}
-                    </p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">{title}</p>
                     <p className="mt-2 text-2xl font-bold text-slate-900 dark:text-white">
                         {value}
                     </p>
                     {subtitle && (
-                        <p className="mt-1 text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1">
+                        <p className="mt-1 flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500">
                             <Icon size={14} />
                             {subtitle}
                         </p>
                     )}
                 </div>
-                <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800">
+                <div className="rounded-xl bg-slate-100 p-3 dark:bg-slate-800">
                     <Icon
                         size={24}
                         className="text-slate-600 dark:text-slate-400"
@@ -152,23 +142,18 @@ function InfoCard({ title, value, subtitle, icon: Icon }) {
 // List Card Component
 function ListCard({ title, subtitle, icon: Icon, children, emptyMessage }) {
     return (
-        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden">
-            <div className="p-5 border-b border-slate-100 dark:border-slate-800">
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+            <div className="border-b border-slate-100 p-5 dark:border-slate-800">
                 <div className="flex items-center gap-2">
-                    <div className="p-2 rounded-lg bg-primary-100 dark:bg-primary-900/30">
-                        <Icon
-                            size={18}
-                            className="text-primary-600 dark:text-primary-400"
-                        />
+                    <div className="rounded-lg bg-primary-100 p-2 dark:bg-primary-900/30">
+                        <Icon size={18} className="text-primary-600 dark:text-primary-400" />
                     </div>
                     <div>
                         <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-100">
                             {title}
                         </h3>
                         {subtitle && (
-                            <p className="text-xs text-slate-500 dark:text-slate-400">
-                                {subtitle}
-                            </p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">{subtitle}</p>
                         )}
                     </div>
                 </div>
@@ -307,7 +292,7 @@ export default function Dashboard({
 
             <div className="space-y-6">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div>
                         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
                             Dashboard
@@ -318,7 +303,7 @@ export default function Dashboard({
                     </div>
                     <Link
                         href={route("transactions.index")}
-                        className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium transition-colors shadow-lg shadow-primary-500/30"
+                        className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-primary-500/30 transition-colors hover:bg-primary-600"
                     >
                         <IconShoppingCart size={18} />
                         <span>Transaksi Baru</span>
@@ -326,7 +311,7 @@ export default function Dashboard({
                 </div>
 
                 {/* Main Stat Cards - Reorganized */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                     <StatCard
                         title="Penjualan Hari Ini"
                         value={formatCurrency(todaySales)}
@@ -358,27 +343,15 @@ export default function Dashboard({
                 </div>
 
                 {/* Secondary Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <InfoCard
-                        title="Total Kategori"
-                        value={totalCategories}
-                        icon={IconCategory}
-                    />
-                    <InfoCard
-                        title="Total Produk"
-                        value={totalProducts}
-                        icon={IconBox}
-                    />
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                    <InfoCard title="Total Kategori" value={totalCategories} icon={IconCategory} />
+                    <InfoCard title="Total Produk" value={totalProducts} icon={IconBox} />
                     <InfoCard
                         title="Total Transaksi"
                         value={totalTransactions}
                         icon={IconMoneybag}
                     />
-                    <InfoCard
-                        title="Total Pelanggan"
-                        value={totalCustomers}
-                        icon={IconUsers}
-                    />
+                    <InfoCard title="Total Pelanggan" value={totalCustomers} icon={IconUsers} />
                 </div>
 
                 {/* Revenue Chart - Full Width */}
@@ -396,7 +369,7 @@ export default function Dashboard({
                 </ListCard>
 
                 {/* 4-Column Bottom Widgets */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
                     <ListCard
                         title="Shift Aktif"
                         subtitle="Pemantauan kasir"
@@ -406,20 +379,17 @@ export default function Dashboard({
                         {activeShifts.length > 0 && (
                             <div className="divide-y divide-slate-100 dark:divide-slate-800">
                                 {activeShifts.map((shift) => (
-                                    <div
-                                        key={shift.id}
-                                        className="py-3 first:pt-0 last:pb-0"
-                                    >
-                                        <div className="flex items-center justify-between gap-3 w-full">
+                                    <div key={shift.id} className="py-3 first:pt-0 last:pb-0">
+                                        <div className="flex w-full items-center justify-between gap-3">
                                             <div className="min-w-0 flex-1">
-                                                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
+                                                <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-200">
                                                     {shift.user?.name || "-"}
                                                 </p>
                                                 <p className="text-xs text-slate-500 dark:text-slate-400">
                                                     {shift.transactions_count} transaksi
                                                 </p>
                                             </div>
-                                            <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400 flex-shrink-0">
+                                            <span className="flex-shrink-0 rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400">
                                                 {formatCurrency(shift.expected_cash)}
                                             </span>
                                         </div>
@@ -443,28 +413,32 @@ export default function Dashboard({
                                         key={index}
                                         className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                                     >
-                                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                                            <span className={`w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center flex-shrink-0 ${
-                                                index === 0 ? "bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400 animate-pulse" :
-                                                index === 1 ? "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400" :
-                                                "bg-orange-50 text-orange-700 dark:bg-orange-950/20 dark:text-orange-450"
-                                            }`}>
+                                        <div className="flex min-w-0 flex-1 items-center gap-3">
+                                            <span
+                                                className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                                                    index === 0
+                                                        ? "animate-pulse bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400"
+                                                        : index === 1
+                                                          ? "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400"
+                                                          : "dark:text-orange-450 bg-orange-50 text-orange-700 dark:bg-orange-950/20"
+                                                }`}
+                                            >
                                                 {index + 1}
                                             </span>
-                                            <div className="space-y-0.5 min-w-0 flex-1">
-                                                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
+                                            <div className="min-w-0 flex-1 space-y-0.5">
+                                                <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-200">
                                                     {product.name}
                                                 </p>
-                                                <p className="text-xs text-slate-500 dark:text-slate-400 font-mono truncate">
+                                                <p className="truncate font-mono text-xs text-slate-500 dark:text-slate-400">
                                                     SKU: {product.sku || "-"}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="text-right flex-shrink-0">
-                                            <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-primary-50 dark:bg-primary-950/40 text-primary-600 dark:text-primary-400 text-xs font-bold">
+                                        <div className="flex-shrink-0 text-right">
+                                            <span className="inline-flex items-center justify-center rounded-full bg-primary-50 px-2 py-0.5 text-xs font-bold text-primary-600 dark:bg-primary-950/40 dark:text-primary-400">
                                                 {product.qty}x
                                             </span>
-                                            <p className="text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mt-0.5 font-semibold">
+                                            <p className="mt-0.5 text-[9px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                                                 Terjual
                                             </p>
                                         </div>
@@ -488,15 +462,15 @@ export default function Dashboard({
                                         key={index}
                                         className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                                     >
-                                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                                            <span className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                                        <div className="flex min-w-0 flex-1 items-center gap-3">
+                                            <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                                                 {index + 1}
                                             </span>
-                                            <span className="text-sm text-slate-700 dark:text-slate-300 truncate flex-1">
+                                            <span className="flex-1 truncate text-sm text-slate-700 dark:text-slate-300">
                                                 {product.name}
                                             </span>
                                         </div>
-                                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400 flex-shrink-0">
+                                        <span className="flex-shrink-0 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-600 dark:bg-amber-950/30 dark:text-amber-400">
                                             {product.stock} pcs
                                         </span>
                                     </li>
@@ -514,26 +488,24 @@ export default function Dashboard({
                     >
                         {topCustomers.length > 0 && (
                             <ul className="divide-y divide-slate-100 dark:divide-slate-800">
-                                {topCustomers
-                                    .slice(0, 5)
-                                    .map((customer, index) => (
-                                        <li
-                                            key={index}
-                                            className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
-                                        >
-                                            <div className="flex items-center gap-3 min-w-0 flex-1">
-                                                <span className="w-7 h-7 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 text-xs font-bold flex items-center justify-center flex-shrink-0">
-                                                    {index + 1}
-                                                </span>
-                                                <span className="text-sm text-slate-700 dark:text-slate-300 truncate flex-1">
-                                                    {customer.name}
-                                                </span>
-                                            </div>
-                                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 dark:bg-indigo-950/30 dark:text-indigo-400 flex-shrink-0">
-                                                {customer.orders}x
+                                {topCustomers.slice(0, 5).map((customer, index) => (
+                                    <li
+                                        key={index}
+                                        className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
+                                    >
+                                        <div className="flex min-w-0 flex-1 items-center gap-3">
+                                            <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-indigo-50 text-xs font-bold text-indigo-600 dark:bg-indigo-950/40 dark:text-indigo-400">
+                                                {index + 1}
                                             </span>
-                                        </li>
-                                    ))}
+                                            <span className="flex-1 truncate text-sm text-slate-700 dark:text-slate-300">
+                                                {customer.name}
+                                            </span>
+                                        </div>
+                                        <span className="flex-shrink-0 rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-600 dark:bg-indigo-950/30 dark:text-indigo-400">
+                                            {customer.orders}x
+                                        </span>
+                                    </li>
+                                ))}
                             </ul>
                         )}
                     </ListCard>
@@ -552,15 +524,15 @@ export default function Dashboard({
                                         key={index}
                                         className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                                     >
-                                        <div className="flex items-center gap-3 min-w-0 flex-1">
-                                            <span className="w-7 h-7 rounded-full bg-primary-50 dark:bg-primary-950/40 text-primary-600 dark:text-primary-400 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                                        <div className="flex min-w-0 flex-1 items-center gap-3">
+                                            <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary-50 text-xs font-bold text-primary-600 dark:bg-primary-950/40 dark:text-primary-400">
                                                 {index + 1}
                                             </span>
-                                            <span className="text-sm text-slate-700 dark:text-slate-300 truncate flex-1">
+                                            <span className="flex-1 truncate text-sm text-slate-700 dark:text-slate-300">
                                                 {loc.name}
                                             </span>
                                         </div>
-                                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-600 dark:bg-primary-950/30 dark:text-primary-400 flex-shrink-0">
+                                        <span className="flex-shrink-0 rounded-full bg-primary-50 px-2 py-0.5 text-xs font-semibold text-primary-600 dark:bg-primary-950/30 dark:text-primary-400">
                                             {loc.orders}x
                                         </span>
                                     </li>
@@ -578,17 +550,17 @@ export default function Dashboard({
                     emptyMessage="Belum ada transaksi"
                 >
                     {recentTransactions.length > 0 && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
                             {recentTransactions.map((trx, index) => (
                                 <div
                                     key={index}
-                                    className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50"
+                                    className="flex items-center justify-between rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50"
                                 >
                                     <div>
                                         <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
                                             {trx.invoice}
                                         </p>
-                                        <p className="text-xs text-slate-500 mt-0.5">
+                                        <p className="mt-0.5 text-xs text-slate-500">
                                             {trx.date} • {trx.customer}
                                         </p>
                                     </div>
@@ -609,17 +581,17 @@ export default function Dashboard({
                     emptyMessage="Semua stok aman"
                 >
                     {lowStockProducts.length > 0 && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
                             {lowStockProducts.map((product, index) => (
                                 <div
                                     key={index}
-                                    className="flex items-center justify-between p-3 rounded-xl bg-rose-50 dark:bg-rose-900/20 border border-rose-100 dark:border-rose-800"
+                                    className="flex items-center justify-between rounded-xl border border-rose-100 bg-rose-50 p-3 dark:border-rose-800 dark:bg-rose-900/20"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <span className="w-7 h-7 rounded-full bg-rose-100 dark:bg-rose-900/40 text-rose-700 dark:text-rose-300 text-sm font-semibold flex items-center justify-center">
+                                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-rose-100 text-sm font-semibold text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">
                                             {index + 1}
                                         </span>
-                                        <span className="text-sm font-semibold text-rose-800 dark:text-rose-200 truncate max-w-[140px]">
+                                        <span className="max-w-[140px] truncate text-sm font-semibold text-rose-800 dark:text-rose-200">
                                             {product.name}
                                         </span>
                                     </div>

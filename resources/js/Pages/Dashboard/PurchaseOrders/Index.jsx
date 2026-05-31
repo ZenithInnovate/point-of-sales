@@ -5,13 +5,7 @@ import Button from "@/Components/Dashboard/Button";
 import Table from "@/Components/Dashboard/Table";
 import Pagination from "@/Components/Dashboard/Pagination";
 import { useAuthorization } from "@/Utils/authorization";
-import {
-    IconCirclePlus,
-    IconEye,
-    IconSearch,
-    IconShoppingCart,
-    IconX,
-} from "@tabler/icons-react";
+import { IconCirclePlus, IconEye, IconSearch, IconShoppingCart, IconX } from "@tabler/icons-react";
 
 const formatCurrency = (value = 0) =>
     new Intl.NumberFormat("id-ID", {
@@ -25,7 +19,8 @@ const statusBadge = (status) => {
     const map = {
         draft: "bg-warning-100 text-warning-700 dark:bg-warning-950/30 dark:text-warning-400",
         ordered: "bg-primary-100 text-primary-700 dark:bg-primary-950/30 dark:text-primary-400",
-        partial_received: "bg-accent-100 text-accent-700 dark:bg-accent-950/30 dark:text-accent-400",
+        partial_received:
+            "bg-accent-100 text-accent-700 dark:bg-accent-950/30 dark:text-accent-400",
         completed: "bg-success-100 text-success-700 dark:bg-success-950/30 dark:text-success-400",
         cancelled: "bg-rose-100 text-rose-700 dark:bg-rose-950/30 dark:text-rose-400",
     };
@@ -36,7 +31,9 @@ const statusBadge = (status) => {
         completed: "Selesai",
         cancelled: "Dibatalkan",
     };
-    return <span className={`${base} ${map[status] || map.draft}`}>{labels[status] || status}</span>;
+    return (
+        <span className={`${base} ${map[status] || map.draft}`}>{labels[status] || status}</span>
+    );
 };
 
 export default function Index({ orders, filters, suppliers }) {
@@ -67,7 +64,7 @@ export default function Index({ orders, filters, suppliers }) {
                         type="link"
                         href={route("purchase-orders.create")}
                         icon={<IconCirclePlus size={18} />}
-                        className="bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30"
+                        className="bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
                         label="Buat PO"
                     />
                 )}
@@ -105,7 +102,9 @@ export default function Index({ orders, filters, suppliers }) {
                 >
                     <option value="">Semua Supplier</option>
                     {suppliers.map((s) => (
-                        <option key={s.id} value={s.id}>{s.name}</option>
+                        <option key={s.id} value={s.id}>
+                            {s.name}
+                        </option>
                     ))}
                 </select>
             </div>
@@ -125,12 +124,17 @@ export default function Index({ orders, filters, suppliers }) {
                     <Table.Tbody>
                         {orders.data.length > 0 ? (
                             orders.data.map((order) => (
-                                <tr key={order.id} className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                <tr
+                                    key={order.id}
+                                    className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                >
                                     <Table.Td>
                                         <p className="font-semibold text-slate-800 dark:text-slate-200">
                                             {order.document_number}
                                         </p>
-                                        <p className="text-xs text-slate-500">{order.created_at?.split("T")[0]}</p>
+                                        <p className="text-xs text-slate-500">
+                                            {order.created_at?.split("T")[0]}
+                                        </p>
                                     </Table.Td>
                                     <Table.Td>{order.supplier?.name || "-"}</Table.Td>
                                     <Table.Td>{statusBadge(order.status)}</Table.Td>
@@ -147,11 +151,14 @@ export default function Index({ orders, filters, suppliers }) {
                                 </tr>
                             ))
                         ) : (
-                            <Table.Empty colSpan={6} message={
-                                <div className="text-slate-500 dark:text-slate-400">
-                                    Belum ada purchase order.
-                                </div>
-                            }>
+                            <Table.Empty
+                                colSpan={6}
+                                message={
+                                    <div className="text-slate-500 dark:text-slate-400">
+                                        Belum ada purchase order.
+                                    </div>
+                                }
+                            >
                                 <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                                     <IconShoppingCart size={28} className="text-slate-400" />
                                 </div>

@@ -7,7 +7,11 @@ import { IconBellRinging, IconBrandWhatsapp } from "@tabler/icons-react";
 
 export default function Index({ campaigns, filters }) {
     const handleFilterChange = (key, value) => {
-        router.get(route("crm-reminders.index"), { ...filters, [key]: value }, { preserveState: true, replace: true });
+        router.get(
+            route("crm-reminders.index"),
+            { ...filters, [key]: value },
+            { preserveState: true, replace: true }
+        );
     };
 
     return (
@@ -15,9 +19,12 @@ export default function Index({ campaigns, filters }) {
             <Head title="CRM Reminders" />
             <div className="w-full">
                 <div className="mb-6">
-                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white">CRM Reminders</h1>
+                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+                        CRM Reminders
+                    </h1>
                     <p className="text-sm text-slate-500 dark:text-slate-400">
-                        Queue reminder internal untuk piutang, repeat order, invoice share, dan promo broadcast.
+                        Queue reminder internal untuk piutang, repeat order, invoice share, dan
+                        promo broadcast.
                     </p>
                 </div>
 
@@ -63,10 +70,15 @@ export default function Index({ campaigns, filters }) {
                                 campaigns.data.map((campaign) => (
                                     <tr key={campaign.id}>
                                         <Table.Td>
-                                            <Link href={route("crm-campaigns.show", campaign.id)} className="font-semibold text-slate-800 hover:text-primary-600 dark:text-slate-100">
+                                            <Link
+                                                href={route("crm-campaigns.show", campaign.id)}
+                                                className="font-semibold text-slate-800 hover:text-primary-600 dark:text-slate-100"
+                                            >
                                                 {campaign.name}
                                             </Link>
-                                            <p className="text-xs text-slate-500 dark:text-slate-400">{campaign.type}</p>
+                                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                                                {campaign.type}
+                                            </p>
                                         </Table.Td>
                                         <Table.Td>{campaign.status}</Table.Td>
                                         <Table.Td>{campaign.logs?.length || 0} target</Table.Td>
@@ -91,7 +103,10 @@ export default function Index({ campaigns, filters }) {
                                     </tr>
                                 ))
                             ) : (
-                                <Table.Empty colSpan={4} message="Belum ada reminder atau campaign queue.">
+                                <Table.Empty
+                                    colSpan={4}
+                                    message="Belum ada reminder atau campaign queue."
+                                >
                                     <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                                         <IconBellRinging size={28} className="text-slate-400" />
                                     </div>

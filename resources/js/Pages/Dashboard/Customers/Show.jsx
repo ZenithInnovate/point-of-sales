@@ -97,10 +97,7 @@ export default function Show({
                             </span>
                             {!customer.is_loyalty_member ? (
                                 <Link
-                                    href={route(
-                                        "customers.upgrade-member",
-                                        customer.id
-                                    )}
+                                    href={route("customers.upgrade-member", customer.id)}
                                     method="post"
                                     as="button"
                                     className="inline-flex items-center gap-2 rounded-full bg-primary-500 px-3 py-1 text-xs font-semibold text-white transition hover:bg-primary-600"
@@ -154,9 +151,7 @@ export default function Show({
                                     </p>
                                     <p className="mt-2 text-sm font-semibold text-slate-900 dark:text-white">
                                         {stats?.last_visit
-                                            ? new Date(
-                                                  stats.last_visit
-                                              ).toLocaleDateString("id-ID")
+                                            ? new Date(stats.last_visit).toLocaleDateString("id-ID")
                                             : "-"}
                                     </p>
                                 </div>
@@ -220,9 +215,7 @@ export default function Show({
                                                     {transaction.invoice}
                                                 </p>
                                                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                                                    {formatDateTime(
-                                                        transaction.date
-                                                    )}
+                                                    {formatDateTime(transaction.date)}
                                                 </p>
                                             </div>
                                             <p className="text-sm font-bold text-primary-600 dark:text-primary-300">
@@ -330,9 +323,7 @@ export default function Show({
                                     </p>
                                     <p className="mt-1 font-semibold text-slate-900 dark:text-white">
                                         {formatPrice(
-                                            customer.total_spent ||
-                                                stats?.total_spent ||
-                                                0
+                                            customer.total_spent || stats?.total_spent || 0
                                         )}
                                     </p>
                                 </div>
@@ -362,19 +353,13 @@ export default function Show({
                                                     onChange={(event) => {
                                                         const nextIds = event.target.checked
                                                             ? [
-                                                                  ...segmentForm.data
-                                                                      .segment_ids,
+                                                                  ...segmentForm.data.segment_ids,
                                                                   segment.value,
                                                               ]
                                                             : segmentForm.data.segment_ids.filter(
-                                                                  (value) =>
-                                                                      value !==
-                                                                      segment.value
+                                                                  (value) => value !== segment.value
                                                               );
-                                                        segmentForm.setData(
-                                                            "segment_ids",
-                                                            nextIds
-                                                        );
+                                                        segmentForm.setData("segment_ids", nextIds);
                                                     }}
                                                     className="mt-0.5 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
                                                 />
@@ -401,9 +386,7 @@ export default function Show({
                                         disabled={segmentForm.processing}
                                         className="inline-flex items-center justify-center rounded-xl bg-primary-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-60"
                                     >
-                                        {segmentForm.processing
-                                            ? "Menyimpan..."
-                                            : "Simpan Segment"}
+                                        {segmentForm.processing ? "Menyimpan..." : "Simpan Segment"}
                                     </button>
                                 </form>
                             ) : (

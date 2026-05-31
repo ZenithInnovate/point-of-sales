@@ -37,8 +37,7 @@ export default function SalesReturnForm({
                 transaction_detail_id: detail.id,
                 qty_return: detail.draft_item?.qty_return ?? 0,
                 return_reason: detail.draft_item?.return_reason ?? "",
-                restock_to_inventory:
-                    detail.draft_item?.restock_to_inventory ?? true,
+                restock_to_inventory: detail.draft_item?.restock_to_inventory ?? true,
             })),
         [transaction.details]
     );
@@ -64,9 +63,7 @@ export default function SalesReturnForm({
     }, [salesReturn, itemDefaults]);
 
     const itemStates = useMemo(() => {
-        const itemMap = new Map(
-            form.data.items.map((item) => [item.transaction_detail_id, item])
-        );
+        const itemMap = new Map(form.data.items.map((item) => [item.transaction_detail_id, item]));
 
         return transaction.details.map((detail) => {
             const current = itemMap.get(detail.id) ?? {
@@ -89,31 +86,18 @@ export default function SalesReturnForm({
 
     const summary = useMemo(() => {
         const selectedItems = itemStates.filter((item) => item.qty_return > 0);
-        const totalItems = selectedItems.reduce(
-            (carry, item) => carry + item.qty_return,
-            0
-        );
-        const totalAmount = selectedItems.reduce(
-            (carry, item) => carry + item.subtotal,
-            0
-        );
+        const totalItems = selectedItems.reduce((carry, item) => carry + item.qty_return, 0);
+        const totalAmount = selectedItems.reduce((carry, item) => carry + item.subtotal, 0);
         const restockQty = selectedItems.reduce(
-            (carry, item) =>
-                carry + (item.restock_to_inventory ? item.qty_return : 0),
+            (carry, item) => carry + (item.restock_to_inventory ? item.qty_return : 0),
             0
         );
 
         let receivableAfter = null;
         let settlementAmount = 0;
 
-        if (
-            transaction.payment_method === "pay_later" &&
-            transaction.receivable
-        ) {
-            receivableAfter = Math.max(
-                0,
-                Number(transaction.receivable.total || 0) - totalAmount
-            );
+        if (transaction.payment_method === "pay_later" && transaction.receivable) {
+            receivableAfter = Math.max(0, Number(transaction.receivable.total || 0) - totalAmount);
             settlementAmount = Math.max(
                 0,
                 Number(transaction.receivable.paid || 0) - receivableAfter
@@ -133,10 +117,8 @@ export default function SalesReturnForm({
             totalAmount,
             restockQty,
             receivableAfter,
-            refundAmount:
-                effectiveReturnType === "refund_cash" ? settlementAmount : 0,
-            creditedAmount:
-                effectiveReturnType === "store_credit" ? settlementAmount : 0,
+            refundAmount: effectiveReturnType === "refund_cash" ? settlementAmount : 0,
+            creditedAmount: effectiveReturnType === "store_credit" ? settlementAmount : 0,
             hasSelectedItems: selectedItems.length > 0,
         };
     }, [
@@ -165,9 +147,7 @@ export default function SalesReturnForm({
         form[submitMethod](submitRoute, {
             preserveScroll: true,
             onSuccess: () =>
-                toast.success(
-                    salesReturn ? "Draft retur diperbarui" : "Draft retur dibuat"
-                ),
+                toast.success(salesReturn ? "Draft retur diperbarui" : "Draft retur dibuat"),
             onError: () => toast.error("Gagal menyimpan draft retur"),
         });
     };
@@ -208,8 +188,7 @@ export default function SalesReturnForm({
                             {title}
                         </h1>
                         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                            Invoice {transaction.invoice} •{" "}
-                            {formatDateTime(transaction.created_at)}
+                            Invoice {transaction.invoice} • {formatDateTime(transaction.created_at)}
                         </p>
                     </div>
 
@@ -222,9 +201,7 @@ export default function SalesReturnForm({
                                         : "bg-warning-100 text-warning-700 dark:bg-warning-950/30 dark:text-warning-400"
                                 }`}
                             >
-                                {salesReturn.status === "completed"
-                                    ? "Completed"
-                                    : "Draft"}
+                                {salesReturn.status === "completed" ? "Completed" : "Draft"}
                             </span>
                             {salesReturn.completed_at && (
                                 <span className="text-xs text-slate-500 dark:text-slate-400">
@@ -236,30 +213,19 @@ export default function SalesReturnForm({
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                    <InfoCard
-                        label="Pelanggan"
-                        value={transaction.customer?.name || "Umum"}
-                    />
+                    <InfoCard label="Pelanggan" value={transaction.customer?.name || "Umum"} />
                     <InfoCard
                         label="Metode Bayar"
-                        value={transaction.payment_method
-                            ?.replaceAll("_", " ")
-                            .toUpperCase()}
+                        value={transaction.payment_method?.replaceAll("_", " ").toUpperCase()}
                     />
                     <InfoCard
                         label="Total Transaksi"
                         value={formatCurrency(transaction.grand_total)}
                     />
-                    <InfoCard
-                        label="Nominal Retur"
-                        value={formatCurrency(summary.totalAmount)}
-                    />
+                    <InfoCard label="Nominal Retur" value={formatCurrency(summary.totalAmount)} />
                 </div>
 
-                <form
-                    onSubmit={submit}
-                    className="grid gap-6 xl:grid-cols-[1.7fr_1fr]"
-                >
+                <form onSubmit={submit} className="grid gap-6 xl:grid-cols-[1.7fr_1fr]">
                     <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
                         <div className="mb-4 flex items-center justify-between">
                             <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -305,9 +271,7 @@ export default function SalesReturnForm({
                                             </div>
                                         </Table.Td>
                                         <Table.Td>{item.qty}</Table.Td>
-                                        <Table.Td>
-                                            {item.returned_completed_qty}
-                                        </Table.Td>
+                                        <Table.Td>{item.returned_completed_qty}</Table.Td>
                                         <Table.Td>{item.remaining_returnable_qty}</Table.Td>
                                         <Table.Td>
                                             <input
@@ -357,18 +321,14 @@ export default function SalesReturnForm({
                                                 className="h-4 w-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500"
                                             />
                                         </Table.Td>
-                                        <Table.Td>
-                                            {formatCurrency(item.subtotal)}
-                                        </Table.Td>
+                                        <Table.Td>{formatCurrency(item.subtotal)}</Table.Td>
                                     </tr>
                                 ))}
                             </Table.Tbody>
                         </Table>
 
                         {form.errors.items && (
-                            <p className="mt-3 text-sm text-danger-600">
-                                {form.errors.items}
-                            </p>
+                            <p className="mt-3 text-sm text-danger-600">{form.errors.items}</p>
                         )}
                     </div>
 
@@ -387,16 +347,11 @@ export default function SalesReturnForm({
                                         value={form.data.return_type}
                                         disabled={!canEdit || !transaction.customer}
                                         onChange={(event) =>
-                                            form.setData(
-                                                "return_type",
-                                                event.target.value
-                                            )
+                                            form.setData("return_type", event.target.value)
                                         }
                                         className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                     >
-                                        <option value="refund_cash">
-                                            Refund Tunai
-                                        </option>
+                                        <option value="refund_cash">Refund Tunai</option>
                                         {transaction.customer && (
                                             <option value="store_credit">
                                                 Saldo Toko / Credit
@@ -405,8 +360,8 @@ export default function SalesReturnForm({
                                     </select>
                                     {!transaction.customer && (
                                         <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                                            Transaksi tanpa pelanggan hanya
-                                            dapat memakai refund tunai.
+                                            Transaksi tanpa pelanggan hanya dapat memakai refund
+                                            tunai.
                                         </p>
                                     )}
                                 </div>
@@ -420,10 +375,7 @@ export default function SalesReturnForm({
                                         value={form.data.notes}
                                         disabled={!canEdit}
                                         onChange={(event) =>
-                                            form.setData(
-                                                "notes",
-                                                event.target.value
-                                            )
+                                            form.setData("notes", event.target.value)
                                         }
                                         className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-800 outline-none transition focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                         placeholder="Catatan retur"
@@ -456,23 +408,17 @@ export default function SalesReturnForm({
                                 />
                                 <PreviewRow
                                     label="Saldo toko"
-                                    value={formatCurrency(
-                                        summary.creditedAmount
-                                    )}
+                                    value={formatCurrency(summary.creditedAmount)}
                                 />
                                 {transaction.receivable && (
                                     <>
                                         <PreviewRow
                                             label="Piutang saat ini"
-                                            value={formatCurrency(
-                                                transaction.receivable.total
-                                            )}
+                                            value={formatCurrency(transaction.receivable.total)}
                                         />
                                         <PreviewRow
                                             label="Piutang setelah retur"
-                                            value={formatCurrency(
-                                                summary.receivableAfter ?? 0
-                                            )}
+                                            value={formatCurrency(summary.receivableAfter ?? 0)}
                                         />
                                     </>
                                 )}
@@ -499,8 +445,7 @@ export default function SalesReturnForm({
                                     />
                                     {form.isDirty && (
                                         <p className="mt-2 text-xs text-warning-600">
-                                            Simpan draft terlebih dulu sebelum
-                                            menyelesaikan retur.
+                                            Simpan draft terlebih dulu sebelum menyelesaikan retur.
                                         </p>
                                     )}
                                 </div>
@@ -519,9 +464,7 @@ function InfoCard({ label, value }) {
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                 {label}
             </p>
-            <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">
-                {value}
-            </p>
+            <p className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">{value}</p>
         </div>
     );
 }

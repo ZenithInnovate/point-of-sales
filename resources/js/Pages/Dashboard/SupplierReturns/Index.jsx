@@ -5,12 +5,7 @@ import Button from "@/Components/Dashboard/Button";
 import Table from "@/Components/Dashboard/Table";
 import Pagination from "@/Components/Dashboard/Pagination";
 import { useAuthorization } from "@/Utils/authorization";
-import {
-    IconCirclePlus,
-    IconEye,
-    IconSearch,
-    IconTruckReturn,
-} from "@tabler/icons-react";
+import { IconCirclePlus, IconEye, IconSearch, IconTruckReturn } from "@tabler/icons-react";
 
 const formatDateTime = (value) =>
     value
@@ -32,7 +27,9 @@ const statusBadge = (status) => {
         completed: "Selesai",
         cancelled: "Dibatalkan",
     };
-    return <span className={`${base} ${map[status] || map.draft}`}>{labels[status] || status}</span>;
+    return (
+        <span className={`${base} ${map[status] || map.draft}`}>{labels[status] || status}</span>
+    );
 };
 
 export default function Index({ returns, filters, suppliers }) {
@@ -63,7 +60,7 @@ export default function Index({ returns, filters, suppliers }) {
                         type="link"
                         href={route("supplier-returns.create")}
                         icon={<IconCirclePlus size={18} />}
-                        className="bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/30"
+                        className="bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
                         label="Buat Retur"
                     />
                 )}
@@ -99,7 +96,9 @@ export default function Index({ returns, filters, suppliers }) {
                 >
                     <option value="">Semua Supplier</option>
                     {suppliers.map((s) => (
-                        <option key={s.id} value={s.id}>{s.name}</option>
+                        <option key={s.id} value={s.id}>
+                            {s.name}
+                        </option>
                     ))}
                 </select>
             </div>
@@ -120,15 +119,24 @@ export default function Index({ returns, filters, suppliers }) {
                     <Table.Tbody>
                         {returns.data.length > 0 ? (
                             returns.data.map((ret) => (
-                                <tr key={ret.id} className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                <tr
+                                    key={ret.id}
+                                    className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                                >
                                     <Table.Td>
-                                        <p className="font-semibold text-slate-800 dark:text-slate-200">{ret.document_number}</p>
-                                        <p className="text-xs text-slate-500">{ret.created_at?.split("T")[0]}</p>
+                                        <p className="font-semibold text-slate-800 dark:text-slate-200">
+                                            {ret.document_number}
+                                        </p>
+                                        <p className="text-xs text-slate-500">
+                                            {ret.created_at?.split("T")[0]}
+                                        </p>
                                     </Table.Td>
                                     <Table.Td>{ret.supplier?.name || "-"}</Table.Td>
                                     <Table.Td>{statusBadge(ret.status)}</Table.Td>
                                     <Table.Td>{ret.items_count}</Table.Td>
-                                    <Table.Td>{formatDateTime(ret.returned_at || ret.created_at)}</Table.Td>
+                                    <Table.Td>
+                                        {formatDateTime(ret.returned_at || ret.created_at)}
+                                    </Table.Td>
                                     <Table.Td>{ret.creator?.name || "-"}</Table.Td>
                                     <Table.Td className="text-center">
                                         <Link
@@ -141,11 +149,14 @@ export default function Index({ returns, filters, suppliers }) {
                                 </tr>
                             ))
                         ) : (
-                            <Table.Empty colSpan={7} message={
-                                <div className="text-slate-500 dark:text-slate-400">
-                                    Belum ada data retur supplier.
-                                </div>
-                            }>
+                            <Table.Empty
+                                colSpan={7}
+                                message={
+                                    <div className="text-slate-500 dark:text-slate-400">
+                                        Belum ada data retur supplier.
+                                    </div>
+                                }
+                            >
                                 <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                                     <IconTruckReturn size={28} className="text-slate-400" />
                                 </div>

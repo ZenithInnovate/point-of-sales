@@ -16,12 +16,7 @@ export default function AuthBotGuardFields({ botGuard, data, setData }) {
                 value={data?.[honeypotField] ?? ""}
                 onChange={(event) => setData(honeypotField, event.target.value)}
             />
-            <input
-                type="hidden"
-                name={tokenField}
-                value={data?.[tokenField] ?? ""}
-                readOnly
-            />
+            <input type="hidden" name={tokenField} value={data?.[tokenField] ?? ""} readOnly />
         </div>
     );
 }

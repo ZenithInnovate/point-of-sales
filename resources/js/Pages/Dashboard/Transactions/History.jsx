@@ -84,12 +84,9 @@ const History = ({ transactions, filters }) => {
     const rows = transactions?.data ?? [];
     const links = transactions?.links ?? [];
     const currentPage = transactions?.current_page ?? 1;
-    const perPage = transactions?.per_page
-        ? Number(transactions?.per_page)
-        : rows.length || 1;
+    const perPage = transactions?.per_page ? Number(transactions?.per_page) : rows.length || 1;
 
-    const hasActiveFilters =
-        filterData.invoice || filterData.start_date || filterData.end_date;
+    const hasActiveFilters = filterData.invoice || filterData.start_date || filterData.end_date;
 
     return (
         <>
@@ -97,13 +94,10 @@ const History = ({ transactions, filters }) => {
 
             <div className="space-y-6">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                            <IconHistory
-                                size={28}
-                                className="text-primary-500"
-                            />
+                        <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">
+                            <IconHistory size={28} className="text-primary-500" />
                             Riwayat Transaksi
                         </h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -113,21 +107,21 @@ const History = ({ transactions, filters }) => {
                     <div className="flex gap-2">
                         <button
                             onClick={() => setShowFilters(!showFilters)}
-                            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-colors ${
+                            className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors ${
                                 showFilters || hasActiveFilters
-                                    ? "bg-primary-50 border-primary-200 text-primary-700 dark:bg-primary-950/50 dark:border-primary-800 dark:text-primary-400"
-                                    : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                                    ? "border-primary-200 bg-primary-50 text-primary-700 dark:border-primary-800 dark:bg-primary-950/50 dark:text-primary-400"
+                                    : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
                             }`}
                         >
                             <IconFilter size={18} />
                             <span>Filter</span>
                             {hasActiveFilters && (
-                                <span className="w-2 h-2 rounded-full bg-primary-500"></span>
+                                <span className="h-2 w-2 rounded-full bg-primary-500"></span>
                             )}
                         </button>
                         <Link
                             href={route("transactions.index")}
-                            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium transition-colors shadow-lg shadow-primary-500/30"
+                            className="inline-flex items-center gap-2 rounded-xl bg-primary-500 px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-primary-500/30 transition-colors hover:bg-primary-600"
                         >
                             <IconReceipt size={18} />
                             <span>Transaksi Baru</span>
@@ -137,62 +131,47 @@ const History = ({ transactions, filters }) => {
 
                 {/* Filters Panel */}
                 {showFilters && (
-                    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 animate-slide-up">
+                    <div className="animate-slide-up rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
                         <form onSubmit={applyFilters}>
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                                         Nomor Invoice
                                     </label>
                                     <input
                                         type="text"
                                         placeholder="TRX-..."
                                         value={filterData.invoice}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                "invoice",
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
+                                        onChange={(e) => handleChange("invoice", e.target.value)}
+                                        className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-slate-800 placeholder-slate-400 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                                         Tanggal Mulai
                                     </label>
                                     <input
                                         type="date"
                                         value={filterData.start_date}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                "start_date",
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
+                                        onChange={(e) => handleChange("start_date", e.target.value)}
+                                        className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-slate-800 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                                         Tanggal Akhir
                                     </label>
                                     <input
                                         type="date"
                                         value={filterData.end_date}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                "end_date",
-                                                e.target.value
-                                            )
-                                        }
-                                        className="w-full h-11 px-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all"
+                                        onChange={(e) => handleChange("end_date", e.target.value)}
+                                        className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-slate-800 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                                     />
                                 </div>
                                 <div className="flex items-end gap-2">
                                     <button
                                         type="submit"
-                                        className="flex-1 h-11 inline-flex items-center justify-center gap-2 rounded-xl bg-primary-500 hover:bg-primary-600 text-white font-medium transition-colors"
+                                        className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-primary-500 font-medium text-white transition-colors hover:bg-primary-600"
                                     >
                                         <IconSearch size={18} />
                                         <span>Cari</span>
@@ -201,7 +180,7 @@ const History = ({ transactions, filters }) => {
                                         <button
                                             type="button"
                                             onClick={resetFilters}
-                                            className="h-11 px-4 inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                                            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 text-slate-600 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
                                         >
                                             <IconX size={18} />
                                         </button>
@@ -214,37 +193,37 @@ const History = ({ transactions, filters }) => {
 
                 {/* Transaction List */}
                 {rows.length > 0 ? (
-                    <div className="bg-transparent border-0 shadow-none rounded-2xl sm:bg-white sm:dark:bg-slate-900 sm:border sm:border-slate-200 sm:dark:border-slate-800 sm:overflow-hidden">
+                    <div className="rounded-2xl border-0 bg-transparent shadow-none sm:overflow-hidden sm:border sm:border-slate-200 sm:bg-white sm:dark:border-slate-800 sm:dark:bg-slate-900">
                         {/* Desktop Table */}
-                        <div className="overflow-x-auto hidden sm:block">
+                        <div className="hidden overflow-x-auto sm:block">
                             <table className="w-full">
                                 <thead>
                                     <tr className="border-b border-slate-100 dark:border-slate-800">
-                                        <th className="px-4 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                                             No
                                         </th>
-                                        <th className="px-4 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                                             Invoice
                                         </th>
-                                        <th className="px-4 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                                             Tanggal
                                         </th>
-                                        <th className="px-4 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                                             Kasir
                                         </th>
-                                        <th className="px-4 py-4 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        <th className="px-4 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                                             Pelanggan
                                         </th>
-                                        <th className="px-4 py-4 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        <th className="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                                             Item
                                         </th>
-                                        <th className="px-4 py-4 text-right text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        <th className="px-4 py-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                                             Total
                                         </th>
-                                        <th className="px-4 py-4 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        <th className="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                                             Status
                                         </th>
-                                        <th className="px-4 py-4 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                        <th className="px-4 py-4 text-center text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                                             Aksi
                                         </th>
                                     </tr>
@@ -253,12 +232,10 @@ const History = ({ transactions, filters }) => {
                                     {rows.map((transaction, index) => (
                                         <tr
                                             key={transaction.id}
-                                            className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                                            className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
                                         >
                                             <td className="px-4 py-4 text-sm text-slate-600 dark:text-slate-400">
-                                                {index +
-                                                    1 +
-                                                    (currentPage - 1) * perPage}
+                                                {index + 1 + (currentPage - 1) * perPage}
                                             </td>
                                             <td className="px-4 py-4">
                                                 <span className="text-sm font-semibold text-slate-900 dark:text-white">
@@ -269,42 +246,33 @@ const History = ({ transactions, filters }) => {
                                                 {transaction.created_at}
                                             </td>
                                             <td className="px-4 py-4 text-sm text-slate-600 dark:text-slate-400">
-                                                {transaction.cashier?.name ??
-                                                    "-"}
+                                                {transaction.cashier?.name ?? "-"}
                                             </td>
                                             <td className="px-4 py-4">
-                                                <span className="px-2 py-1 text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-md">
-                                                    {transaction.customer
-                                                        ?.name ?? "Umum"}
+                                                <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+                                                    {transaction.customer?.name ?? "Umum"}
                                                 </span>
                                             </td>
                                             <td className="px-4 py-4 text-center">
-                                                <span className="px-2 py-1 text-xs font-medium bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-400 rounded-full">
-                                                    {transaction.total_items ??
-                                                        0}
+                                                <span className="rounded-full bg-primary-100 px-2 py-1 text-xs font-medium text-primary-700 dark:bg-primary-900/50 dark:text-primary-400">
+                                                    {transaction.total_items ?? 0}
                                                 </span>
                                             </td>
                                             <td className="px-4 py-4 text-right text-sm font-semibold text-slate-900 dark:text-white">
-                                                {formatCurrency(
-                                                    transaction.grand_total ?? 0
-                                                )}
+                                                {formatCurrency(transaction.grand_total ?? 0)}
                                             </td>
                                             <td className="px-4 py-4 text-center">
-                                                {transaction.payment_method ===
-                                                    "pay_later" &&
-                                                transaction.payment_status !==
-                                                    "paid" ? (
-                                                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full">
+                                                {transaction.payment_method === "pay_later" &&
+                                                transaction.payment_status !== "paid" ? (
+                                                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
                                                         Piutang
                                                     </span>
-                                                ) : transaction.payment_status ===
-                                                  "paid" ? (
-                                                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-success-100 dark:bg-success-900/30 text-success-700 dark:text-success-400 rounded-full">
+                                                ) : transaction.payment_status === "paid" ? (
+                                                    <span className="inline-flex items-center gap-1 rounded-full bg-success-100 px-2 py-1 text-xs font-medium text-success-700 dark:bg-success-900/30 dark:text-success-400">
                                                         <IconCheck size={12} />
                                                         Lunas
                                                     </span>
-                                                ) : transaction.payment_status ===
-                                                      "pending" &&
+                                                ) : transaction.payment_status === "pending" &&
                                                   canConfirmPayment ? (
                                                     <button
                                                         onClick={() =>
@@ -313,14 +281,13 @@ const History = ({ transactions, filters }) => {
                                                                 transaction,
                                                             })
                                                         }
-                                                        className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-warning-100 dark:bg-warning-900/30 text-warning-700 dark:text-warning-400 rounded-full hover:bg-warning-200 dark:hover:bg-warning-900/50 transition-colors"
+                                                        className="inline-flex items-center gap-1 rounded-full bg-warning-100 px-2 py-1 text-xs font-medium text-warning-700 transition-colors hover:bg-warning-200 dark:bg-warning-900/30 dark:text-warning-400 dark:hover:bg-warning-900/50"
                                                     >
                                                         Pending - Konfirmasi
                                                     </button>
                                                 ) : (
-                                                    <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-danger-100 dark:bg-danger-900/30 text-danger-700 dark:text-danger-400 rounded-full">
-                                                        {transaction.payment_status ??
-                                                            "-"}
+                                                    <span className="inline-flex items-center rounded-full bg-danger-100 px-2 py-1 text-xs font-medium text-danger-700 dark:bg-danger-900/30 dark:text-danger-400">
+                                                        {transaction.payment_status ?? "-"}
                                                     </span>
                                                 )}
                                             </td>
@@ -328,20 +295,20 @@ const History = ({ transactions, filters }) => {
                                                 <div className="flex items-center justify-center gap-2">
                                                     {canCreateSalesReturn ? (
                                                         transaction.can_create_sales_return ? (
-                                                        <Link
-                                                            href={route(
-                                                                "sales-returns.create",
-                                                                transaction.id
-                                                            )}
-                                                            className="inline-flex items-center justify-center rounded-lg bg-warning-50 px-3 py-2 text-xs font-semibold text-warning-700 hover:bg-warning-100 dark:bg-warning-950/30 dark:text-warning-300"
-                                                            title="Buat retur"
-                                                        >
-                                                            Retur
-                                                        </Link>
+                                                            <Link
+                                                                href={route(
+                                                                    "sales-returns.create",
+                                                                    transaction.id
+                                                                )}
+                                                                className="inline-flex items-center justify-center rounded-lg bg-warning-50 px-3 py-2 text-xs font-semibold text-warning-700 hover:bg-warning-100 dark:bg-warning-950/30 dark:text-warning-300"
+                                                                title="Buat retur"
+                                                            >
+                                                                Retur
+                                                            </Link>
                                                         ) : (
-                                                        <span className="inline-flex items-center justify-center rounded-lg bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-                                                            Retur selesai
-                                                        </span>
+                                                            <span className="inline-flex items-center justify-center rounded-lg bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                                                                Retur selesai
+                                                            </span>
                                                         )
                                                     ) : null}
                                                     <a
@@ -354,12 +321,10 @@ const History = ({ transactions, filters }) => {
                                                         )}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-green-600 hover:text-green-700 bg-green-50 hover:bg-green-100 dark:bg-green-900/30 dark:hover:bg-green-900/50 transition-colors"
+                                                        className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-green-50 text-green-600 transition-colors hover:bg-green-100 hover:text-green-700 dark:bg-green-900/30 dark:hover:bg-green-900/50"
                                                         title="Bagikan ke WhatsApp"
                                                     >
-                                                        <IconBrandWhatsapp
-                                                            size={18}
-                                                        />
+                                                        <IconBrandWhatsapp size={18} />
                                                     </a>
                                                     {canCreateCrmCampaign && (
                                                         <Link
@@ -372,9 +337,7 @@ const History = ({ transactions, filters }) => {
                                                             className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-primary-50 text-primary-600 transition-colors hover:bg-primary-100 hover:text-primary-700 dark:bg-primary-950/30 dark:hover:bg-primary-950/50"
                                                             title="Buat campaign share"
                                                         >
-                                                            <IconBuildingBank
-                                                                size={18}
-                                                            />
+                                                            <IconBuildingBank size={18} />
                                                         </Link>
                                                     )}
                                                     <Link
@@ -382,7 +345,7 @@ const History = ({ transactions, filters }) => {
                                                             "transactions.print",
                                                             transaction.invoice
                                                         )}
-                                                        className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-slate-500 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-950/50 transition-colors"
+                                                        className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition-colors hover:bg-primary-50 hover:text-primary-600 dark:hover:bg-primary-950/50"
                                                         title="Cetak Struk"
                                                     >
                                                         <IconPrinter size={18} />
@@ -396,11 +359,11 @@ const History = ({ transactions, filters }) => {
                         </div>
 
                         {/* Mobile Cards */}
-                        <div className="sm:hidden flex flex-col gap-3 px-1">
+                        <div className="flex flex-col gap-3 px-1 sm:hidden">
                             {rows.map((transaction, index) => (
                                 <div
                                     key={transaction.id}
-                                    className="p-4 space-y-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm"
+                                    className="space-y-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                                 >
                                     <div className="flex items-center justify-between">
                                         <div className="space-y-1">
@@ -414,23 +377,19 @@ const History = ({ transactions, filters }) => {
                                                 {transaction.created_at}
                                             </p>
                                         </div>
-                                        <div className="text-right space-y-2">
-                                            <div className="flex flex-wrap gap-2 justify-end">
-                                                {transaction.payment_method ===
-                                                    "pay_later" &&
-                                                transaction.payment_status !==
-                                                    "paid" ? (
-                                                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 rounded-full">
+                                        <div className="space-y-2 text-right">
+                                            <div className="flex flex-wrap justify-end gap-2">
+                                                {transaction.payment_method === "pay_later" &&
+                                                transaction.payment_status !== "paid" ? (
+                                                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
                                                         Piutang
                                                     </span>
-                                                ) : transaction.payment_status ===
-                                                  "paid" ? (
-                                                    <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-success-100 dark:bg-success-900/30 text-success-700 dark:text-success-400 rounded-full">
+                                                ) : transaction.payment_status === "paid" ? (
+                                                    <span className="inline-flex items-center gap-1 rounded-full bg-success-100 px-2 py-1 text-xs font-medium text-success-700 dark:bg-success-900/30 dark:text-success-400">
                                                         <IconCheck size={12} />
                                                         Lunas
                                                     </span>
-                                                ) : transaction.payment_status ===
-                                                      "pending" &&
+                                                ) : transaction.payment_status === "pending" &&
                                                   canConfirmPayment ? (
                                                     <button
                                                         onClick={() =>
@@ -439,21 +398,18 @@ const History = ({ transactions, filters }) => {
                                                                 transaction,
                                                             })
                                                         }
-                                                        className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-warning-100 dark:bg-warning-900/30 text-warning-700 dark:text-warning-400 rounded-full"
+                                                        className="inline-flex items-center gap-1 rounded-full bg-warning-100 px-2 py-1 text-xs font-medium text-warning-700 dark:bg-warning-900/30 dark:text-warning-400"
                                                     >
                                                         Pending
                                                     </button>
                                                 ) : (
-                                                    <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-danger-100 dark:bg-danger-900/30 text-danger-700 dark:text-danger-400 rounded-full">
-                                                        {transaction.payment_status ??
-                                                            "-"}
+                                                    <span className="inline-flex items-center rounded-full bg-danger-100 px-2 py-1 text-xs font-medium text-danger-700 dark:bg-danger-900/30 dark:text-danger-400">
+                                                        {transaction.payment_status ?? "-"}
                                                     </span>
                                                 )}
                                             </div>
                                             <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                                                {formatCurrency(
-                                                    transaction.grand_total ?? 0
-                                                )}
+                                                {formatCurrency(transaction.grand_total ?? 0)}
                                             </p>
                                         </div>
                                     </div>
@@ -464,8 +420,7 @@ const History = ({ transactions, filters }) => {
                                                 Kasir
                                             </p>
                                             <p className="font-medium">
-                                                {transaction.cashier?.name ??
-                                                    "-"}
+                                                {transaction.cashier?.name ?? "-"}
                                             </p>
                                         </div>
                                         <div className="text-right">
@@ -473,8 +428,7 @@ const History = ({ transactions, filters }) => {
                                                 Pelanggan
                                             </p>
                                             <p className="font-medium">
-                                                {transaction.customer?.name ??
-                                                    "Umum"}
+                                                {transaction.customer?.name ?? "Umum"}
                                             </p>
                                         </div>
                                         <div>
@@ -499,38 +453,32 @@ const History = ({ transactions, filters }) => {
                                     <div className="grid grid-cols-2 gap-2">
                                         {canCreateSalesReturn ? (
                                             transaction.can_create_sales_return ? (
-                                            <Link
-                                                href={route(
-                                                    "sales-returns.create",
-                                                    transaction.id
-                                                )}
-                                                className="inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-semibold rounded-lg bg-warning-50 text-warning-700 hover:bg-warning-100 dark:bg-warning-950/30 dark:text-warning-300"
-                                            >
-                                                Retur
-                                            </Link>
+                                                <Link
+                                                    href={route(
+                                                        "sales-returns.create",
+                                                        transaction.id
+                                                    )}
+                                                    className="inline-flex items-center justify-center gap-1 rounded-lg bg-warning-50 px-3 py-2 text-xs font-semibold text-warning-700 hover:bg-warning-100 dark:bg-warning-950/30 dark:text-warning-300"
+                                                >
+                                                    Retur
+                                                </Link>
                                             ) : (
-                                            <div className="inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-                                                Retur selesai
-                                            </div>
+                                                <div className="inline-flex items-center justify-center gap-1 rounded-lg bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                                                    Retur selesai
+                                                </div>
                                             )
                                         ) : null}
                                         <Link
-                                            href={route(
-                                                "transactions.print",
-                                                transaction.invoice
-                                            )}
-                                            className="inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-semibold rounded-lg bg-primary-50 text-primary-700 hover:bg-primary-100 dark:bg-primary-900/30 dark:text-primary-300 dark:hover:bg-primary-900/50"
+                                            href={route("transactions.print", transaction.invoice)}
+                                            className="inline-flex items-center justify-center gap-1 rounded-lg bg-primary-50 px-3 py-2 text-xs font-semibold text-primary-700 hover:bg-primary-100 dark:bg-primary-900/30 dark:text-primary-300 dark:hover:bg-primary-900/50"
                                         >
                                             Detail
                                         </Link>
                                         <a
-                                            href={route(
-                                                "transactions.public",
-                                                transaction.invoice
-                                            )}
+                                            href={route("transactions.public", transaction.invoice)}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                                            className="inline-flex items-center justify-center gap-1 rounded-lg bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
                                         >
                                             Invoice
                                         </a>
@@ -554,7 +502,7 @@ const History = ({ transactions, filters }) => {
                                             )}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="inline-flex items-center justify-center gap-1 px-3 py-2 text-xs font-semibold rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-300 dark:hover:bg-emerald-900/50"
+                                            className="inline-flex items-center justify-center gap-1 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-300 dark:hover:bg-emerald-900/50"
                                         >
                                             Resi
                                         </a>
@@ -565,15 +513,15 @@ const History = ({ transactions, filters }) => {
                     </div>
                 ) : (
                     /* Empty State */
-                    <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
-                        <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                    <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-900">
+                        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
                             <IconDatabaseOff
                                 size={32}
                                 className="text-slate-400"
                                 strokeWidth={1.5}
                             />
                         </div>
-                        <h3 className="text-lg font-medium text-slate-800 dark:text-slate-200 mb-1">
+                        <h3 className="mb-1 text-lg font-medium text-slate-800 dark:text-slate-200">
                             Belum Ada Transaksi
                         </h3>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -594,35 +542,30 @@ const History = ({ transactions, filters }) => {
                     <div
                         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                         onClick={() =>
-                            !isConfirming &&
-                            setConfirmModal({ open: false, transaction: null })
+                            !isConfirming && setConfirmModal({ open: false, transaction: null })
                         }
                     />
 
                     {/* Modal */}
-                    <div className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
+                    <div className="animate-in fade-in zoom-in relative w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl duration-200 dark:bg-slate-900">
                         {/* Header */}
                         <div className="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-5 text-white">
                             <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20">
                                     <IconBuildingBank size={24} />
                                 </div>
                                 <div>
-                                    <h3 className="text-lg font-bold">
-                                        Konfirmasi Pembayaran
-                                    </h3>
-                                    <p className="text-sm opacity-90">
-                                        Transfer Bank
-                                    </p>
+                                    <h3 className="text-lg font-bold">Konfirmasi Pembayaran</h3>
+                                    <p className="text-sm opacity-90">Transfer Bank</p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Content */}
-                        <div className="p-6 space-y-4">
+                        <div className="space-y-4 p-6">
                             {/* Invoice Info */}
-                            <div className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4">
-                                <div className="flex justify-between items-center mb-2">
+                            <div className="rounded-xl bg-slate-50 p-4 dark:bg-slate-800">
+                                <div className="mb-2 flex items-center justify-between">
                                     <span className="text-sm text-slate-500 dark:text-slate-400">
                                         Invoice
                                     </span>
@@ -630,44 +573,39 @@ const History = ({ transactions, filters }) => {
                                         {confirmModal.transaction.invoice}
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center mb-2">
+                                <div className="mb-2 flex items-center justify-between">
                                     <span className="text-sm text-slate-500 dark:text-slate-400">
                                         Pelanggan
                                     </span>
                                     <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                        {confirmModal.transaction.customer
-                                            ?.name ?? "Umum"}
+                                        {confirmModal.transaction.customer?.name ?? "Umum"}
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center">
+                                <div className="flex items-center justify-between">
                                     <span className="text-sm text-slate-500 dark:text-slate-400">
                                         Total
                                     </span>
                                     <span className="text-lg font-bold text-primary-600 dark:text-primary-400">
-                                        {formatCurrency(
-                                            confirmModal.transaction
-                                                .grand_total ?? 0
-                                        )}
+                                        {formatCurrency(confirmModal.transaction.grand_total ?? 0)}
                                     </span>
                                 </div>
                             </div>
 
                             {/* Confirmation Message */}
-                            <div className="flex items-start gap-3 p-4 bg-warning-50 dark:bg-warning-900/20 rounded-xl border border-warning-200 dark:border-warning-800">
+                            <div className="flex items-start gap-3 rounded-xl border border-warning-200 bg-warning-50 p-4 dark:border-warning-800 dark:bg-warning-900/20">
                                 <IconAlertCircle
                                     size={20}
-                                    className="text-warning-600 dark:text-warning-400 flex-shrink-0 mt-0.5"
+                                    className="mt-0.5 flex-shrink-0 text-warning-600 dark:text-warning-400"
                                 />
                                 <p className="text-sm text-warning-800 dark:text-warning-300">
-                                    Pastikan dana sudah diterima sebelum
-                                    mengkonfirmasi pembayaran ini. Tindakan ini
-                                    tidak dapat dibatalkan.
+                                    Pastikan dana sudah diterima sebelum mengkonfirmasi pembayaran
+                                    ini. Tindakan ini tidak dapat dibatalkan.
                                 </p>
                             </div>
                         </div>
 
                         {/* Actions */}
-                        <div className="px-6 pb-6 flex gap-3">
+                        <div className="flex gap-3 px-6 pb-6">
                             <button
                                 onClick={() =>
                                     setConfirmModal({
@@ -676,7 +614,7 @@ const History = ({ transactions, filters }) => {
                                     })
                                 }
                                 disabled={isConfirming}
-                                className="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50"
+                                className="flex-1 rounded-xl border border-slate-200 px-4 py-3 font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                             >
                                 Batal
                             </button>
@@ -704,14 +642,11 @@ const History = ({ transactions, filters }) => {
                                     );
                                 }}
                                 disabled={isConfirming}
-                                className="flex-1 px-4 py-3 rounded-xl bg-success-500 hover:bg-success-600 text-white font-medium transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                                className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-success-500 px-4 py-3 font-medium text-white transition-colors hover:bg-success-600 disabled:opacity-50"
                             >
                                 {isConfirming ? (
                                     <>
-                                        <svg
-                                            className="animate-spin h-4 w-4"
-                                            viewBox="0 0 24 24"
-                                        >
+                                        <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24">
                                             <circle
                                                 className="opacity-25"
                                                 cx="12"
