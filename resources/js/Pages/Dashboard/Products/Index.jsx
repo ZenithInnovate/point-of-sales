@@ -46,7 +46,7 @@ function ProductCard({
 
     return (
         <div
-            className={`group bg-white dark:bg-slate-900 rounded-2xl border overflow-hidden hover:shadow-lg transition-all duration-200 ${
+            className={`group bg-white dark:bg-slate-900 rounded-lg border overflow-hidden hover:shadow-lg transition-all duration-200 ${
                 isSelected
                     ? "border-primary-500 ring-2 ring-primary-500/20"
                     : "border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
@@ -103,7 +103,7 @@ function ProductCard({
                         {canUpdate && (
                             <Link
                                 href={route("products.edit", product.id)}
-                                className="p-2.5 rounded-xl bg-white text-warning-600 hover:bg-warning-50 shadow-lg transition-colors"
+                                className="p-2.5 rounded-lg bg-white text-warning-600 hover:bg-warning-50 shadow-lg transition-colors"
                             >
                                 <IconPencilCog size={18} />
                             </Link>
@@ -113,7 +113,7 @@ function ProductCard({
                                 type={"delete"}
                                 icon={<IconTrash size={18} />}
                                 className={
-                                    "p-2.5 rounded-xl bg-white text-danger-600 hover:bg-danger-50 shadow-lg"
+                                    "p-2.5 rounded-lg bg-white text-danger-600 hover:bg-danger-50 shadow-lg"
                                 }
                                 url={route("products.destroy", product.id)}
                             />
@@ -242,7 +242,7 @@ export default function Index({ products }) {
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
                         <button
                             onClick={handlePrintAllBarcodes}
-                            className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors w-full sm:w-auto"
+                            className="inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors w-full sm:w-auto"
                         >
                             <IconBarcode size={18} />
                             Cetak All Barcode
@@ -298,7 +298,7 @@ export default function Index({ products }) {
                     {selectedProducts.length > 0 && (
                         <button
                             onClick={handlePrintSelected}
-                            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium transition-colors"
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium transition-colors"
                         >
                             <IconPrinter size={18} />
                             Cetak Terpilih ({selectedProducts.length})
@@ -483,7 +483,7 @@ export default function Index({ products }) {
                 )
             ) : (
                 /* Empty State */
-                <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+                <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
                     <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
                         <IconDatabaseOff
                             size={32}

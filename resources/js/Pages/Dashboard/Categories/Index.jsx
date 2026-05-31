@@ -20,7 +20,7 @@ import { useAuthorization } from "@/Utils/authorization";
 // Category Card for Grid View
 function CategoryCard({ category, canUpdate, canDelete }) {
     return (
-        <div className="group bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-lg hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
+        <div className="group bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-lg hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200">
             {/* Category Image */}
             <div className="relative aspect-[3/2] bg-slate-100 dark:bg-slate-800 overflow-hidden">
                 {category.image ? (
@@ -46,7 +46,7 @@ function CategoryCard({ category, canUpdate, canDelete }) {
                         {canUpdate && (
                             <Link
                                 href={route("categories.edit", category.id)}
-                                className="p-2.5 rounded-xl bg-white text-warning-600 hover:bg-warning-50 shadow-lg transition-colors"
+                                className="p-2.5 rounded-lg bg-white text-warning-600 hover:bg-warning-50 shadow-lg transition-colors"
                             >
                                 <IconPencilCog size={18} />
                             </Link>
@@ -56,7 +56,7 @@ function CategoryCard({ category, canUpdate, canDelete }) {
                                 type={"delete"}
                                 icon={<IconTrash size={18} />}
                                 className={
-                                    "p-2.5 rounded-xl bg-white text-danger-600 hover:bg-danger-50 shadow-lg"
+                                    "p-2.5 rounded-lg bg-white text-danger-600 hover:bg-danger-50 shadow-lg"
                                 }
                                 url={route("categories.destroy", category.id)}
                             />
@@ -195,7 +195,7 @@ export default function Index({ categories }) {
                                         </Table.Td>
                                         <Table.Td>
                                             <div className="flex items-center gap-3">
-                                                <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 overflow-hidden flex-shrink-0">
+                                                <div className="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden flex-shrink-0">
                                                     {category.image ? (
                                                         <img
                                                             src={category.image}
@@ -273,7 +273,7 @@ export default function Index({ categories }) {
                 )
             ) : (
                 /* Empty State */
-                <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+                <div className="flex flex-col items-center justify-center py-16 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
                     <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
                         <IconDatabaseOff
                             size={32}
