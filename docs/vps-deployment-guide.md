@@ -16,7 +16,26 @@ Sebelum memulai, pastikan server VPS Anda sudah terpasang:
 
 ---
 
-## 🔐 Langkah 1: Pengaturan Hak Akses Database (SANGAT KRUSIAL!)
+## 🌐 Langkah 1: Penyetelan DNS Domain (Arahkan ke IP VPS)
+
+Sebelum menyentuh konfigurasi server VPS, Anda wajib mengarahkan seluruh domain atau subdomain aktif yang akan digunakan oleh tenant ke IP Publik server VPS Anda.
+
+1. Buka layanan **DNS Manager / Registrar Domain** Anda (misalnya Cloudflare, IDwebhost, Niagahoster, dll.).
+2. Tambahkan **A Record** untuk setiap domain utama atau subdomain yang akan digunakan:
+   * **Domain Landing Page/Pusat (misal: `akarpos.com`)**:
+     * Type: `A` | Name: `@` | Value: `IP_PUBLIK_VPS_ANDA`
+   * **Domain Tenant 1 (misal: `domain1.com`)**:
+     * Type: `A` | Name: `@` | Value: `IP_PUBLIK_VPS_ANDA`
+   * **Domain Tenant 2 (misal: `domain2.com`)**:
+     * Type: `A` | Name: `@` | Value: `IP_PUBLIK_VPS_ANDA`
+3. Simpan konfigurasi DNS tersebut. 
+
+> [!NOTE]
+> Propagasi DNS (penyelarasan alamat IP di internet) biasanya memerlukan waktu antara 5 menit hingga maksimal 24 jam tergantung penyedia domain Anda.
+
+---
+
+## 🔐 Langkah 2: Pengaturan Hak Akses Database (SANGAT KRUSIAL!)
 
 > [!WARNING]
 > **Poin Kunci Keamanan DB:**
@@ -42,7 +61,7 @@ Sebelum memulai, pastikan server VPS Anda sudah terpasang:
 
 ---
 
-## 📂 Langkah 2: Deploy Source Code & Konfigurasi `.env`
+## 📂 Langkah 3: Deploy Source Code & Konfigurasi `.env`
 
 1. Clone repository project Anda ke direktori `/var/www/toko` di VPS:
    ```bash
@@ -89,7 +108,7 @@ Sebelum memulai, pastikan server VPS Anda sudah terpasang:
 
 ---
 
-## ⚙️ Langkah 3: Menjalankan Migrasi Landlord (Pusat)
+## ⚙️ Langkah 4: Menjalankan Migrasi Landlord (Pusat)
 
 Jalankan perintah ini untuk membuat tabel pendaftaran tenant (`tenants`) di database pusat:
 ```bash
@@ -98,7 +117,7 @@ php artisan migrate --path=database/migrations/landlord --database=landlord --fo
 
 ---
 
-## 🏪 Langkah 4: Mendaftarkan & Menyiapkan Tenant
+## 🏪 Langkah 5: Mendaftarkan & Menyiapkan Tenant
 
 Jalankan perintah `tenant:create` untuk masing-masing domain aktif Anda untuk membuat database secara otomatis, memigrasikan tabel POS, dan men-seed data default:
 
@@ -112,7 +131,7 @@ php artisan tenant:create tenant2 domain2.com "Toko Cabang" --db-database=toko2
 
 ---
 
-## 🌐 Langkah 5: Konfigurasi Nginx Multi-Domain (Catch-All)
+## 🖥️ Langkah 6: Konfigurasi Nginx Multi-Domain (Catch-All)
 
 > [!TIP]
 > **Metode Best Practice SaaS:**
@@ -171,7 +190,7 @@ php artisan tenant:create tenant2 domain2.com "Toko Cabang" --db-database=toko2
 
 ---
 
-## 🔒 Langkah 6: Mengamankan Koneksi dengan SSL Gratis (HTTPS)
+## 🔒 Langkah 7: Mengamankan Koneksi dengan SSL Gratis (HTTPS)
 
 Gunakan Certbot untuk menginstal SSL Let's Encrypt gratis secara otomatis di seluruh domain aktif Anda:
 
@@ -183,7 +202,7 @@ Gunakan Certbot untuk menginstal SSL Let's Encrypt gratis secara otomatis di sel
 
 ---
 
-## 🛡️ Langkah 7: Pengaturan Kepemilikan & Hak Akses Direktori (PENTING!)
+## 🛡️ Langkah 8: Pengaturan Kepemilikan & Hak Akses Direktori (PENTING!)
 
 Agar server Nginx (`www-data`) memiliki izin penuh untuk membuat folder isolasi tenant dan mengunggah berkas (seperti foto produk atau avatar kasir), jalankan perintah ini:
 ```bash
