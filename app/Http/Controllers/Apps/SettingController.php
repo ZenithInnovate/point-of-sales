@@ -54,9 +54,16 @@ class SettingController extends Controller
      */
     public function storeProfile()
     {
+        $logo = Setting::get('store_logo', '');
+        if ($logo && !str_starts_with((string) $logo, 'http') && !str_starts_with((string) $logo, '/storage')) {
+            $logo = app()->bound('tenant')
+                ? asset('/storage/tenants/'.app('tenant')->storage_key.'/'.ltrim((string) $logo, '/'))
+                : asset('storage/'.ltrim((string) $logo, '/'));
+        }
+
         $settings = [
             'store_name' => Setting::get('store_name', ''),
-            'store_logo' => Setting::get('store_logo', ''),
+            'store_logo' => $logo,
             'store_address' => Setting::get('store_address', ''),
             'store_phone' => Setting::get('store_phone', ''),
             'store_email' => Setting::get('store_email', ''),

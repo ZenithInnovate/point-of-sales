@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Head, useForm, usePage, Link } from "@inertiajs/react";
 import Button from "@/Components/Dashboard/Button";
@@ -13,6 +13,7 @@ import {
     IconPhoto,
     IconBarcode,
     IconCurrencyDollar,
+    IconUpload,
 } from "@tabler/icons-react";
 
 export default function Create({ categories }) {
@@ -32,6 +33,7 @@ export default function Create({ categories }) {
 
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+    const fileInputRef = useRef(null);
 
     const setSelectedCategoryHandler = (value) => {
         setSelectedCategory(value);
@@ -82,28 +84,39 @@ export default function Create({ categories }) {
                                 <IconPhoto size={18} />
                                 Gambar Produk
                             </h3>
-                            <div className="mb-4 flex aspect-square items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
+
+                            <div
+                                onClick={() => fileInputRef.current?.click()}
+                                className="group relative mb-4 flex aspect-square cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-300 bg-slate-100 transition-all hover:border-primary-500 hover:bg-slate-200/50 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary-500"
+                                title="Klik untuk mengunggah gambar produk"
+                            >
                                 {imagePreview ? (
-                                    <img
-                                        src={imagePreview}
-                                        alt="Preview"
-                                        className="h-full w-full object-cover"
-                                    />
-                                ) : (
-                                    <div className="p-6 text-center">
-                                        <IconPhoto
-                                            size={48}
-                                            className="mx-auto mb-2 text-slate-400"
+                                    <>
+                                        <img
+                                            src={imagePreview}
+                                            alt="Preview"
+                                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                         />
-                                        <p className="text-sm text-slate-500">Belum ada gambar</p>
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                                            <IconUpload size={24} />
+                                            <span className="mt-1 text-[10px] font-semibold">
+                                                Ganti Gambar
+                                            </span>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="p-6 text-center text-slate-400 transition-colors duration-200 group-hover:text-primary-500 dark:text-slate-500">
+                                        <IconPhoto size={48} className="mx-auto mb-2" />
+                                        <p className="text-sm font-semibold">Unggah Gambar</p>
                                     </div>
                                 )}
                             </div>
-                            <Input
+
+                            <input
                                 type="file"
-                                label="Upload Gambar"
+                                ref={fileInputRef}
                                 onChange={handleImageChange}
-                                errors={errors.image}
+                                className="hidden"
                                 accept="image/*"
                             />
                         </div>

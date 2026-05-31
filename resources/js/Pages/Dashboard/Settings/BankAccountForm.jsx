@@ -103,19 +103,70 @@ export default function BankAccountForm({ bankAccount = null }) {
                             <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                                 Logo Bank (opsional)
                             </label>
+
+                            <div
+                                onClick={() =>
+                                    canUpdatePaymentSettings && fileInputRef.current?.click()
+                                }
+                                className={`group relative mb-3 flex h-32 w-32 items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 transition-all dark:border-slate-700 dark:bg-slate-800 ${
+                                    canUpdatePaymentSettings
+                                        ? "cursor-pointer hover:border-primary-500 hover:bg-slate-100/50 dark:hover:border-primary-500 dark:hover:bg-slate-800/80"
+                                        : "cursor-not-allowed opacity-60"
+                                }`}
+                                title={
+                                    canUpdatePaymentSettings
+                                        ? "Klik untuk mengunggah logo bank"
+                                        : ""
+                                }
+                            >
+                                {logoPreview ? (
+                                    <>
+                                        <img
+                                            src={logoPreview}
+                                            alt="Logo Bank"
+                                            className="h-full w-full object-contain p-2 transition-transform duration-300 group-hover:scale-105"
+                                        />
+                                        {canUpdatePaymentSettings && (
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                                                <IconUpload size={20} />
+                                                <span className="mt-1 text-[10px] font-semibold">
+                                                    Ganti Logo
+                                                </span>
+                                            </div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <div
+                                        className={`flex flex-col items-center gap-1 text-slate-400 transition-colors duration-200 dark:text-slate-500 ${canUpdatePaymentSettings ? "group-hover:text-primary-500" : ""}`}
+                                    >
+                                        <IconBuildingBank size={36} strokeWidth={1.5} />
+                                        <span className="text-[10px] font-semibold">
+                                            Unggah Logo
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+
                             <input
                                 type="file"
+                                ref={fileInputRef}
                                 accept="image/*"
-                                onChange={(e) => setData("logo", e.target.files?.[0] || null)}
+                                className="hidden"
                                 disabled={!canUpdatePaymentSettings}
-                                className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) {
+                                        setData("logo", file);
+                                        setLogoPreview(URL.createObjectURL(file));
+                                    }
+                                }}
                             />
                             {errors.logo && (
                                 <p className="mt-1 text-xs text-danger-500">{errors.logo}</p>
                             )}
                         </div>
-                        <div className="flex items-end">
-                            <label className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                        <div className="flex items-center">
+                            <label className="flex cursor-pointer items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
                                 <input
                                     type="checkbox"
                                     checked={data.is_active}

@@ -4,7 +4,8 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Link, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { IconUpload } from "@tabler/icons-react";
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = "" }) {
     const user = usePage().props.auth.user;
@@ -16,6 +17,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     });
 
     const [preview, setPreview] = useState(user.avatar || null);
+    const fileInputRef = useRef(null);
 
     const submit = (e) => {
         e.preventDefault();
@@ -83,23 +85,43 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputLabel htmlFor="avatar" value="Avatar" />
 
                     <div className="mt-2 flex items-center gap-4">
-                        <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-gray-200">
+                        <div
+                            onClick={() => fileInputRef.current?.click()}
+                            className="group relative flex h-16 w-16 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-gray-300 bg-gray-50 shadow-inner transition-all hover:border-indigo-500 hover:bg-gray-100/50"
+                            title="Click to upload avatar"
+                        >
                             {preview ? (
-                                <img
-                                    src={preview}
-                                    alt="Preview"
-                                    className="h-full w-full object-cover"
-                                />
+                                <>
+                                    <img
+                                        src={preview}
+                                        alt="Preview"
+                                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-gray-950/60 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                                        <IconUpload size={14} />
+                                        <span className="text-[8px] font-semibold">Change</span>
+                                    </div>
+                                </>
                             ) : (
-                                <span className="text-lg font-semibold text-gray-600">
-                                    {user.name?.charAt(0)?.toUpperCase() || "?"}
-                                </span>
+                                <div className="flex h-full w-full flex-col items-center justify-center rounded-full text-lg font-bold text-gray-400 transition-colors duration-200 group-hover:text-indigo-500">
+                                    {user.name ? (
+                                        <span className="group-hover:hidden">
+                                            {user.name.charAt(0).toUpperCase()}
+                                        </span>
+                                    ) : (
+                                        <span className="group-hover:hidden">?</span>
+                                    )}
+                                    <IconUpload size={16} className="hidden group-hover:block" />
+                                </div>
                             )}
                         </div>
+
                         <input
                             id="avatar"
+                            ref={fileInputRef}
                             type="file"
                             accept="image/*"
+                            className="hidden"
                             onChange={(e) => {
                                 const file = e.target.files[0];
                                 if (file) {

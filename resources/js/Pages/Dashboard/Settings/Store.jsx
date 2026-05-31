@@ -74,8 +74,8 @@ export default function Store({ settings }) {
                                 <IconPhoto size={18} />
                                 Logo Toko
                             </label>
-                            
-                            <div 
+
+                            <div
                                 onClick={() => fileInputRef.current?.click()}
                                 className="group relative mb-3 flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 transition-all hover:border-primary-500 hover:bg-slate-100/50 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary-500 dark:hover:bg-slate-800/80"
                                 title="Klik untuk mengunggah logo"
@@ -93,15 +93,19 @@ export default function Store({ settings }) {
                                             alt="Logo"
                                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                                         />
-                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100 text-white">
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                                             <IconUpload size={20} />
-                                            <span className="mt-1 text-[10px] font-semibold">Ganti Logo</span>
+                                            <span className="mt-1 text-[10px] font-semibold">
+                                                Ganti Logo
+                                            </span>
                                         </div>
                                     </>
                                 ) : (
-                                    <div className="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 transition-colors duration-200 group-hover:text-primary-500">
+                                    <div className="flex flex-col items-center gap-1 text-slate-400 transition-colors duration-200 group-hover:text-primary-500 dark:text-slate-500">
                                         <IconBuildingStore size={36} strokeWidth={1.5} />
-                                        <span className="text-[10px] font-semibold">Unggah Logo</span>
+                                        <span className="text-[10px] font-semibold">
+                                            Unggah Logo
+                                        </span>
                                     </div>
                                 )}
                             </div>

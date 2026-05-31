@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Head, usePage, useForm, Link } from "@inertiajs/react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { IconUserEdit, IconDeviceFloppy, IconArrowLeft, IconShield } from "@tabler/icons-react";
+import {
+    IconUserEdit,
+    IconDeviceFloppy,
+    IconArrowLeft,
+    IconShield,
+    IconUpload,
+} from "@tabler/icons-react";
 import Input from "@/Components/Dashboard/Input";
 import Checkbox from "@/Components/Dashboard/Checkbox";
 import toast from "react-hot-toast";
-import { useState } from "react";
 
 export default function Edit() {
     const { roles, user } = usePage().props;
@@ -21,6 +26,7 @@ export default function Edit() {
     });
 
     const [avatarPreview, setAvatarPreview] = useState(user.avatar || null);
+    const fileInputRef = useRef(null);
 
     const setSelectedRoles = (e) => {
         let items = [...data.selectedRoles];
@@ -70,35 +76,62 @@ export default function Edit() {
                             <label className="mb-3 block text-sm font-semibold text-slate-700 dark:text-slate-300">
                                 Avatar
                             </label>
+
                             <div className="flex flex-col items-center gap-4">
-                                <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-2 border-slate-200 bg-slate-100 text-xl font-bold text-slate-500 shadow-inner dark:border-slate-700 dark:bg-slate-800">
+                                <div
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="group relative flex h-20 w-20 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-dashed border-slate-300 bg-slate-100 shadow-inner transition-all hover:border-primary-500 hover:bg-slate-200/50 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary-500"
+                                    title="Klik untuk mengunggah avatar"
+                                >
                                     {avatarPreview ? (
-                                        <img
-                                            src={avatarPreview}
-                                            alt="Preview"
-                                            className="h-full w-full object-cover"
-                                        />
+                                        <>
+                                            <img
+                                                src={avatarPreview}
+                                                alt="Preview"
+                                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                            />
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-slate-950/60 text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                                                <IconUpload size={16} />
+                                                <span className="text-[8px] font-semibold">
+                                                    Ganti
+                                                </span>
+                                            </div>
+                                        </>
                                     ) : (
-                                        <span>
-                                            {user.name ? user.name.charAt(0).toUpperCase() : "?"}
-                                        </span>
+                                        <div className="flex h-full w-full flex-col items-center justify-center rounded-full text-xl font-bold text-slate-400 transition-colors duration-200 group-hover:text-primary-500 dark:text-slate-500">
+                                            {data.name ? (
+                                                <span className="group-hover:hidden">
+                                                    {data.name.charAt(0).toUpperCase()}
+                                                </span>
+                                            ) : (
+                                                <span className="group-hover:hidden">?</span>
+                                            )}
+                                            <IconUpload
+                                                size={18}
+                                                className="hidden group-hover:block"
+                                            />
+                                        </div>
                                     )}
                                 </div>
-                                <div className="w-full">
-                                    <Input
-                                        type="file"
-                                        accept="image/*"
-                                        onChange={(e) => {
-                                            const file = e.target.files[0];
-                                            if (file) {
-                                                setData("avatar", file);
-                                                setAvatarPreview(URL.createObjectURL(file));
-                                            }
-                                        }}
-                                        errors={errors.avatar}
-                                        className="w-full text-xs"
-                                    />
-                                </div>
+
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    accept="image/*"
+                                    className="hidden"
+                                    onChange={(e) => {
+                                        const file = e.target.files[0];
+                                        if (file) {
+                                            setData("avatar", file);
+                                            setAvatarPreview(URL.createObjectURL(file));
+                                        }
+                                    }}
+                                />
+                                {errors.avatar && (
+                                    <p className="mt-1 text-center text-xs text-danger-500">
+                                        {errors.avatar}
+                                    </p>
+                                )}
                             </div>
                         </div>
 
