@@ -60,23 +60,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('verification.notice');
         }
 
-        $routePriority = [
-            'transactions-access' => 'transactions.index',
-            'receivables-access' => 'receivables.index',
-            'payables-access' => 'payables.index',
-            'customers-access' => 'customers.index',
-            'suppliers-access' => 'suppliers.index',
-            'reports-access' => 'reports.sales.index',
-            'dashboard-access' => 'dashboard',
-        ];
-
-        $defaultRoute = 'dashboard.access';
-        foreach ($routePriority as $permission => $routeName) {
-            if ($user && $user->can($permission)) {
-                $defaultRoute = $routeName;
-                break;
-            }
-        }
+        $defaultRoute = $user && $user->can('dashboard-access') ? 'dashboard' : 'dashboard.access';
 
         return redirect()->intended(route($defaultRoute, absolute: false));
     }

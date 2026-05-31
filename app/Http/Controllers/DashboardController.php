@@ -19,6 +19,48 @@ class DashboardController extends Controller
 {
     public function index(CashierShiftService $cashierShiftService)
     {
+        if (app()->bound('tenant') && app('tenant')->id === 'admin') {
+            $totalTenants = \App\Models\Tenant::count();
+            $activeTenants = \App\Models\Tenant::where('status', 'active')->count();
+            $suspendedTenants = \App\Models\Tenant::where('status', 'suspended')->count();
+            $totalUsers = \App\Models\User::count();
+
+            $recentTenants = \App\Models\Tenant::latest()->take(5)->get()->map(function ($t) {
+                return [
+                    'id' => $t->id,
+                    'name' => $t->name,
+                    'domain' => $t->domain,
+                    'status' => $t->status,
+                    'created_at' => optional($t->created_at)->format('d M Y'),
+                ];
+            });
+
+            $recentAuditLogs = \App\Models\AuditLog::with('user:id,name')
+                ->latest()
+                ->take(5)
+                ->get()
+                ->map(function ($log) {
+                    return [
+                        'event' => $log->event,
+                        'module' => $log->module,
+                        'description' => $log->description,
+                        'username' => $log->user?->name ?? 'System',
+                        'time' => optional($log->created_at)->diffForHumans(),
+                    ];
+                });
+
+            return Inertia::render('Dashboard/MasterIndex', [
+                'stats' => [
+                    'total_tenants' => $totalTenants,
+                    'active_tenants' => $activeTenants,
+                    'suspended_tenants' => $suspendedTenants,
+                    'total_users' => $totalUsers,
+                ],
+                'recentTenants' => $recentTenants,
+                'recentAuditLogs' => $recentAuditLogs,
+            ]);
+        }
+
         $totalCategories = Category::count();
         $totalProducts = Product::count();
         $totalTransactions = Transaction::count();

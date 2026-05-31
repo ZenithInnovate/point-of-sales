@@ -161,6 +161,101 @@ class TenantManagementTest extends TestCase
         ], 'landlord');
     }
 
+    public function test_admin_cannot_update_master_tenant(): void
+    {
+        $user = $this->createUserWithPermissions(['tenants-update']);
+
+        $masterTenant = Tenant::firstOrCreate([
+            'id' => 'admin',
+        ], [
+            'name' => 'Landlord Admin',
+            'domain' => 'admin.localhost',
+            'storage_key' => 'uuid-storage-key-master',
+            'db_host' => '127.0.0.1',
+            'db_port' => '3306',
+            'db_database' => 'toko',
+            'db_username' => 'root',
+            'db_password' => '',
+            'status' => 'active',
+        ]);
+
+        $response = $this->actingAs($user)->put(route('tenants.update', $masterTenant->id), [
+            'name' => 'Landlord Admin Baru',
+            'domain' => 'admin-baru.localhost',
+            'status' => 'suspended',
+        ]);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_admin_cannot_delete_master_tenant(): void
+    {
+        $user = $this->createUserWithPermissions(['tenants-delete']);
+
+        $masterTenant = Tenant::firstOrCreate([
+            'id' => 'admin',
+        ], [
+            'name' => 'Landlord Admin',
+            'domain' => 'admin.localhost',
+            'storage_key' => 'uuid-storage-key-master',
+            'db_host' => '127.0.0.1',
+            'db_port' => '3306',
+            'db_database' => 'toko',
+            'db_username' => 'root',
+            'db_password' => '',
+            'status' => 'active',
+        ]);
+
+        $response = $this->actingAs($user)->delete(route('tenants.destroy', $masterTenant->id));
+
+        $response->assertStatus(403);
+        $this->assertDatabaseHas('tenants', [
+            'id' => 'admin',
+        ], 'landlord');
+    }
+
+    public function test_master_tenant_is_excluded_from_index(): void
+    {
+        $user = $this->createUserWithPermissions(['tenants-access']);
+
+        Tenant::firstOrCreate([
+            'id' => 'admin',
+        ], [
+            'name' => 'Landlord Admin',
+            'domain' => 'admin.localhost',
+            'storage_key' => 'uuid-storage-key-master',
+            'db_host' => '127.0.0.1',
+            'db_port' => '3306',
+            'db_database' => 'toko',
+            'db_username' => 'root',
+            'db_password' => '',
+            'status' => 'active',
+        ]);
+
+        Tenant::create([
+            'id' => 'toko-c',
+            'name' => 'Toko C',
+            'domain' => 'tokoc.localhost',
+            'storage_key' => 'uuid-storage-key-3',
+            'db_host' => '127.0.0.1',
+            'db_port' => '3306',
+            'db_database' => 'toko_c_db',
+            'db_username' => 'root',
+            'db_password' => '',
+            'status' => 'active',
+        ]);
+
+        $response = $this->actingAs($user)->get(route('tenants.index'));
+
+        $response->assertOk();
+        
+        $tenantsData = $response->original->getData()['page']['props']['tenants']['data'];
+        $tenantIds = collect($tenantsData)->pluck('id')->toArray();
+
+        $this->assertContains('toko-c', $tenantIds);
+        $this->assertNotContains('admin', $tenantIds);
+    }
+
     private function createUserWithPermissions(array $permissions): User
     {
         $user = User::factory()->create();

@@ -18,11 +18,14 @@ class TenantController extends Controller
      */
     public function index()
     {
-        $tenants = Tenant::when(request()->search, function ($query) {
-            $query->where('name', 'like', '%'.request()->search.'%')
-                  ->orWhere('id', 'like', '%'.request()->search.'%')
-                  ->orWhere('domain', 'like', '%'.request()->search.'%');
-        })->latest()->paginate(5);
+        $tenants = Tenant::where('id', '!=', 'admin')
+            ->when(request()->search, function ($query) {
+                $query->where(function ($q) {
+                    $q->where('name', 'like', '%'.request()->search.'%')
+                      ->orWhere('id', 'like', '%'.request()->search.'%')
+                      ->orWhere('domain', 'like', '%'.request()->search.'%');
+                });
+            })->latest()->paginate(5);
 
         return Inertia::render('Dashboard/Tenants/Index', [
             'tenants' => $tenants,
@@ -90,6 +93,10 @@ class TenantController extends Controller
      */
     public function edit(Tenant $tenant)
     {
+        if ($tenant->id === 'admin') {
+            abort(403, 'Tenant Pusat tidak dapat dimodifikasi.');
+        }
+
         return Inertia::render('Dashboard/Tenants/Edit', [
             'tenant' => $tenant,
         ]);
@@ -100,6 +107,10 @@ class TenantController extends Controller
      */
     public function update(Request $request, Tenant $tenant)
     {
+        if ($tenant->id === 'admin') {
+            abort(403, 'Tenant Pusat tidak dapat dimodifikasi.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'domain' => 'required|string|unique:landlord.tenants,domain,' . $tenant->id,
@@ -120,6 +131,10 @@ class TenantController extends Controller
      */
     public function destroy(Tenant $tenant)
     {
+        if ($tenant->id === 'admin') {
+            abort(403, 'Tenant Pusat tidak dapat dihapus.');
+        }
+
         // 1. Drop database fisik kustom agar bersih
         try {
             DB::connection('landlord')->statement(
