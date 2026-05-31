@@ -34,6 +34,7 @@ import {
     IconTruckDelivery,
     IconTruckReturn,
     IconSpeakerphone,
+    IconMail,
 } from "@tabler/icons-react";
 import hasAnyPermission from "./Permission";
 import React from "react";
@@ -362,6 +363,13 @@ export default function Menu() {
                     active: url === "/dashboard/settings/target",
                     icon: <IconChartInfographic size={20} strokeWidth={1.5} />,
                     permissions: hasAnyPermission(["dashboard-access"]),
+                },
+                {
+                    title: "Pengaturan Email",
+                    href: route("settings.email.edit"),
+                    active: url === "/dashboard/settings/email",
+                    icon: <IconMail size={20} strokeWidth={1.5} />,
+                    permissions: hasAnyPermission(["payment-settings-access"]),
                 },
             ],
         },

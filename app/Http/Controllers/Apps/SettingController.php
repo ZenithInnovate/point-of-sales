@@ -191,4 +191,79 @@ class SettingController extends Controller
 
         return back()->with('success', 'Pengaturan loyalty berhasil disimpan');
     }
+
+    /**
+     * Show email settings page
+     */
+    public function email()
+    {
+        $settings = [
+            'mail_host' => Setting::get('mail_host', ''),
+            'mail_port' => Setting::get('mail_port', '587'),
+            'mail_username' => Setting::get('mail_username', ''),
+            'mail_password' => Setting::get('mail_password', ''),
+            'mail_encryption' => Setting::get('mail_encryption', 'tls'),
+            'mail_from_address' => Setting::get('mail_from_address', ''),
+            'mail_from_name' => Setting::get('mail_from_name', ''),
+        ];
+
+        return Inertia::render('Dashboard/Settings/Email', [
+            'settings' => $settings,
+        ]);
+    }
+
+    /**
+     * Update email settings
+     */
+    public function updateEmail(Request $request)
+    {
+        $request->validate([
+            'mail_host' => 'nullable|string|max:255',
+            'mail_port' => 'nullable|string|max:10',
+            'mail_username' => 'nullable|string|max:255',
+            'mail_password' => 'nullable|string|max:255',
+            'mail_encryption' => 'nullable|string|max:20',
+            'mail_from_address' => 'nullable|email|max:255',
+            'mail_from_name' => 'nullable|string|max:255',
+        ]);
+
+        $before = [
+            'mail_host' => Setting::get('mail_host', ''),
+            'mail_port' => Setting::get('mail_port', '587'),
+            'mail_username' => Setting::get('mail_username', ''),
+            'mail_encryption' => Setting::get('mail_encryption', 'tls'),
+            'mail_from_address' => Setting::get('mail_from_address', ''),
+            'mail_from_name' => Setting::get('mail_from_name', ''),
+        ];
+
+        Setting::set('mail_host', $request->mail_host, 'SMTP Host');
+        Setting::set('mail_port', $request->mail_port, 'SMTP Port');
+        Setting::set('mail_username', $request->mail_username, 'SMTP Username');
+        
+        if ($request->mail_password !== null) {
+            Setting::set('mail_password', $request->mail_password, 'SMTP Password');
+        }
+        
+        Setting::set('mail_encryption', $request->mail_encryption, 'SMTP Encryption');
+        Setting::set('mail_from_address', $request->mail_from_address, 'Email Pengirim');
+        Setting::set('mail_from_name', $request->mail_from_name, 'Nama Pengirim');
+
+        $this->auditLogService->log(
+            event: 'email.setting.updated',
+            module: 'email_settings',
+            auditable: ['target_label' => 'Email Settings'],
+            description: 'Pengaturan email/SMTP toko diperbarui.',
+            before: $before,
+            after: [
+                'mail_host' => $request->mail_host,
+                'mail_port' => $request->mail_port,
+                'mail_username' => $request->mail_username,
+                'mail_encryption' => $request->mail_encryption,
+                'mail_from_address' => $request->mail_from_address,
+                'mail_from_name' => $request->mail_from_name,
+            ],
+        );
+
+        return back()->with('success', 'Pengaturan email berhasil diperbarui');
+    }
 }

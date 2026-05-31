@@ -264,6 +264,10 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::get('/settings/loyalty', [\App\Http\Controllers\Apps\SettingController::class, 'loyalty'])->middleware('permission:dashboard-access')->name('settings.loyalty');
     Route::post('/settings/loyalty', [\App\Http\Controllers\Apps\SettingController::class, 'updateLoyalty'])->middleware('permission:dashboard-access')->name('settings.loyalty.update');
 
+    // settings email
+    Route::get('/settings/email', [\App\Http\Controllers\Apps\SettingController::class, 'email'])->middleware('permission:payment-settings-access')->name('settings.email.edit');
+    Route::post('/settings/email', [\App\Http\Controllers\Apps\SettingController::class, 'updateEmail'])->middleware('permission:payment-settings-access')->name('settings.email.update');
+
     // settings bank accounts
     Route::get('/settings/bank-accounts', [\App\Http\Controllers\Apps\BankAccountController::class, 'index'])->middleware('permission:payment-settings-access')->name('settings.bank-accounts.index');
     Route::get('/settings/bank-accounts/create', [\App\Http\Controllers\Apps\BankAccountController::class, 'create'])->middleware('permission:payment-settings-update')->name('settings.bank-accounts.create');
