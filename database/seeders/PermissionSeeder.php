@@ -112,6 +112,12 @@ class PermissionSeeder extends Seeder
         // audit logs
         $create('audit-logs-access');
 
+        // tenants permissions
+        $create('tenants-access');
+        $create('tenants-create');
+        $create('tenants-update');
+        $create('tenants-delete');
+
         // purchase orders
         $create('purchase-orders-access');
         $create('purchase-orders-create');

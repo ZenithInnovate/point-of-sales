@@ -59,7 +59,13 @@ return [
             ]) : [],
         ],
 
-        'landlord' => [
+        'landlord' => (env('APP_ENV') === 'testing') ? [
+            'driver' => 'sqlite',
+            'url' => env('DB_URL'),
+            'database' => ':memory:',
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+        ] : [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
             'host' => env('DB_LANDLORD_HOST', env('DB_HOST', '127.0.0.1')),

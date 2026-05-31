@@ -327,6 +327,18 @@ export default function Menu() {
             ],
         },
         {
+            title: "SaaS Management",
+            details: [
+                {
+                    title: "Kelola Tenant",
+                    href: route("tenants.index"),
+                    active: url.startsWith("/dashboard/tenants"),
+                    icon: <IconBuildingStore size={20} strokeWidth={1.5} />,
+                    permissions: hasAnyPermission(["tenants-access"]),
+                },
+            ],
+        },
+        {
             title: "Pengaturan",
             details: [
                 {
@@ -375,5 +387,19 @@ export default function Menu() {
         },
     ];
 
-    return menuNavigation;
+    const { tenant } = usePage().props;
+    const isMasterTenant = tenant?.is_master || false;
+
+    if (isMasterTenant) {
+        return menuNavigation.filter(
+            (section) =>
+                section.title === "Overview" ||
+                section.title === "SaaS Management" ||
+                section.title === "User Management"
+        );
+    }
+
+    return menuNavigation.filter(
+        (section) => section.title !== "SaaS Management"
+    );
 }

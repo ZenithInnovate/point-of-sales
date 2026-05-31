@@ -21,8 +21,8 @@ class AuditLogService
         ?array $meta = null,
         ?Authenticatable $actor = null
     ): AuditLog {
-        $request = request();
-        $resolvedActor = $actor ?? auth()->user();
+        $request = app()->bound('request') ? request() : null;
+        $resolvedActor = $actor ?? (app()->bound('request') ? auth()->user() : null);
 
         return AuditLog::create([
             'user_id' => $resolvedActor?->getAuthIdentifier(),

@@ -18,6 +18,7 @@ use App\Http\Controllers\Apps\SalesReturnController;
 use App\Http\Controllers\Apps\StockMutationController;
 use App\Http\Controllers\Apps\StockOpnameController;
 use App\Http\Controllers\Apps\SupplierReturnController;
+use App\Http\Controllers\Apps\TenantController;
 use App\Http\Controllers\Apps\TransactionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationController;
@@ -84,6 +85,20 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
         ->middlewareFor(['create', 'store'], 'permission:categories-create')
         ->middlewareFor(['edit', 'update'], 'permission:categories-edit')
         ->middlewareFor('destroy', 'permission:categories-delete');
+    Route::group(['middleware' => [
+        function ($request, $next) {
+            if (!app()->bound('tenant') || app('tenant')->id !== 'admin') {
+                abort(403, 'Akses ditolak. Fitur ini hanya tersedia di Tenant Pusat (Admin).');
+            }
+            return $next($request);
+        }
+    ]], function () {
+        Route::resource('tenants', TenantController::class)
+            ->middlewareFor(['index', 'show'], 'permission:tenants-access')
+            ->middlewareFor(['create', 'store'], 'permission:tenants-create')
+            ->middlewareFor(['edit', 'update'], 'permission:tenants-update')
+            ->middlewareFor('destroy', 'permission:tenants-delete');
+    });
     Route::resource('products', ProductController::class)
         ->middlewareFor(['index', 'show'], 'permission:products-access')
         ->middlewareFor(['create', 'store'], 'permission:products-create')

@@ -165,6 +165,11 @@ class HandleInertiaRequests extends Middleware
             'receivableAgingSummary' => $receivableAgingSummary,
             'activeCashierShift' => $activeCashierShift,
             'storeProfile' => $storeProfile,
+            'tenant' => app()->bound('tenant') ? [
+                'id' => app('tenant')->id,
+                'name' => app('tenant')->name,
+                'is_master' => app('tenant')->id === 'admin',
+            ] : null,
             'security' => [
                 'warnings' => $securityWarnings,
                 'publicRegistrationEnabled' => config('security.auth.public_registration'),
