@@ -410,16 +410,16 @@ export default function Dashboard({
                                         key={shift.id}
                                         className="py-3 first:pt-0 last:pb-0"
                                     >
-                                        <div className="flex items-center justify-between gap-3">
-                                            <div>
-                                                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                                        <div className="flex items-center justify-between gap-3 w-full">
+                                            <div className="min-w-0 flex-1">
+                                                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
                                                     {shift.user?.name || "-"}
                                                 </p>
                                                 <p className="text-xs text-slate-500 dark:text-slate-400">
                                                     {shift.transactions_count} transaksi
                                                 </p>
                                             </div>
-                                            <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                                            <span className="text-xs font-semibold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400 flex-shrink-0">
                                                 {formatCurrency(shift.expected_cash)}
                                             </span>
                                         </div>
@@ -443,24 +443,28 @@ export default function Dashboard({
                                         key={index}
                                         className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                                     >
-                                        <div className="flex items-start gap-3">
-                                            <span className="w-7 h-7 rounded-full bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 text-sm font-semibold flex items-center justify-center">
+                                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                                            <span className={`w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center flex-shrink-0 ${
+                                                index === 0 ? "bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400 animate-pulse" :
+                                                index === 1 ? "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400" :
+                                                "bg-orange-50 text-orange-700 dark:bg-orange-950/20 dark:text-orange-450"
+                                            }`}>
                                                 {index + 1}
                                             </span>
-                                            <div className="space-y-1">
-                                                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 line-clamp-1">
+                                            <div className="space-y-0.5 min-w-0 flex-1">
+                                                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
                                                     {product.name}
                                                 </p>
-                                                <p className="text-xs text-slate-500 dark:text-slate-400">
+                                                <p className="text-xs text-slate-500 dark:text-slate-400 font-mono truncate">
                                                     SKU: {product.sku || "-"}
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="text-right">
-                                            <p className="text-base font-semibold text-primary-600 dark:text-primary-400 leading-tight">
+                                        <div className="text-right flex-shrink-0">
+                                            <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-primary-50 dark:bg-primary-950/40 text-primary-600 dark:text-primary-400 text-xs font-bold">
                                                 {product.qty}x
-                                            </p>
-                                            <p className="text-[11px] uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                                            </span>
+                                            <p className="text-[9px] uppercase tracking-wider text-slate-400 dark:text-slate-500 mt-0.5 font-semibold">
                                                 Terjual
                                             </p>
                                         </div>
@@ -482,17 +486,17 @@ export default function Dashboard({
                                 {slowMovingProducts.map((product, index) => (
                                     <li
                                         key={index}
-                                        className="flex items-center justify-between py-3 first:pt-0 last:pb-0"
+                                        className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                                     >
-                                        <div className="flex items-center gap-3">
-                                            <span className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-semibold flex items-center justify-center">
+                                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                                            <span className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-bold flex items-center justify-center flex-shrink-0">
                                                 {index + 1}
                                             </span>
-                                            <span className="text-sm text-slate-700 dark:text-slate-300 truncate max-w-[120px]">
+                                            <span className="text-sm text-slate-700 dark:text-slate-300 truncate flex-1">
                                                 {product.name}
                                             </span>
                                         </div>
-                                        <span className="text-xs text-warning-500 font-semibold">
+                                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400 flex-shrink-0">
                                             {product.stock} pcs
                                         </span>
                                     </li>
@@ -515,17 +519,17 @@ export default function Dashboard({
                                     .map((customer, index) => (
                                         <li
                                             key={index}
-                                            className="flex items-center justify-between py-3 first:pt-0 last:pb-0"
+                                            className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                                         >
-                                            <div className="flex items-center gap-3">
-                                                <span className="w-7 h-7 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm font-semibold flex items-center justify-center">
+                                            <div className="flex items-center gap-3 min-w-0 flex-1">
+                                                <span className="w-7 h-7 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 text-xs font-bold flex items-center justify-center flex-shrink-0">
                                                     {index + 1}
                                                 </span>
-                                                <span className="text-sm text-slate-700 dark:text-slate-300">
+                                                <span className="text-sm text-slate-700 dark:text-slate-300 truncate flex-1">
                                                     {customer.name}
                                                 </span>
                                             </div>
-                                            <span className="text-xs text-slate-500 font-semibold">
+                                            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 dark:bg-indigo-950/30 dark:text-indigo-400 flex-shrink-0">
                                                 {customer.orders}x
                                             </span>
                                         </li>
@@ -546,21 +550,21 @@ export default function Dashboard({
                                 {topLocations.map((loc, index) => (
                                     <li
                                         key={index}
-                                        className="flex items-center justify-between py-3 first:pt-0 last:pb-0"
+                                        className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
                                     >
-                                        <div className="flex items-center gap-3">
-                                            <span className="w-7 h-7 rounded-full bg-primary-100 dark:bg-primary-900/50 text-primary-600 dark:text-primary-400 text-sm font-semibold flex items-center justify-center">
+                                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                                            <span className="w-7 h-7 rounded-full bg-primary-50 dark:bg-primary-950/40 text-primary-600 dark:text-primary-400 text-xs font-bold flex items-center justify-center flex-shrink-0">
                                                 {index + 1}
                                             </span>
-                                            <span className="text-sm text-slate-700 dark:text-slate-300 truncate max-w-[120px]">
+                                            <span className="text-sm text-slate-700 dark:text-slate-300 truncate flex-1">
                                                 {loc.name}
                                             </span>
                                         </div>
-                                        <span className="text-xs text-slate-500 font-semibold">
+                                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-primary-50 text-primary-600 dark:bg-primary-950/30 dark:text-primary-400 flex-shrink-0">
                                             {loc.orders}x
-                                            </span>
-                                        </li>
-                                    ))}
+                                        </span>
+                                    </li>
+                                ))}
                             </ul>
                         )}
                     </ListCard>
