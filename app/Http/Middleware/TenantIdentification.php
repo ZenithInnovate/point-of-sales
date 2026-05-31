@@ -64,6 +64,19 @@ class TenantIdentification
         // Jalankan bootstrap koneksi database & storage untuk tenant aktif ini
         $this->tenantManager->bootstrap($tenant);
 
+        // Validasi Lisensi Domain Tenant (kecuali untuk testing environment atau master tenant admin)
+        if ($tenant->id !== 'admin' && !app()->environment('testing')) {
+            $validDomains = [
+                'tenant2.localhost',
+            ];
+
+            $hasValidLicense = in_array($tenant->domain, $validDomains);
+
+            if (!$hasValidLicense && !$request->is('license*')) {
+                return redirect()->route('license.validation');
+            }
+        }
+
         return $next($request);
     }
 }

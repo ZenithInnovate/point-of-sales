@@ -47,6 +47,19 @@ Route::get('/', function () {
 //     ]);
 // });
 
+Route::get('/license', function () {
+    $landlord = \App\Models\Tenant::find('admin');
+    $landlordUrl = $landlord 
+        ? (request()->secure() ? 'https://' : 'http://') . $landlord->domain . (request()->getPort() ? ':' . request()->getPort() : '')
+        : '/';
+
+    return Inertia::render('LicenseValidation', [
+        'tenant_name' => app('tenant')->name,
+        'tenant_domain' => app('tenant')->domain,
+        'landlord_url' => $landlordUrl,
+    ]);
+})->name('license.validation');
+
 Route::get('/dashboard/access', function () {
     return Inertia::render('Dashboard/Access');
 })->middleware(['auth', 'verified'])->name('dashboard.access');
