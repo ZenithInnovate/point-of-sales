@@ -41,9 +41,9 @@ class TenantManager
         DB::setDefaultConnection('mysql');
 
         // Dynamically override public and local filesystem disks
-        Config::set('filesystems.disks.local.root', storage_path('app/public/tenants/' . $tenant->id));
-        Config::set('filesystems.disks.public.root', storage_path('app/public/tenants/' . $tenant->id));
-        Config::set('filesystems.disks.public.url', env('APP_URL') . '/storage/tenants/' . $tenant->id);
+        Config::set('filesystems.disks.local.root', storage_path('app/public/tenants/' . $tenant->storage_key));
+        Config::set('filesystems.disks.public.root', storage_path('app/public/tenants/' . $tenant->storage_key));
+        Config::set('filesystems.disks.public.url', env('APP_URL') . '/storage/tenants/' . $tenant->storage_key);
 
         // Clear Spatie Permission cached keys for this tenant
         try {

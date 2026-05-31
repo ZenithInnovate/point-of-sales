@@ -73,7 +73,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 }
 
                 return app()->bound('tenant')
-                    ? asset('/storage/tenants/' . app('tenant')->id . '/' . ltrim($value, '/'))
+                    ? asset('/storage/tenants/' . app('tenant')->storage_key . '/' . ltrim($value, '/'))
                     : asset('storage/' . ltrim($value, '/'));
             }
         );

@@ -97,6 +97,7 @@ class TenantCreateCommand extends Command
                 'id' => $id,
                 'name' => $name,
                 'domain' => $domain,
+                'storage_key' => (string) Str::uuid(),
                 'db_host' => $dbHost,
                 'db_port' => $dbPort,
                 'db_database' => $dbDatabase,

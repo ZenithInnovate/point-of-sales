@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('id', 50)->primary(); // Unique tenant slug/id, e.g. 'toko-a'
             $table->string('name', 255);
             $table->string('domain', 255)->unique(); // e.g. 'tokoa.com' or 'tokoa.localhost'
+            $table->string('storage_key', 255)->unique(); // Secure random UUID for media folder
             $table->string('db_host', 255);
             $table->string('db_port', 50)->default('3306');
             $table->string('db_database', 255);

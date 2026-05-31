@@ -46,6 +46,7 @@ class Tenant extends Model
         'id',
         'name',
         'domain',
+        'storage_key',
         'db_host',
         'db_port',
         'db_database',
