@@ -28,9 +28,15 @@ export default function LinkItem({ href, icon, access, title, sidebarOpen, ...pr
     const targetPath = cleanPath(href);
 
     // Exact match or subpath match (e.g. nested detail/edit screens)
+    // Exclude /dashboard/transactions/history from /dashboard/transactions subpath match to prevent double active highlights
     const isActive =
         currentPath === targetPath ||
-        (targetPath !== "/dashboard" && currentPath.startsWith(targetPath + "/"));
+        (targetPath !== "/dashboard" &&
+            currentPath.startsWith(targetPath + "/") &&
+            !(
+                targetPath === "/dashboard/transactions" &&
+                currentPath.startsWith("/dashboard/transactions/history")
+            ));
     const canAccess = isSuperAdmin(auth) || access === true;
 
     if (!canAccess) return null;

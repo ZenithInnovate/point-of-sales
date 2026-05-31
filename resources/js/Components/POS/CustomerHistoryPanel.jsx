@@ -290,10 +290,13 @@ export function CustomerHistoryButton({ customerId, customerName, className = ""
         <>
             <button
                 onClick={() => setShowHistory(true)}
-                className={`rounded-lg p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-primary-500 dark:hover:bg-slate-800 ${className}`}
+                className={`transition-colors ${
+                    className ||
+                    "rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-primary-500 dark:hover:bg-slate-800"
+                }`}
                 title="Lihat riwayat"
             >
-                <IconHistory size={16} />
+                <IconHistory size={className ? 20 : 16} />
             </button>
 
             {/* History Modal */}

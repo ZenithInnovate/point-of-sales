@@ -98,7 +98,7 @@ export default function SearchBar({
                     onKeyDown={handleKeyDown}
                     placeholder={placeholder}
                     autoFocus={autoFocus}
-                    className="h-14 w-full rounded-2xl border-2 border-slate-200 bg-white pl-12 pr-24 text-lg text-slate-800 placeholder-slate-400 transition-all focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-primary-500"
+                    className="h-14 w-full rounded-lg border-2 border-slate-200 bg-white pl-12 pr-24 text-lg text-slate-800 placeholder-slate-400 transition-all focus:border-primary-500 focus:ring-4 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-primary-500"
                 />
 
                 {/* Right Side Icons */}
@@ -124,7 +124,7 @@ export default function SearchBar({
 
             {/* Suggestions Dropdown */}
             {showSuggestions && (
-                <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-80 animate-slide-up overflow-y-auto rounded-xl border border-slate-200 bg-white py-2 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+                <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-80 animate-slide-up overflow-y-auto rounded-lg border border-slate-200 bg-white py-2 shadow-xl dark:border-slate-700 dark:bg-slate-900">
                     <ul ref={listRef}>
                         {suggestions.map((product, index) => (
                             <li key={product.id}>

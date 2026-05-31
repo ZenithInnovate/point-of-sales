@@ -23,7 +23,7 @@ function ProductCard({ product, onAddToCart, isAdding }) {
         <button
             onClick={() => hasStock && onAddToCart(product)}
             disabled={!hasStock || isAdding}
-            className={`group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all duration-200 dark:border-slate-800 dark:bg-slate-900 ${
+            className={`group relative flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white text-left transition-all duration-200 dark:border-slate-800 dark:bg-slate-900 ${
                 hasStock
                     ? "cursor-pointer hover:-translate-y-0.5 hover:border-primary-300 hover:shadow-lg active:scale-[0.98] dark:hover:border-primary-700"
                     : "cursor-not-allowed opacity-60"
@@ -69,7 +69,7 @@ function ProductCard({ product, onAddToCart, isAdding }) {
                 {/* Hover Add Indicator (centered on image) */}
                 {hasStock && (
                     <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-primary-500/10 opacity-0 transition-opacity group-hover:opacity-100">
-                        <div className="rounded-full bg-primary-500 px-4 py-2 text-sm font-semibold text-white shadow-lg">
+                        <div className="rounded-lg bg-primary-500 px-4 py-2 text-sm font-semibold text-white shadow-lg">
                             + Tambah
                         </div>
                     </div>
@@ -77,8 +77,8 @@ function ProductCard({ product, onAddToCart, isAdding }) {
             </div>
 
             {/* Product Info */}
-            <div className="flex min-h-[80px] flex-1 flex-col justify-between p-3">
-                <h3 className="line-clamp-2 text-sm font-medium leading-tight text-slate-800 dark:text-slate-200">
+            <div className="flex min-h-[80px] flex-1 flex-col justify-between p-3 text-left">
+                <h3 className="line-clamp-2 text-sm font-semibold leading-tight text-slate-800 transition-colors group-hover:text-primary-600 dark:text-slate-200 dark:group-hover:text-primary-400">
                     {product.title}
                 </h3>
                 <div className="mt-2">
@@ -106,7 +106,7 @@ function CategoryTab({ category, isActive, onClick }) {
     return (
         <button
             onClick={onClick}
-            className={`min-h-touch whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+            className={`min-h-touch whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
                 isActive
                     ? "bg-primary-500 text-white shadow-md shadow-primary-500/30"
                     : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:bg-slate-800"
@@ -128,7 +128,7 @@ function SearchInput({ value, onChange, onSearch, isSearching, placeholder, inpu
                 onChange={(e) => onChange(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && onSearch?.()}
                 placeholder={placeholder || "Cari produk atau scan barcode... (/ untuk fokus)"}
-                className="h-12 w-full rounded-xl border border-slate-200 bg-white pl-4 pr-12 text-base text-slate-800 placeholder-slate-400 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-primary-500"
+                className="h-12 w-full rounded-lg border border-slate-200 bg-white pl-4 pr-12 text-base text-slate-800 placeholder-slate-400 transition-all focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:placeholder-slate-500 dark:focus:border-primary-500"
                 disabled={isSearching}
             />
             <div className="absolute right-3 top-1/2 -translate-y-1/2">

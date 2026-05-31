@@ -98,11 +98,11 @@ export default function CustomerSelect({
                 )}
 
                 {/* Select Button with History and Add */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-stretch gap-2">
                     <button
                         type="button"
                         onClick={() => setIsOpen(!isOpen)}
-                        className={`flex h-auto min-h-[3rem] flex-1 items-center gap-3 rounded-xl border-2 px-4 py-2 text-left transition-all duration-200 ${
+                        className={`flex h-auto min-h-[3rem] min-w-0 flex-1 items-center gap-3 rounded-lg border-2 px-4 py-2 text-left transition-all duration-200 ${
                             isOpen
                                 ? "border-primary-500 ring-4 ring-primary-500/20"
                                 : error
@@ -170,6 +170,7 @@ export default function CustomerSelect({
                         <CustomerHistoryButton
                             customerId={selected.id}
                             customerName={selected.name}
+                            className="flex w-12 flex-shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-primary-500 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-400"
                         />
                     )}
 
@@ -177,16 +178,10 @@ export default function CustomerSelect({
                         <button
                             type="button"
                             onClick={handleUpgradeMember}
-                            className="h-12 rounded-xl border border-primary-200 bg-primary-50 px-3 text-primary-600 hover:bg-primary-100 dark:border-primary-800 dark:bg-primary-950/30 dark:text-primary-300"
+                            className="flex w-12 flex-shrink-0 items-center justify-center rounded-lg border border-amber-200 bg-amber-50 text-amber-600 transition-colors hover:bg-amber-100 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-400"
                             title="Upgrade pelanggan menjadi member"
                         >
-                            <span className="hidden items-center gap-2 text-sm font-semibold sm:inline-flex">
-                                <IconCrown size={16} />
-                                Upgrade
-                            </span>
-                            <span className="inline-flex sm:hidden">
-                                <IconCrown size={18} />
-                            </span>
+                            <IconCrown size={20} />
                         </button>
                     ) : null}
 
@@ -194,7 +189,7 @@ export default function CustomerSelect({
                     <button
                         type="button"
                         onClick={() => setShowAddModal(true)}
-                        className="flex h-12 w-12 items-center justify-center rounded-xl border-2 border-dashed border-primary-300 text-primary-500 transition-colors hover:bg-primary-50 dark:border-primary-700 dark:hover:bg-primary-950/30"
+                        className="flex w-12 flex-shrink-0 items-center justify-center rounded-lg border-2 border-dashed border-primary-300 text-primary-500 transition-colors hover:bg-primary-50 dark:border-primary-700 dark:hover:bg-primary-950/30"
                         title="Tambah pelanggan baru"
                     >
                         <IconUserPlus size={20} />
