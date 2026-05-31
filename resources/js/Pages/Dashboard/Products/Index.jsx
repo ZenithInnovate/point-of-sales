@@ -99,23 +99,25 @@ function ProductCard({
 
                 {/* Action Buttons Overlay */}
                 {(canUpdate || canDelete) && (
-                    <div className="absolute inset-0 flex items-center justify-center gap-2 bg-slate-900/0 opacity-0 transition-all group-hover:bg-slate-900/40 group-hover:opacity-100">
+                    <div className="absolute inset-0 flex items-center justify-center gap-3 bg-slate-950/0 opacity-0 backdrop-blur-none transition-all duration-300 group-hover:bg-slate-950/40 group-hover:opacity-100 group-hover:backdrop-blur-sm">
                         {canUpdate && (
                             <Link
                                 href={route("products.edit", product.id)}
-                                className="rounded-lg bg-white p-2.5 text-warning-600 shadow-lg transition-colors hover:bg-warning-50"
+                                className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-warning-600 shadow-lg transition-transform duration-200 hover:scale-110 hover:bg-warning-50 hover:text-warning-700"
+                                title="Edit Produk"
                             >
-                                <IconPencilCog size={18} />
+                                <IconPencilCog size={18} strokeWidth={2} />
                             </Link>
                         )}
                         {canDelete && (
                             <Button
                                 type={"delete"}
-                                icon={<IconTrash size={18} />}
+                                icon={<IconTrash size={18} strokeWidth={2} />}
                                 className={
-                                    "rounded-lg bg-white p-2.5 text-danger-600 shadow-lg hover:bg-danger-50"
+                                    "flex h-10 w-10 items-center justify-center rounded-lg bg-white text-danger-600 shadow-lg transition-transform duration-200 hover:scale-110 hover:bg-danger-50 hover:text-danger-700"
                                 }
                                 url={route("products.destroy", product.id)}
+                                title="Hapus Produk"
                             />
                         )}
                     </div>

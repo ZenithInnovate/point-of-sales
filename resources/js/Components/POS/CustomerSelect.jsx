@@ -102,7 +102,7 @@ export default function CustomerSelect({
                     <button
                         type="button"
                         onClick={() => setIsOpen(!isOpen)}
-                        className={`flex h-12 flex-1 items-center gap-3 rounded-xl border-2 px-4 text-left transition-all duration-200 ${
+                        className={`flex h-auto min-h-[3rem] flex-1 items-center gap-3 rounded-xl border-2 px-4 py-2 text-left transition-all duration-200 ${
                             isOpen
                                 ? "border-primary-500 ring-4 ring-primary-500/20"
                                 : error
@@ -129,23 +129,26 @@ export default function CustomerSelect({
                         <div className="min-w-0 flex-1">
                             {selected ? (
                                 <>
-                                    <p className="truncate text-sm font-medium text-slate-800 dark:text-slate-200">
+                                    <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-200">
                                         {selected.name}
+                                        {selected.no_telp && (
+                                            <span className="ml-1.5 font-normal text-slate-500 dark:text-slate-400">
+                                                ({selected.no_telp})
+                                            </span>
+                                        )}
                                     </p>
-                                    {selected.no_telp && (
-                                        <p className="truncate text-xs text-slate-500 dark:text-slate-400">
-                                            {selected.no_telp}
-                                        </p>
-                                    )}
-                                    {selected.member_code ? (
-                                        <p className="truncate text-[11px] text-slate-500 dark:text-slate-400">
-                                            {selected.member_code}
-                                        </p>
-                                    ) : null}
-                                    <p className="truncate text-[11px] text-primary-500 dark:text-primary-300">
-                                        {selected.is_loyalty_member
-                                            ? `${selected.loyalty_tier} • ${selected.loyalty_points || 0} poin`
-                                            : "Non-member"}
+                                    <p className="mt-0.5 truncate text-xs text-slate-500 dark:text-slate-400">
+                                        {selected.member_code ? `${selected.member_code} • ` : ""}
+                                        {selected.is_loyalty_member ? (
+                                            <span className="font-medium text-primary-600 dark:text-primary-400">
+                                                {selected.loyalty_tier} (
+                                                {selected.loyalty_points || 0} poin)
+                                            </span>
+                                        ) : (
+                                            <span className="text-slate-400 dark:text-slate-500">
+                                                Non-member
+                                            </span>
+                                        )}
                                     </p>
                                 </>
                             ) : (
@@ -156,7 +159,7 @@ export default function CustomerSelect({
                         </div>
                         <IconChevronDown
                             size={18}
-                            className={`text-slate-400 transition-transform ${
+                            className={`flex-shrink-0 text-slate-400 transition-transform ${
                                 isOpen ? "rotate-180" : ""
                             }`}
                         />
