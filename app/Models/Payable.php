@@ -57,11 +57,11 @@ class Payable extends Model
             return 'paid';
         }
 
-        if (! $this->due_date) {
+        if (!$this->due_date) {
             return 'no_due_date';
         }
 
-        if (! now()->gt($this->due_date)) {
+        if (!now()->gt($this->due_date)) {
             return 'current';
         }
 

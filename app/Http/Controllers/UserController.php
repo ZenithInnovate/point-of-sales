@@ -179,9 +179,9 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\RedirectResponse
     {
-        $ids = explode(',', $id);
+        $ids = explode(',', (string) $id);
         $users = User::query()->with('roles')->whereIn('id', $ids)->get();
 
         foreach ($users as $user) {

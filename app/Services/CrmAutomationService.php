@@ -67,7 +67,7 @@ class CrmAutomationService
             $hasActiveVoucher = $customer->vouchers
                 ->filter(fn ($voucher): bool => $voucher->currentStatusLabel() === 'active')
                 ->isNotEmpty();
-            if ($voucherFilter === 'has_active_voucher' && ! $hasActiveVoucher) {
+            if ($voucherFilter === 'has_active_voucher' && !$hasActiveVoucher) {
                 return false;
             }
             if ($voucherFilter === 'no_active_voucher' && $hasActiveVoucher) {
@@ -83,7 +83,7 @@ class CrmAutomationService
                 ->isNotEmpty();
             $hasDueSoon = $customer->receivables
                 ->filter(function ($receivable) use ($at) {
-                    if ($receivable->status === 'paid' || ! $receivable->due_date) {
+                    if ($receivable->status === 'paid' || !$receivable->due_date) {
                         return false;
                     }
 

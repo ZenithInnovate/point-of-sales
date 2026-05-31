@@ -239,11 +239,11 @@ class SettingController extends Controller
         Setting::set('mail_host', $request->mail_host, 'SMTP Host');
         Setting::set('mail_port', $request->mail_port, 'SMTP Port');
         Setting::set('mail_username', $request->mail_username, 'SMTP Username');
-        
+
         if ($request->mail_password !== null) {
             Setting::set('mail_password', $request->mail_password, 'SMTP Password');
         }
-        
+
         Setting::set('mail_encryption', $request->mail_encryption, 'SMTP Encryption');
         Setting::set('mail_from_address', $request->mail_from_address, 'Email Pengirim');
         Setting::set('mail_from_name', $request->mail_from_name, 'Nama Pengirim');

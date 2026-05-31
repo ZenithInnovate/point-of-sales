@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Head, useForm, Link, usePage } from "@inertiajs/react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { IconArrowLeft, IconCheck, IconBuildingBank } from "@tabler/icons-react";
+import { IconArrowLeft, IconCheck, IconBuildingBank, IconUpload } from "@tabler/icons-react";
 import toast from "react-hot-toast";
 import Input from "@/Components/Dashboard/Input";
 import { useAuthorization } from "@/Utils/authorization";
@@ -19,6 +19,9 @@ export default function BankAccountForm({ bankAccount = null }) {
         logo: null,
         is_active: bankAccount?.is_active ?? true,
     });
+
+    const [logoPreview, setLogoPreview] = useState(bankAccount?.logo_url || null);
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         if (flash?.success) toast.success(flash.success);
@@ -44,7 +47,7 @@ export default function BankAccountForm({ bankAccount = null }) {
     return (
         <>
             <Head title={isEdit ? "Edit Rekening Bank" : "Tambah Rekening Bank"} />
-            <div className="max-w-3xl space-y-6">
+            <div className="w-full space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">

@@ -22,9 +22,9 @@ class OperationalCoreSeeder extends Seeder
     public function run(): void
     {
         if (
-            ! Schema::hasTable('cashier_shifts')
-            || ! Schema::hasTable('sales_returns')
-            || ! Schema::hasTable('sales_return_items')
+            !Schema::hasTable('cashier_shifts')
+            || !Schema::hasTable('sales_returns')
+            || !Schema::hasTable('sales_return_items')
         ) {
             $this->command?->warn('Skipping OperationalCoreSeeder because required tables do not exist.');
 
@@ -34,7 +34,7 @@ class OperationalCoreSeeder extends Seeder
         $cashier = User::where('email', 'cashier@gmail.com')->first() ?? User::first();
         $supervisor = User::where('email', 'admin@gmail.com')->first() ?? $cashier;
 
-        if (! $cashier || ! $supervisor) {
+        if (!$cashier || !$supervisor) {
             $this->command?->warn('Skipping OperationalCoreSeeder because seed users are missing.');
 
             return;
@@ -247,7 +247,7 @@ class OperationalCoreSeeder extends Seeder
         StockMutationService $stockMutationService
     ): void {
         $product = $detail->product;
-        if (! $product) {
+        if (!$product) {
             return;
         }
 

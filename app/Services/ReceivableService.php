@@ -38,7 +38,7 @@ class ReceivableService
             ->orderBy('due_date')
             ->get();
 
-        $receivables->transform(fn($item) => $item);
+        $receivables->transform(fn ($item) => $item);
 
         $totalOutstanding = $receivables
             ->where('status', '!=', 'paid')

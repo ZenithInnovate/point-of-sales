@@ -56,7 +56,7 @@ class AuthenticatedSessionController extends Controller
             ],
         );
 
-        if ($user && method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
+        if ($user && method_exists($user, 'hasVerifiedEmail') && !$user->hasVerifiedEmail()) {
             return redirect()->route('verification.notice');
         }
 

@@ -47,8 +47,8 @@ class Category extends Model
     {
         return Attribute::make(
             get: fn ($value): string => app()->bound('tenant')
-                ? asset('/storage/tenants/' . app('tenant')->storage_key . '/category/' . $value)
-                : asset('/storage/category/' . $value),
+                ? asset('/storage/tenants/'.app('tenant')->storage_key.'/category/'.$value)
+                : asset('/storage/category/'.$value),
         );
     }
 }

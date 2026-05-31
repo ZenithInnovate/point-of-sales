@@ -10,7 +10,7 @@ class EnsurePublicRegistrationEnabled
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! config('security.auth.public_registration')) {
+        if (!config('security.auth.public_registration')) {
             abort(404);
         }
 

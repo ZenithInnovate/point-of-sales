@@ -25,29 +25,25 @@ class DashboardController extends Controller
             $suspendedTenants = \App\Models\Tenant::where('status', 'suspended')->count();
             $totalUsers = \App\Models\User::count();
 
-            $recentTenants = \App\Models\Tenant::latest()->take(5)->get()->map(function ($t) {
-                return [
-                    'id' => $t->id,
-                    'name' => $t->name,
-                    'domain' => $t->domain,
-                    'status' => $t->status,
-                    'created_at' => optional($t->created_at)->format('d M Y'),
-                ];
-            });
+            $recentTenants = \App\Models\Tenant::latest()->take(5)->get()->map(fn ($t): array => [
+                'id' => $t->id,
+                'name' => $t->name,
+                'domain' => $t->domain,
+                'status' => $t->status,
+                'created_at' => optional($t->created_at)->format('d M Y'),
+            ]);
 
             $recentAuditLogs = \App\Models\AuditLog::with('user:id,name')
                 ->latest()
                 ->take(5)
                 ->get()
-                ->map(function ($log) {
-                    return [
-                        'event' => $log->event,
-                        'module' => $log->module,
-                        'description' => $log->description,
-                        'username' => $log->user?->name ?? 'System',
-                        'time' => optional($log->created_at)->diffForHumans(),
-                    ];
-                });
+                ->map(fn ($log): array => [
+                    'event' => $log->event,
+                    'module' => $log->module,
+                    'description' => $log->description,
+                    'username' => $log->user?->name ?? 'System',
+                    'time' => optional($log->created_at)->diffForHumans(),
+                ]);
 
             return Inertia::render('Dashboard/MasterIndex', [
                 'stats' => [
@@ -85,13 +81,11 @@ class DashboardController extends Controller
             ->orderBy('date', 'desc')
             ->take(12)
             ->get()
-            ->map(function ($row) {
-                return [
-                    'date' => $row->date,
-                    'label' => Carbon::parse($row->date)->format('d M'),
-                    'total' => (int) $row->total,
-                ];
-            })
+            ->map(fn ($row): array => [
+                'date' => $row->date,
+                'label' => Carbon::parse($row->date)->format('d M'),
+                'total' => (int) $row->total,
+            ])
             ->reverse()
             ->values();
 
@@ -101,27 +95,23 @@ class DashboardController extends Controller
             ->orderByDesc('qty')
             ->take(3)
             ->get()
-            ->map(function ($detail) {
-                return [
-                    'name' => $detail->product?->title ?? 'Produk terhapus',
-                    'sku' => $detail->product?->sku ?? '-',
-                    'qty' => (int) $detail->qty,
-                    'total' => (int) $detail->total,
-                ];
-            });
+            ->map(fn ($detail): array => [
+                'name' => $detail->product?->title ?? 'Produk terhapus',
+                'sku' => $detail->product?->sku ?? '-',
+                'qty' => (int) $detail->qty,
+                'total' => (int) $detail->total,
+            ]);
 
         // New: Low Stock Products (stock < 10)
         $lowStockProducts = Product::where('stock', '<', 10)
             ->orderBy('stock', 'asc')
             ->take(5)
             ->get()
-            ->map(function ($product) {
-                return [
-                    'name' => $product->title,
-                    'stock' => (int) $product->stock,
-                    'image' => $product->image,
-                ];
-            });
+            ->map(fn ($product): array => [
+                'name' => $product->title,
+                'stock' => (int) $product->stock,
+                'image' => $product->image,
+            ]);
 
         // New: Slow Moving Products (no sales in 30 days)
         $thirtyDaysAgo = Carbon::now()->subDays(30);
@@ -133,27 +123,23 @@ class DashboardController extends Controller
             ->where('stock', '>', 0)
             ->take(5)
             ->get()
-            ->map(function ($product) {
-                return [
-                    'name' => $product->title,
-                    'stock' => (int) $product->stock,
-                    'image' => $product->image,
-                ];
-            });
+            ->map(fn ($product): array => [
+                'name' => $product->title,
+                'stock' => (int) $product->stock,
+                'image' => $product->image,
+            ]);
 
         $recentTransactions = Transaction::with('cashier:id,name', 'customer:id,name')
             ->latest()
             ->take(5)
             ->get()
-            ->map(function ($transaction) {
-                return [
-                    'invoice' => $transaction->invoice,
-                    'date' => Carbon::parse($transaction->created_at)->format('d M Y'),
-                    'customer' => $transaction->customer?->name ?? '-',
-                    'cashier' => $transaction->cashier?->name ?? '-',
-                    'total' => (int) $transaction->grand_total,
-                ];
-            });
+            ->map(fn ($transaction): array => [
+                'invoice' => $transaction->invoice,
+                'date' => Carbon::parse($transaction->created_at)->format('d M Y'),
+                'customer' => $transaction->customer?->name ?? '-',
+                'cashier' => $transaction->cashier?->name ?? '-',
+                'total' => (int) $transaction->grand_total,
+            ]);
 
         $topCustomers = Transaction::select('customer_id', DB::raw('COUNT(*) as orders'), DB::raw('SUM(grand_total) as total'))
             ->with('customer:id,name')
@@ -162,13 +148,11 @@ class DashboardController extends Controller
             ->orderByDesc('total')
             ->take(5)
             ->get()
-            ->map(function ($row) {
-                return [
-                    'name' => $row->customer?->name ?? 'Pelanggan',
-                    'orders' => (int) $row->orders,
-                    'total' => (int) $row->total,
-                ];
-            });
+            ->map(fn ($row): array => [
+                'name' => $row->customer?->name ?? 'Pelanggan',
+                'orders' => (int) $row->orders,
+                'total' => (int) $row->total,
+            ]);
 
         $topLocations = Transaction::join('customers', 'transactions.customer_id', '=', 'customers.id')
             ->select('customers.village_name', DB::raw('COUNT(*) as orders'))
@@ -177,12 +161,10 @@ class DashboardController extends Controller
             ->orderByDesc('orders')
             ->take(5)
             ->get()
-            ->map(function ($row) {
-                return [
-                    'name' => $row->village_name ?? 'Lainnya',
-                    'orders' => (int) $row->orders,
-                ];
-            });
+            ->map(fn ($row): array => [
+                'name' => $row->village_name ?? 'Lainnya',
+                'orders' => (int) $row->orders,
+            ]);
 
         $activeShifts = CashierShift::query()
             ->with('user:id,name')
@@ -190,7 +172,7 @@ class DashboardController extends Controller
             ->latest('opened_at')
             ->take(5)
             ->get()
-            ->map(function (CashierShift $shift) use ($cashierShiftService) {
+            ->map(function (CashierShift $shift) use ($cashierShiftService): array {
                 $summary = $cashierShiftService->calculateSummary($shift);
 
                 return [

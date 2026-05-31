@@ -32,7 +32,7 @@ class PaymentSettingController extends Controller
             $webhookWarnings[] = 'APP_URL masih mengarah ke localhost atau 127.0.0.1. Payment gateway membutuhkan URL publik yang bisa diakses dari internet.';
         }
 
-        if ($setting->xendit_enabled && ! $setting->secretConfigured('xendit_callback_token')) {
+        if ($setting->xendit_enabled && !$setting->secretConfigured('xendit_callback_token')) {
             $webhookWarnings[] = 'Xendit aktif tetapi callback token belum diisi. Webhook Xendit akan ditolak sampai token tersedia.';
         }
 

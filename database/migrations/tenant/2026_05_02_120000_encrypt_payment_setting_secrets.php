@@ -57,7 +57,7 @@ return new class extends Migration
                 foreach ($this->fields as $field) {
                     $value = $setting->{$field};
 
-                    if (blank($value) || ! $this->isEncrypted($value)) {
+                    if (blank($value) || !$this->isEncrypted($value)) {
                         continue;
                     }
 

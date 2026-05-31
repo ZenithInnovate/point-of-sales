@@ -53,7 +53,7 @@ class CrmCampaignController extends Controller
         $validated = $this->validateCampaign($request);
         $campaign = $this->crmAutomationService->createCampaign($validated, $request->user()->id);
 
-        if (! $request->boolean('save_as_draft')) {
+        if (!$request->boolean('save_as_draft')) {
             $campaign = $this->crmAutomationService->processCampaign($campaign);
         }
 

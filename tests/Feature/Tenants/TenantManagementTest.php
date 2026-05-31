@@ -248,7 +248,7 @@ class TenantManagementTest extends TestCase
         $response = $this->actingAs($user)->get(route('tenants.index'));
 
         $response->assertOk();
-        
+
         $tenantsData = $response->original->getData()['page']['props']['tenants']['data'];
         $tenantIds = collect($tenantsData)->pluck('id')->toArray();
 

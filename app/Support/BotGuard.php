@@ -31,7 +31,7 @@ class BotGuard
 
     public static function validate(Request $request): void
     {
-        if (! config('security.bot_guard.enabled', true)) {
+        if (!config('security.bot_guard.enabled', true)) {
             return;
         }
 

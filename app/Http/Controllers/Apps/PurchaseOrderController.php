@@ -107,7 +107,7 @@ class PurchaseOrderController extends Controller
 
     public function cancel(Request $request, PurchaseOrder $purchaseOrder)
     {
-        if (! in_array($purchaseOrder->status, ['draft', 'ordered', 'partial_received'])) {
+        if (!in_array($purchaseOrder->status, ['draft', 'ordered', 'partial_received'])) {
             return back()->with('error', 'PO tidak dapat dibatalkan.');
         }
 

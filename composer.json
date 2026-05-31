@@ -46,7 +46,8 @@
         "rector": "vendor/bin/rector process",
         "fix": [
             "@rector",
-            "@pint"
+            "@pint",
+            "npm run format"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

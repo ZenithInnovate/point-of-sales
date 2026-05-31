@@ -212,7 +212,7 @@ class CustomerSegmentationService
             return false;
         }
 
-        if (! $customer->last_purchase_at) {
+        if (!$customer->last_purchase_at) {
             return false;
         }
 
@@ -228,7 +228,7 @@ class CustomerSegmentationService
             return false;
         }
 
-        if (! $customer->last_purchase_at) {
+        if (!$customer->last_purchase_at) {
             return true;
         }
 

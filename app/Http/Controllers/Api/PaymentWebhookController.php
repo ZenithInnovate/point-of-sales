@@ -19,7 +19,7 @@ class PaymentWebhookController extends Controller
         try {
             $paymentSetting = PaymentSetting::first();
 
-            if (! $paymentSetting || ! $paymentSetting->midtrans_enabled) {
+            if (!$paymentSetting || !$paymentSetting->midtrans_enabled) {
                 return response()->json(['status' => 'error', 'message' => 'Midtrans not configured'], 400);
             }
 
@@ -47,7 +47,7 @@ class PaymentWebhookController extends Controller
             // Find transaction by invoice (order_id)
             $transaction = Transaction::where('invoice', $orderId)->first();
 
-            if (! $transaction) {
+            if (!$transaction) {
                 Log::warning('Midtrans Webhook: Transaction not found', [
                     'provider' => 'midtrans',
                     'order_id' => $orderId,
@@ -101,7 +101,7 @@ class PaymentWebhookController extends Controller
         try {
             $paymentSetting = PaymentSetting::first();
 
-            if (! $paymentSetting || ! $paymentSetting->xendit_enabled) {
+            if (!$paymentSetting || !$paymentSetting->xendit_enabled) {
                 return response()->json(['status' => 'error', 'message' => 'Xendit not configured'], 400);
             }
 
@@ -119,7 +119,7 @@ class PaymentWebhookController extends Controller
                 return response()->json(['status' => 'error', 'message' => 'Xendit callback token is not configured'], 400);
             }
 
-            if (! is_string($callbackToken) || ! hash_equals($expectedToken, $callbackToken)) {
+            if (!is_string($callbackToken) || !hash_equals($expectedToken, $callbackToken)) {
                 Log::warning('Xendit Webhook: Invalid callback token', [
                     'provider' => 'xendit',
                     'external_id' => $request->input('external_id'),
@@ -141,7 +141,7 @@ class PaymentWebhookController extends Controller
             // Find transaction by invoice
             $transaction = Transaction::where('invoice', $externalId)->first();
 
-            if (! $transaction) {
+            if (!$transaction) {
                 Log::warning('Xendit Webhook: Transaction not found', [
                     'provider' => 'xendit',
                     'external_id' => $externalId,

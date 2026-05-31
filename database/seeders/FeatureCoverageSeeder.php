@@ -35,7 +35,7 @@ class FeatureCoverageSeeder extends Seeder
 {
     public function run(): void
     {
-        if (! $this->requiredTablesExist()) {
+        if (!$this->requiredTablesExist()) {
             $this->command?->warn('Skipping FeatureCoverageSeeder because required tables do not exist.');
 
             return;
@@ -44,7 +44,7 @@ class FeatureCoverageSeeder extends Seeder
         $admin = User::where('email', 'admin@gmail.com')->first() ?? User::first();
         $cashier = User::where('email', 'cashier@gmail.com')->first() ?? $admin;
 
-        if (! $admin || ! $cashier) {
+        if (!$admin || !$cashier) {
             $this->command?->warn('Skipping FeatureCoverageSeeder because sample users are missing.');
 
             return;
@@ -227,7 +227,7 @@ class FeatureCoverageSeeder extends Seeder
             ->latest('id')
             ->first();
 
-        if (! $bankAccount || ! $transaction) {
+        if (!$bankAccount || !$transaction) {
             return;
         }
 
@@ -583,7 +583,7 @@ class FeatureCoverageSeeder extends Seeder
             foreach ($finalizedOpname->items as $item) {
                 $product = $item->product()->lockForUpdate()->first();
 
-                if (! $product || $item->physical_stock === null) {
+                if (!$product || $item->physical_stock === null) {
                     continue;
                 }
 

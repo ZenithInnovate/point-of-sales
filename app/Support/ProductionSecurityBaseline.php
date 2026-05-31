@@ -26,7 +26,7 @@ class ProductionSecurityBaseline
 
         $appUrl = (string) config('app.url');
 
-        if (blank($appUrl) || ! str_starts_with($appUrl, 'https://')) {
+        if (blank($appUrl) || !str_starts_with($appUrl, 'https://')) {
             $issues[] = [
                 'key' => 'app_url_https',
                 'message' => 'APP_URL harus menggunakan HTTPS yang valid di production.',

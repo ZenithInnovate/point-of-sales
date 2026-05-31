@@ -22,8 +22,8 @@ class TenantController extends Controller
             ->when(request()->search, function ($query): void {
                 $query->where(function ($q): void {
                     $q->where('name', 'like', '%'.request()->search.'%')
-                      ->orWhere('id', 'like', '%'.request()->search.'%')
-                      ->orWhere('domain', 'like', '%'.request()->search.'%');
+                        ->orWhere('id', 'like', '%'.request()->search.'%')
+                        ->orWhere('domain', 'like', '%'.request()->search.'%');
                 });
             })->latest()->paginate(5);
 
@@ -65,7 +65,7 @@ class TenantController extends Controller
         // Parameter DB default diambil dari DB utama/landlord jika tidak diisi
         $dbHost = $request->db_host ?: config('database.connections.landlord.host');
         $dbPort = $request->db_port ?: config('database.connections.landlord.port');
-        $dbDatabase = $request->db_database ?: 'pos_tenant_' . str_replace('-', '_', $id);
+        $dbDatabase = $request->db_database ?: 'pos_tenant_'.str_replace('-', '_', $id);
         $dbUsername = $request->db_username ?: config('database.connections.landlord.username');
         $dbPassword = $request->db_password ?? config('database.connections.landlord.password');
 
@@ -86,7 +86,7 @@ class TenantController extends Controller
                 return back()->withErrors(['id' => 'Gagal membuat database tenant atau menjalankan migrasi.']);
             }
         } catch (\Exception $e) {
-            return back()->withErrors(['id' => 'Terjadi kesalahan sistem saat membuat tenant: ' . $e->getMessage()]);
+            return back()->withErrors(['id' => 'Terjadi kesalahan sistem saat membuat tenant: '.$e->getMessage()]);
         }
 
         return to_route('tenants.index');
@@ -121,7 +121,7 @@ class TenantController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'domain' => 'required|string|unique:landlord.tenants,domain,' . $tenant->id,
+            'domain' => 'required|string|unique:landlord.tenants,domain,'.$tenant->id,
             'status' => 'required|in:active,suspended',
         ]);
 
@@ -154,7 +154,7 @@ class TenantController extends Controller
 
         // 2. Hapus direktori penyimpanan media khusus tenant
         if ($tenant->storage_key) {
-            Storage::disk('public')->deleteDirectory('tenants/' . $tenant->storage_key);
+            Storage::disk('public')->deleteDirectory('tenants/'.$tenant->storage_key);
         }
 
         // 3. Hapus data registrasi landlord

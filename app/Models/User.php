@@ -60,7 +60,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return Attribute::make(
             get: function ($value) {
-                if (! $value) {
+                if (!$value) {
                     return null;
                 }
 
@@ -73,8 +73,8 @@ class User extends Authenticatable implements MustVerifyEmail
                 }
 
                 return app()->bound('tenant')
-                    ? asset('/storage/tenants/' . app('tenant')->storage_key . '/' . ltrim($value, '/'))
-                    : asset('storage/' . ltrim($value, '/'));
+                    ? asset('/storage/tenants/'.app('tenant')->storage_key.'/'.ltrim($value, '/'))
+                    : asset('storage/'.ltrim($value, '/'));
             }
         );
     }
@@ -84,7 +84,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getPermissions()
     {
-        return $this->getAllPermissions()->mapWithKeys(fn($permission) => [
+        return $this->getAllPermissions()->mapWithKeys(fn ($permission): array => [
             $permission['name'] => true,
         ]);
     }

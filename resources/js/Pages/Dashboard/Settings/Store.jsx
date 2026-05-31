@@ -3,7 +3,7 @@ import { Head, useForm } from "@inertiajs/react";
 import Input from "@/Components/Dashboard/Input";
 import Textarea from "@/Components/Dashboard/TextArea";
 import toast from "react-hot-toast";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
     IconBuildingStore,
     IconDeviceFloppy,
@@ -12,6 +12,7 @@ import {
     IconWorld,
     IconMail,
     IconPhoto,
+    IconUpload,
 } from "@tabler/icons-react";
 
 export default function Store({ settings }) {
@@ -26,6 +27,7 @@ export default function Store({ settings }) {
     });
 
     const [logoPreview, setLogoPreview] = useState(settings.store_logo || null);
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         return () => {
@@ -72,25 +74,43 @@ export default function Store({ settings }) {
                                 <IconPhoto size={18} />
                                 Logo Toko
                             </label>
-                            <div className="mb-3 flex h-32 w-32 items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+                            
+                            <div 
+                                onClick={() => fileInputRef.current?.click()}
+                                className="group relative mb-3 flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 transition-all hover:border-primary-500 hover:bg-slate-100/50 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-primary-500 dark:hover:bg-slate-800/80"
+                                title="Klik untuk mengunggah logo"
+                            >
                                 {logoPreview ? (
-                                    <img
-                                        src={
-                                            logoPreview.startsWith("http") ||
-                                            logoPreview.startsWith("/storage")
-                                                ? logoPreview
-                                                : `/storage/${logoPreview}`
-                                        }
-                                        alt="Logo"
-                                        className="h-full w-full object-cover"
-                                    />
+                                    <>
+                                        <img
+                                            src={
+                                                logoPreview.startsWith("blob:") ||
+                                                logoPreview.startsWith("http") ||
+                                                logoPreview.startsWith("/storage")
+                                                    ? logoPreview
+                                                    : `/storage/${logoPreview}`
+                                            }
+                                            alt="Logo"
+                                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                        />
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100 text-white">
+                                            <IconUpload size={20} />
+                                            <span className="mt-1 text-[10px] font-semibold">Ganti Logo</span>
+                                        </div>
+                                    </>
                                 ) : (
-                                    <IconBuildingStore size={36} className="text-slate-300" />
+                                    <div className="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 transition-colors duration-200 group-hover:text-primary-500">
+                                        <IconBuildingStore size={36} strokeWidth={1.5} />
+                                        <span className="text-[10px] font-semibold">Unggah Logo</span>
+                                    </div>
                                 )}
                             </div>
+
                             <input
                                 type="file"
+                                ref={fileInputRef}
                                 accept="image/*"
+                                className="hidden"
                                 onChange={(e) => {
                                     const file = e.target.files[0];
                                     if (file) {

@@ -75,7 +75,7 @@ class CustomerSegmentController extends Controller
                 'memberships' => $customerSegment->memberships
                     ->sortByDesc('matched_at')
                     ->values()
-                    ->map(fn ($membership) => [
+                    ->map(fn ($membership): array => [
                         'id' => $membership->id,
                         'source' => $membership->source,
                         'matched_at' => optional($membership->matched_at)?->toIso8601String(),
@@ -184,7 +184,7 @@ class CustomerSegmentController extends Controller
         ]);
 
         $validated['slug'] = $segment?->slug ?? Str::slug($validated['name']);
-        if (! $segment && CustomerSegment::query()->where('slug', $validated['slug'])->exists()) {
+        if (!$segment && CustomerSegment::query()->where('slug', $validated['slug'])->exists()) {
             $validated['slug'] .= '-'.Str::lower(Str::random(4));
         }
 
@@ -192,7 +192,7 @@ class CustomerSegmentController extends Controller
             $validated['auto_rule_type'] = null;
             $validated['rule_config'] = null;
         } else {
-            $validated['rule_config'] = $validated['rule_config'] ?? [];
+            $validated['rule_config'] ??= [];
         }
 
         $validated['is_active'] = (bool) ($validated['is_active'] ?? false);

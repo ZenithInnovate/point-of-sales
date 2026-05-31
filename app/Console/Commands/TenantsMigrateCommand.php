@@ -28,7 +28,7 @@ class TenantsMigrateCommand extends Command
     public function __construct(/**
      * The tenant manager instance.
      */
-    protected TenantManager $tenantManager)
+        protected TenantManager $tenantManager)
     {
         parent::__construct();
     }
@@ -45,6 +45,7 @@ class TenantsMigrateCommand extends Command
 
             if (!$tenant) {
                 $this->error("Tenant dengan ID '{$tenantId}' tidak ditemukan.");
+
                 return Command::FAILURE;
             }
 
@@ -53,7 +54,8 @@ class TenantsMigrateCommand extends Command
             $tenants = Tenant::where('status', 'active')->get();
 
             if ($tenants->isEmpty()) {
-                $this->info("Tidak ada tenant aktif untuk dimigrasikan.");
+                $this->info('Tidak ada tenant aktif untuk dimigrasikan.');
+
                 return Command::SUCCESS;
             }
 
@@ -63,6 +65,7 @@ class TenantsMigrateCommand extends Command
         }
 
         $this->info('Semua migrasi tenant selesai dijalankan!');
+
         return Command::SUCCESS;
     }
 
@@ -71,10 +74,10 @@ class TenantsMigrateCommand extends Command
      */
     protected function migrateTenant(Tenant $tenant): void
     {
-        $this->line("--------------------------------------------------");
+        $this->line('--------------------------------------------------');
         $this->info("Memigrasikan Tenant: [{$tenant->id}] - {$tenant->name}");
         $this->line("Database: {$tenant->db_database} pada Host: {$tenant->db_host}");
-        $this->line("--------------------------------------------------");
+        $this->line('--------------------------------------------------');
 
         try {
             // Bootstrap koneksi tenant aktif
@@ -89,7 +92,7 @@ class TenantsMigrateCommand extends Command
 
             $this->info("Berhasil memigrasikan tenant [{$tenant->id}].");
         } catch (\Exception $e) {
-            $this->error("Gagal memigrasikan tenant [{$tenant->id}]: " . $e->getMessage());
+            $this->error("Gagal memigrasikan tenant [{$tenant->id}]: ".$e->getMessage());
         }
     }
 }

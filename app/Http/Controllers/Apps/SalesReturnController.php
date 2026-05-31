@@ -47,7 +47,7 @@ class SalesReturnController extends Controller
 
         $salesReturns = SalesReturn::query()
             ->with(['transaction:id,invoice,payment_method,payment_status', 'customer:id,name', 'cashier:id,name'])
-            ->when(! $request->user()->isSuperAdmin(), function (Builder $query) use ($request): void {
+            ->when(!$request->user()->isSuperAdmin(), function (Builder $query) use ($request): void {
                 $query->whereHas('transaction', function (Builder $builder) use ($request): void {
                     $builder->where('cashier_id', $request->user()->id);
                 });
@@ -76,7 +76,7 @@ class SalesReturnController extends Controller
 
         $transaction = $this->resolveAccessibleTransaction($request, $transaction->id);
 
-        if (! $this->transactionHasReturnableItems($transaction)) {
+        if (!$this->transactionHasReturnableItems($transaction)) {
             return to_route('transactions.history')->with('error', 'Seluruh item transaksi ini sudah habis diretur.');
         }
 
@@ -206,7 +206,7 @@ class SalesReturnController extends Controller
             foreach ($salesReturn->items as $item) {
                 $detail = $item->transactionDetail;
 
-                if (! $detail || $item->qty_return < 1) {
+                if (!$detail || $item->qty_return < 1) {
                     throw ValidationException::withMessages([
                         'sales_return' => 'Seluruh item retur harus memiliki kuantitas minimal 1.',
                     ]);
@@ -345,7 +345,7 @@ class SalesReturnController extends Controller
                 'details.product:id,title,barcode,sku,buy_price',
                 'details.salesReturnItems.salesReturn:id,status',
             ])
-            ->when(! $request->user()->isSuperAdmin(), fn (Builder $query) => $query->where('cashier_id', $request->user()->id))
+            ->when(!$request->user()->isSuperAdmin(), fn (Builder $query) => $query->where('cashier_id', $request->user()->id))
             ->findOrFail($transactionId);
     }
 
@@ -363,7 +363,7 @@ class SalesReturnController extends Controller
                 'items.product:id,title,barcode,sku,buy_price',
                 'items.transactionDetail:id,transaction_id,product_id,qty,price',
             ])
-            ->when(! $request->user()->isSuperAdmin(), function (Builder $query) use ($request): void {
+            ->when(!$request->user()->isSuperAdmin(), function (Builder $query) use ($request): void {
                 $query->whereHas('transaction', fn (Builder $builder) => $builder->where('cashier_id', $request->user()->id));
             })
             ->findOrFail($salesReturnId);
@@ -455,7 +455,7 @@ class SalesReturnController extends Controller
                 'id' => $salesReturn->transaction?->id,
                 'invoice' => $salesReturn->transaction?->invoice,
             ],
-            'items' => $salesReturn->items->map(fn(SalesReturnItem $item) => [
+            'items' => $salesReturn->items->map(fn (SalesReturnItem $item): array => [
                 'id' => $item->id,
                 'transaction_detail_id' => $item->transaction_detail_id,
                 'product' => $item->product ? [
@@ -493,7 +493,7 @@ class SalesReturnController extends Controller
 
         $returnType = $validated['return_type'];
 
-        if (! $transaction->customer_id) {
+        if (!$transaction->customer_id) {
             $returnType = 'refund_cash';
         }
 
@@ -501,7 +501,7 @@ class SalesReturnController extends Controller
             ->map(function (array $item) use ($details, $returnedQtyMap): ?array {
                 $detail = $details->get((int) $item['transaction_detail_id']);
 
-                if (! $detail) {
+                if (!$detail) {
                     throw ValidationException::withMessages([
                         'items' => 'Ada item retur yang tidak cocok dengan transaksi asal.',
                     ]);
@@ -564,7 +564,7 @@ class SalesReturnController extends Controller
 
     private function calculateSettlement(Transaction $transaction, int $totalReturnAmount, string $returnType): array
     {
-        $resolvedReturnType = ! $transaction->customer_id && $returnType === 'store_credit'
+        $resolvedReturnType = !$transaction->customer_id && $returnType === 'store_credit'
             ? 'refund_cash'
             : $returnType;
 
@@ -634,7 +634,7 @@ class SalesReturnController extends Controller
 
     private function ensureDraft(SalesReturn $salesReturn): void
     {
-        if (! $salesReturn->isDraft()) {
+        if (!$salesReturn->isDraft()) {
             throw ValidationException::withMessages([
                 'sales_return' => 'Retur penjualan yang sudah selesai tidak dapat diubah lagi.',
             ]);
@@ -643,7 +643,7 @@ class SalesReturnController extends Controller
 
     private function ensureSalesReturnTablesExist(): void
     {
-        if (! Schema::hasTable('sales_returns') || ! Schema::hasTable('sales_return_items')) {
+        if (!Schema::hasTable('sales_returns') || !Schema::hasTable('sales_return_items')) {
             abort(503, 'Fitur retur penjualan belum siap. Jalankan migrasi database terlebih dahulu.');
         }
     }

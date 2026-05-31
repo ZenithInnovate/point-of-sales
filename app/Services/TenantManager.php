@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Tenant;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\PermissionRegistrar;
 
 class TenantManager
@@ -43,9 +42,9 @@ class TenantManager
         DB::setDefaultConnection('mysql');
 
         // Dynamically override public and local filesystem disks
-        Config::set('filesystems.disks.local.root', storage_path('app/public/tenants/' . $tenant->storage_key));
-        Config::set('filesystems.disks.public.root', storage_path('app/public/tenants/' . $tenant->storage_key));
-        Config::set('filesystems.disks.public.url', env('APP_URL') . '/storage/tenants/' . $tenant->storage_key);
+        Config::set('filesystems.disks.local.root', storage_path('app/public/tenants/'.$tenant->storage_key));
+        Config::set('filesystems.disks.public.root', storage_path('app/public/tenants/'.$tenant->storage_key));
+        Config::set('filesystems.disks.public.url', env('APP_URL').'/storage/tenants/'.$tenant->storage_key);
 
         // Dynamically override SMTP mail settings for this tenant (Option B)
         try {
@@ -56,10 +55,10 @@ class TenantManager
                 Config::set('mail.mailers.smtp.username', \App\Models\Setting::get('mail_username'));
                 Config::set('mail.mailers.smtp.password', \App\Models\Setting::get('mail_password'));
                 Config::set('mail.mailers.smtp.encryption', \App\Models\Setting::get('mail_encryption', 'tls'));
-                
+
                 $fromAddress = \App\Models\Setting::get('mail_from_address', \App\Models\Setting::get('mail_username'));
                 $fromName = \App\Models\Setting::get('mail_from_name', $tenant->name);
-                
+
                 Config::set('mail.from.address', $fromAddress);
                 Config::set('mail.from.name', $fromName);
             } else {
@@ -73,7 +72,7 @@ class TenantManager
                     Config::set('mail.from.name', $fromName);
                 }
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // Heningkan saat seeding atau jika tabel database belum migrasi lengkap
         }
 

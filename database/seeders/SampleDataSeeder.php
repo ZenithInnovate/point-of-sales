@@ -172,7 +172,7 @@ class SampleDataSeeder extends Seeder
         foreach ($blueprints as $blueprint) {
             $customer = $customers->get($blueprint['customer']);
 
-            if (! $customer) {
+            if (!$customer) {
                 continue;
             }
 
@@ -337,7 +337,7 @@ class SampleDataSeeder extends Seeder
                 'category_id' => $category?->id,
                 'image' => $image ?? 'default.jpg',
                 'barcode' => $product['barcode'],
-                'sku' => 'SKU-' . $product['barcode'],
+                'sku' => 'SKU-'.$product['barcode'],
                 'title' => $product['title'],
                 'description' => $product['description'],
                 'buy_price' => $product['buy_price'],
@@ -354,7 +354,7 @@ class SampleDataSeeder extends Seeder
     {
         $cashier = User::where('email', 'cashier@gmail.com')->first() ?? User::first();
 
-        if (! $cashier) {
+        if (!$cashier) {
             return;
         }
 
@@ -430,7 +430,7 @@ class SampleDataSeeder extends Seeder
                 ->map(function ($item) use ($products) {
                     $product = $products->get($item['barcode']);
 
-                    if (! $product) {
+                    if (!$product) {
                         return null;
                     }
 
@@ -558,7 +558,7 @@ class SampleDataSeeder extends Seeder
         foreach ($manualReceivables as $item) {
             $customer = $customers->get($item['customer']);
 
-            if (! $customer) {
+            if (!$customer) {
                 continue;
             }
 
@@ -634,7 +634,7 @@ class SampleDataSeeder extends Seeder
         foreach ($blueprints as $item) {
             $supplier = $suppliers->get($item['supplier']);
 
-            if (! $supplier) {
+            if (!$supplier) {
                 continue;
             }
 

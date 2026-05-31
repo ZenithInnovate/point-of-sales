@@ -90,15 +90,15 @@ class AuditLogService
         $hadBefore = filled($before);
         $hasAfter = filled($after);
 
-        if (! $hadBefore && ! $hasAfter) {
+        if (!$hadBefore && !$hasAfter) {
             return null;
         }
 
-        if (! $hadBefore && $hasAfter) {
+        if (!$hadBefore && $hasAfter) {
             return 'configured';
         }
 
-        if (! $hasAfter) {
+        if (!$hasAfter) {
             return 'removed';
         }
 

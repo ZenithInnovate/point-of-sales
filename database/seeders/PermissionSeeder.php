@@ -42,6 +42,7 @@ class PermissionSeeder extends Seeder
             $create('audit-logs-access');
 
             app(PermissionRegistrar::class)->forgetCachedPermissions();
+
             return;
         }
 

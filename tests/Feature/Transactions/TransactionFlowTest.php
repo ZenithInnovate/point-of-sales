@@ -144,7 +144,7 @@ class TransactionFlowTest extends TestCase
         $response
             ->assertOk()
             ->assertInertia(
-                fn (Assert $page) => $page
+                fn (Assert $page): \Inertia\Testing\AssertableInertia => $page
                     ->component('Dashboard/Transactions/Print')
                     ->where('transaction.invoice', $transaction->invoice)
                     ->where('transaction.grand_total', $transaction->grand_total)
@@ -167,7 +167,7 @@ class TransactionFlowTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertInertia(function (Assert $page) use ($product, $shift) {
+            ->assertInertia(function (Assert $page) use ($product, $shift): void {
                 $page->component('Dashboard/Transactions/Index');
 
                 $products = $page->toArray()['props']['products'] ?? [];
@@ -239,7 +239,7 @@ class TransactionFlowTest extends TestCase
         $this->assertSame('https://pay.midtrans.test/invoice', $transaction->payment_url);
         $this->assertSame('TRX-MIDTRANS', $transaction->payment_reference);
 
-        Http::assertSent(fn ($request) => str_contains($request->url(), 'midtrans.com')
+        Http::assertSent(fn ($request): bool => str_contains((string) $request->url(), 'midtrans.com')
             && $request['transaction_details']['order_id'] === $transaction->invoice);
     }
 

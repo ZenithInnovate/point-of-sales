@@ -187,7 +187,7 @@ class MemberManagementTest extends TestCase
 
     private function seedRegionHierarchy(): void
     {
-        if (! Schema::hasTable('provinces')) {
+        if (!Schema::hasTable('provinces')) {
             Schema::create('provinces', function ($table): void {
                 $table->id();
                 $table->string('code')->unique();
@@ -195,7 +195,7 @@ class MemberManagementTest extends TestCase
             });
         }
 
-        if (! Schema::hasTable('cities')) {
+        if (!Schema::hasTable('cities')) {
             Schema::create('cities', function ($table): void {
                 $table->id();
                 $table->string('code')->unique();
@@ -204,7 +204,7 @@ class MemberManagementTest extends TestCase
             });
         }
 
-        if (! Schema::hasTable('districts')) {
+        if (!Schema::hasTable('districts')) {
             Schema::create('districts', function ($table): void {
                 $table->id();
                 $table->string('code')->unique();
@@ -213,7 +213,7 @@ class MemberManagementTest extends TestCase
             });
         }
 
-        if (! Schema::hasTable('villages')) {
+        if (!Schema::hasTable('villages')) {
             Schema::create('villages', function ($table): void {
                 $table->id();
                 $table->string('code')->unique();

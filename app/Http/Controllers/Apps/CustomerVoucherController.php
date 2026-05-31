@@ -26,15 +26,15 @@ class CustomerVoucherController extends Controller
 
         $vouchers = CustomerVoucher::query()
             ->with(['customer:id,name,no_telp', 'creator:id,name'])
-            ->when($filters['search'], function ($query, $search) {
-                $query->where(function ($builder) use ($search) {
+            ->when($filters['search'], function ($query, $search): void {
+                $query->where(function ($builder) use ($search): void {
                     $builder
                         ->where('code', 'like', '%'.$search.'%')
                         ->orWhere('name', 'like', '%'.$search.'%')
                         ->orWhereHas('customer', fn ($customerQuery) => $customerQuery->where('name', 'like', '%'.$search.'%'));
                 });
             })
-            ->when($filters['status'], function ($query, $status) {
+            ->when($filters['status'], function ($query, $status): void {
                 match ($status) {
                     'active' => $query->where('is_active', true)->where('is_used', false),
                     'scheduled' => $query->where('is_active', true)->where('is_used', false)->whereNotNull('starts_at')->where('starts_at', '>', now()),

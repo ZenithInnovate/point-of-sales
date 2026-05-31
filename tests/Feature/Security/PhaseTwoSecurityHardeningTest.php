@@ -50,7 +50,7 @@ class PhaseTwoSecurityHardeningTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('settings.payments.edit'));
 
-        $response->assertInertia(fn (Assert $page) => $page
+        $response->assertInertia(fn (Assert $page): \Inertia\Testing\AssertableInertia => $page
             ->component('Dashboard/Settings/Payment')
             ->missing('setting.midtrans_server_key')
             ->missing('setting.xendit_secret_key')

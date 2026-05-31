@@ -107,7 +107,7 @@ class AdvancedSalesInsightsController extends Controller
             ->when($filters['customer_id'] ?? null, fn (Builder $q, $customerId) => $q->where('transactions.customer_id', $customerId))
             ->when($filters['start_date'] ?? null, fn (Builder $q, $startDate) => $q->whereDate('transactions.created_at', '>=', $startDate))
             ->when($filters['end_date'] ?? null, fn (Builder $q, $endDate) => $q->whereDate('transactions.created_at', '<=', $endDate))
-            ->when($filters['category_id'] ?? null, function (Builder $q, $categoryId) {
+            ->when($filters['category_id'] ?? null, function (Builder $q, $categoryId): void {
                 $q->whereHas('details.product', fn (Builder $productQuery) => $productQuery->where('category_id', $categoryId));
             });
     }
@@ -151,7 +151,7 @@ class AdvancedSalesInsightsController extends Controller
             ->orderByDesc('revenue_total')
             ->limit(10)
             ->get()
-            ->map(fn ($row) => [
+            ->map(fn ($row): array => [
                 'product_id' => (int) $row->product_id,
                 'product_title' => $row->product_title,
                 'product_sku' => $row->product_sku,
@@ -205,7 +205,7 @@ class AdvancedSalesInsightsController extends Controller
             ->orderByDesc('products.stock')
             ->limit(10)
             ->get()
-            ->map(fn ($row) => [
+            ->map(fn ($row): array => [
                 'product_id' => (int) $row->product_id,
                 'product_title' => $row->product_title,
                 'product_sku' => $row->product_sku,
@@ -241,7 +241,7 @@ class AdvancedSalesInsightsController extends Controller
             ->orderByDesc('profit_total')
             ->limit(10)
             ->get()
-            ->map(fn ($row) => [
+            ->map(fn ($row): array => [
                 'product_id' => (int) $row->product_id,
                 'product_title' => $row->product_title,
                 'category_name' => $row->category_name,
@@ -275,7 +275,7 @@ class AdvancedSalesInsightsController extends Controller
             ->groupBy('p.category_id', 'c.name')
             ->orderByDesc('profit_total')
             ->get()
-            ->map(fn ($row) => [
+            ->map(fn ($row): array => [
                 'category_id' => $row->category_id ? (int) $row->category_id : null,
                 'category_name' => $row->category_name,
                 'qty_sold' => (int) $row->qty_sold,
@@ -297,10 +297,10 @@ class AdvancedSalesInsightsController extends Controller
             ->groupBy(DB::raw($hourExpression))
             ->orderBy(DB::raw($hourExpression))
             ->get()
-            ->keyBy(fn ($row) => (int) $row->hour_bucket);
+            ->keyBy(fn ($row): int => (int) $row->hour_bucket);
 
         return collect(range(0, 23))
-            ->map(function (int $hour) use ($rows) {
+            ->map(function (int $hour) use ($rows): array {
                 $row = $rows->get($hour);
 
                 return [
@@ -320,7 +320,7 @@ class AdvancedSalesInsightsController extends Controller
             ->groupBy(DB::raw('DATE(created_at)'))
             ->orderBy(DB::raw('DATE(created_at)'))
             ->get()
-            ->map(fn ($row) => [
+            ->map(fn ($row): array => [
                 'date' => $row->sales_date,
                 'label' => Carbon::parse($row->sales_date)->format('d M'),
                 'orders_count' => (int) $row->orders_count,
@@ -360,7 +360,7 @@ class AdvancedSalesInsightsController extends Controller
             ->orderByDesc('items_sold')
             ->orderByDesc('revenue_total')
             ->get()
-            ->map(fn ($row) => [
+            ->map(fn ($row): array => [
                 'cashier_id' => (int) $row->cashier_id,
                 'cashier_name' => $row->cashier_name,
                 'orders_count' => (int) $row->orders_count,
@@ -395,7 +395,7 @@ class AdvancedSalesInsightsController extends Controller
                 'customers.loyalty_tier'
             )
             ->get()
-            ->map(fn ($row) => [
+            ->map(fn ($row): array => [
                 'customer_id' => (int) $row->customer_id,
                 'customer_name' => $row->customer_name,
                 'is_loyalty_member' => (bool) $row->is_loyalty_member,
@@ -411,8 +411,8 @@ class AdvancedSalesInsightsController extends Controller
             ]);
 
         $activeCustomers = $rows->count();
-        $repeatCustomers = $rows->filter(fn (array $row) => $row['orders_count'] > 1)->values();
-        $newCustomers = $rows->filter(fn (array $row) => $row['orders_count'] === 1)->values();
+        $repeatCustomers = $rows->filter(fn (array $row): bool => $row['orders_count'] > 1)->values();
+        $newCustomers = $rows->filter(fn (array $row): bool => $row['orders_count'] === 1)->values();
         $memberRevenue = $rows->where('is_loyalty_member', true)->sum('revenue_total');
         $nonMemberRevenue = $rows->where('is_loyalty_member', false)->sum('revenue_total');
         $repeatRevenue = $repeatCustomers->sum('revenue_total');
@@ -433,7 +433,7 @@ class AdvancedSalesInsightsController extends Controller
                     : 0,
             ],
             'top_customers' => $repeatCustomers
-                ->sortByDesc(fn (array $row) => [$row['orders_count'], $row['revenue_total']])
+                ->sortByDesc(fn (array $row): array => [$row['orders_count'], $row['revenue_total']])
                 ->take(10)
                 ->values()
                 ->all(),
@@ -469,7 +469,7 @@ class AdvancedSalesInsightsController extends Controller
                 sales.last_sold_at as last_sold_at
             ')
             ->get()
-            ->map(function ($row) use ($windowDays) {
+            ->map(function ($row) use ($windowDays): array {
                 $qtySold = (int) $row->qty_sold;
                 $currentStock = (int) $row->current_stock;
                 $averageDailyQty = $windowDays > 0 ? round($qtySold / $windowDays, 2) : 0;
@@ -502,7 +502,7 @@ class AdvancedSalesInsightsController extends Controller
         ];
 
         $sortedRows = $rows
-            ->sort(function (array $a, array $b) {
+            ->sort(function (array $a, array $b): int {
                 $statusPriority = [
                     'critical' => 0,
                     'low' => 1,
@@ -544,7 +544,7 @@ class AdvancedSalesInsightsController extends Controller
             ->selectRaw('MIN(transactions.created_at) as min_date, MAX(transactions.created_at) as max_date')
             ->first();
 
-        if (! $range?->min_date || ! $range?->max_date) {
+        if (!$range?->min_date || !$range?->max_date) {
             return 30;
         }
 
@@ -585,10 +585,10 @@ class AdvancedSalesInsightsController extends Controller
 
         return [
             'summary' => [
-                'active' => $rules->filter(fn (PricingRule $rule) => $rule->currentStatusLabel() === 'active')->count(),
-                'scheduled' => $rules->filter(fn (PricingRule $rule) => $rule->currentStatusLabel() === 'scheduled')->count(),
-                'expired' => $rules->filter(fn (PricingRule $rule) => $rule->currentStatusLabel() === 'expired')->count(),
-                'inactive' => $rules->filter(fn (PricingRule $rule) => $rule->currentStatusLabel() === 'inactive')->count(),
+                'active' => $rules->filter(fn (PricingRule $rule): bool => $rule->currentStatusLabel() === 'active')->count(),
+                'scheduled' => $rules->filter(fn (PricingRule $rule): bool => $rule->currentStatusLabel() === 'scheduled')->count(),
+                'expired' => $rules->filter(fn (PricingRule $rule): bool => $rule->currentStatusLabel() === 'expired')->count(),
+                'inactive' => $rules->filter(fn (PricingRule $rule): bool => $rule->currentStatusLabel() === 'inactive')->count(),
                 'by_kind' => [
                     PricingRule::KIND_STANDARD_DISCOUNT => $rules->where('kind', PricingRule::KIND_STANDARD_DISCOUNT)->count(),
                     PricingRule::KIND_QTY_BREAK => $rules->where('kind', PricingRule::KIND_QTY_BREAK)->count(),
@@ -597,24 +597,24 @@ class AdvancedSalesInsightsController extends Controller
                 ],
             ],
             'active_rules' => $rules
-                ->filter(fn (PricingRule $rule) => $rule->currentStatusLabel() === 'active')
+                ->filter(fn (PricingRule $rule): bool => $rule->currentStatusLabel() === 'active')
                 ->take(5)
                 ->values()
-                ->map(fn (PricingRule $rule) => $this->serializePromoRule($rule))
+                ->map(fn (PricingRule $rule): array => $this->serializePromoRule($rule))
                 ->all(),
             'scheduled_rules' => $rules
-                ->filter(fn (PricingRule $rule) => $rule->currentStatusLabel() === 'scheduled')
+                ->filter(fn (PricingRule $rule): bool => $rule->currentStatusLabel() === 'scheduled')
                 ->sortBy(fn (PricingRule $rule) => optional($rule->starts_at)?->timestamp ?? PHP_INT_MAX)
                 ->take(5)
                 ->values()
-                ->map(fn (PricingRule $rule) => $this->serializePromoRule($rule))
+                ->map(fn (PricingRule $rule): array => $this->serializePromoRule($rule))
                 ->all(),
             'recent_audits' => AuditLog::query()
                 ->where('module', 'pricing_rules')
                 ->latest('id')
                 ->limit(5)
                 ->get()
-                ->map(fn (AuditLog $log) => [
+                ->map(fn (AuditLog $log): array => [
                     'id' => $log->id,
                     'event' => $log->event,
                     'description' => $log->description,
@@ -642,7 +642,7 @@ class AdvancedSalesInsightsController extends Controller
                 'points_earned' => (int) (clone $historyQuery)
                     ->where('type', LoyaltyPointHistory::TYPE_EARN)
                     ->sum('points_delta'),
-                'points_redeemed' => (int) abs((int) (clone $historyQuery)
+                'points_redeemed' => abs((int) (clone $historyQuery)
                     ->where('type', LoyaltyPointHistory::TYPE_REDEEM)
                     ->sum('points_delta')),
                 'voucher_discount_total' => (int) (clone $historyQuery)
@@ -655,11 +655,11 @@ class AdvancedSalesInsightsController extends Controller
                     'platinum' => $members->where('loyalty_tier', 'platinum')->count(),
                 ],
                 'voucher_summary' => [
-                    'active' => $vouchers->filter(fn (CustomerVoucher $voucher) => $voucher->currentStatusLabel() === 'active')->count(),
-                    'scheduled' => $vouchers->filter(fn (CustomerVoucher $voucher) => $voucher->currentStatusLabel() === 'scheduled')->count(),
-                    'expired' => $vouchers->filter(fn (CustomerVoucher $voucher) => $voucher->currentStatusLabel() === 'expired')->count(),
-                    'used' => $vouchers->filter(fn (CustomerVoucher $voucher) => $voucher->currentStatusLabel() === 'used')->count(),
-                    'inactive' => $vouchers->filter(fn (CustomerVoucher $voucher) => $voucher->currentStatusLabel() === 'inactive')->count(),
+                    'active' => $vouchers->filter(fn (CustomerVoucher $voucher): bool => $voucher->currentStatusLabel() === 'active')->count(),
+                    'scheduled' => $vouchers->filter(fn (CustomerVoucher $voucher): bool => $voucher->currentStatusLabel() === 'scheduled')->count(),
+                    'expired' => $vouchers->filter(fn (CustomerVoucher $voucher): bool => $voucher->currentStatusLabel() === 'expired')->count(),
+                    'used' => $vouchers->filter(fn (CustomerVoucher $voucher): bool => $voucher->currentStatusLabel() === 'used')->count(),
+                    'inactive' => $vouchers->filter(fn (CustomerVoucher $voucher): bool => $voucher->currentStatusLabel() === 'inactive')->count(),
                 ],
             ],
             'top_members' => Customer::query()
@@ -668,7 +668,7 @@ class AdvancedSalesInsightsController extends Controller
                 ->orderByDesc('loyalty_points')
                 ->limit(5)
                 ->get()
-                ->map(fn (Customer $customer) => [
+                ->map(fn (Customer $customer): array => [
                     'id' => $customer->id,
                     'name' => $customer->name,
                     'loyalty_tier' => $customer->loyalty_tier,
@@ -714,7 +714,7 @@ class AdvancedSalesInsightsController extends Controller
                 ->latest('id')
                 ->limit(5)
                 ->get()
-                ->map(fn (CustomerCampaign $campaign) => [
+                ->map(fn (CustomerCampaign $campaign): array => [
                     'id' => $campaign->id,
                     'name' => $campaign->name,
                     'type' => $campaign->type,

@@ -78,7 +78,7 @@ class RoleSeeder extends Seeder
     {
         $legacyRole = Role::where('name', 'permission-access')->first();
 
-        if (! $legacyRole) {
+        if (!$legacyRole) {
             return;
         }
 

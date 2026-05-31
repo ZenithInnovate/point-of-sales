@@ -45,7 +45,7 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RoleRequest $request)
+    public function store(RoleRequest $request): \Illuminate\Http\RedirectResponse
     {
         // create new role data
         $role = Role::create(['name' => $request->name]);
@@ -71,7 +71,7 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RoleRequest $request, Role $role)
+    public function update(RoleRequest $request, Role $role): \Illuminate\Http\RedirectResponse
     {
         $beforePermissions = $role->permissions()->pluck('name')->all();
         $before = [
@@ -117,7 +117,7 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Role $role)
+    public function destroy(Role $role): \Illuminate\Http\RedirectResponse
     {
         $before = [
             'name' => $role->name,

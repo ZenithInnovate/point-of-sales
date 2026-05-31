@@ -31,9 +31,9 @@ class CustomerController extends Controller
     public function index()
     {
         // get customers
-        $customers = Customer::when(request()->search, function ($customers) {
+        $customers = Customer::when(request()->search, function ($customers): void {
             $search = request()->search;
-            $customers = $customers->where(function ($query) use ($search) {
+            $customers = $customers->where(function ($query) use ($search): void {
                 $query
                     ->where('name', 'like', '%'.$search.'%')
                     ->orWhere('member_code', 'like', '%'.$search.'%');
@@ -167,7 +167,7 @@ class CustomerController extends Controller
                     'loyalty_points' => (int) $customer->loyalty_points,
                 ],
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal menambahkan pelanggan',
@@ -263,7 +263,7 @@ class CustomerController extends Controller
             ->latest()
             ->limit(15)
             ->get()
-            ->map(fn ($history) => [
+            ->map(fn ($history): array => [
                 'id' => $history->id,
                 'type' => $history->type,
                 'points_delta' => (int) $history->points_delta,
@@ -277,7 +277,7 @@ class CustomerController extends Controller
             ->latest()
             ->limit(10)
             ->get()
-            ->map(fn (CustomerVoucher $voucher) => $this->loyaltyService->serializeVoucher($voucher) + [
+            ->map(fn (CustomerVoucher $voucher): array => $this->loyaltyService->serializeVoucher($voucher) + [
                 'is_active' => (bool) $voucher->is_active,
                 'is_used' => (bool) $voucher->is_used,
             ]);
@@ -317,7 +317,7 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\RedirectResponse
     {
         // find customer by ID
         $customer = Customer::findOrFail($id);
@@ -344,7 +344,7 @@ class CustomerController extends Controller
             ->latest()
             ->limit(5)
             ->get()
-            ->map(fn ($history) => [
+            ->map(fn ($history): array => [
                 'id' => $history->id,
                 'type' => $history->type,
                 'points_delta' => (int) $history->points_delta,
@@ -359,7 +359,7 @@ class CustomerController extends Controller
             ->latest()
             ->limit(5)
             ->get()
-            ->map(fn (CustomerVoucher $voucher) => $this->loyaltyService->serializeVoucher($voucher));
+            ->map(fn (CustomerVoucher $voucher): array => $this->loyaltyService->serializeVoucher($voucher));
 
         return response()->json([
             'success' => true,
@@ -458,7 +458,7 @@ class CustomerController extends Controller
             ->orderByDesc('created_at')
             ->limit(5)
             ->get()
-            ->map(fn ($t) => [
+            ->map(fn ($t): array => [
                 'id' => $t->id,
                 'invoice' => $t->invoice,
                 'total' => $t->grand_total,

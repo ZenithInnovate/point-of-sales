@@ -52,7 +52,7 @@ class BankAccountController extends Controller
      */
     public function store(Request $request)
     {
-        if (! $request->hasFile('logo')) {
+        if (!$request->hasFile('logo')) {
             $request->request->remove('logo');
         }
 
@@ -93,7 +93,7 @@ class BankAccountController extends Controller
     {
         $before = $this->bankAccountPayload($bankAccount);
 
-        if (! $request->hasFile('logo')) {
+        if (!$request->hasFile('logo')) {
             $request->request->remove('logo');
         }
 
@@ -172,7 +172,7 @@ class BankAccountController extends Controller
         $before = $this->bankAccountPayload($bankAccount);
 
         $bankAccount->update([
-            'is_active' => ! $bankAccount->is_active,
+            'is_active' => !$bankAccount->is_active,
         ]);
 
         $status = $bankAccount->is_active ? 'diaktifkan' : 'dinonaktifkan';

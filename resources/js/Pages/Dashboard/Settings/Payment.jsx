@@ -89,7 +89,7 @@ export default function Payment({
                 </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="max-w-3xl space-y-6">
+            <form onSubmit={handleSubmit} className="w-full space-y-6">
                 {/* Default Gateway */}
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
                     <h3 className="mb-4 flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">

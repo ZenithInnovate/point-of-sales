@@ -74,7 +74,7 @@ class GoodsReceivingController extends Controller
 
         foreach ($data['items'] as $item) {
             $poItem = $order->items->firstWhere('id', $item['purchase_order_item_id']);
-            if (! $poItem) {
+            if (!$poItem) {
                 return back()->with('error', 'Item tidak ditemukan di PO.');
             }
             $outstanding = $poItem->qty_ordered - $poItem->qty_received;

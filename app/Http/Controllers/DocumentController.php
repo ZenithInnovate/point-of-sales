@@ -13,7 +13,7 @@ class DocumentController extends Controller
     private function ensureFontDirectory(): void
     {
         $fontDir = storage_path('fonts');
-        if (! is_dir($fontDir)) {
+        if (!is_dir($fontDir)) {
             @mkdir($fontDir, 0755, true);
         }
     }
@@ -21,18 +21,18 @@ class DocumentController extends Controller
     private function storeProfile(): array
     {
         $logo = \App\Models\Setting::get('store_logo');
-        if ($logo && ! str_starts_with($logo, 'http') && ! str_starts_with($logo, '/storage')) {
+        if ($logo && !str_starts_with((string) $logo, 'http') && !str_starts_with((string) $logo, '/storage')) {
             $logo = app()->bound('tenant')
-                ? asset('/storage/tenants/' . app('tenant')->storage_key . '/' . ltrim($logo, '/'))
-                : asset('storage/'.ltrim($logo, '/'));
+                ? asset('/storage/tenants/'.app('tenant')->storage_key.'/'.ltrim((string) $logo, '/'))
+                : asset('storage/'.ltrim((string) $logo, '/'));
         }
 
         $logoData = null;
         if ($logo) {
             $localPath = null;
-            if (str_starts_with($logo, asset('storage'))) {
+            if (str_starts_with((string) $logo, asset('storage'))) {
                 $localPath = public_path(str_replace(asset(''), '', $logo));
-            } elseif (str_starts_with($logo, '/storage')) {
+            } elseif (str_starts_with((string) $logo, '/storage')) {
                 $localPath = public_path($logo);
             }
 
@@ -61,7 +61,7 @@ class DocumentController extends Controller
         return 'data:image/png;base64,'.base64_encode($data);
     }
 
-    public function invoice(string $invoice)
+    public function invoice(string $invoice): \Illuminate\Http\Response
     {
         $this->ensureFontDirectory();
 
@@ -81,12 +81,12 @@ class DocumentController extends Controller
     /**
      * Public version of invoice (no auth needed).
      */
-    public function publicInvoice(string $invoice)
+    public function publicInvoice(string $invoice): \Illuminate\Http\Response
     {
         return $this->invoice($invoice);
     }
 
-    public function receipt(string $invoice, string $size = '80')
+    public function receipt(string $invoice, string $size = '80'): \Illuminate\Http\Response
     {
         $this->ensureFontDirectory();
 
@@ -105,7 +105,7 @@ class DocumentController extends Controller
         return $pdf->stream("receipt-{$transaction->invoice}-{$size}.pdf");
     }
 
-    public function shipping(string $invoice)
+    public function shipping(string $invoice): \Illuminate\Http\Response
     {
         $this->ensureFontDirectory();
 
@@ -126,7 +126,7 @@ class DocumentController extends Controller
         return $pdf->stream("shipping-{$transaction->invoice}.pdf");
     }
 
-    public function receivable(Receivable $receivable)
+    public function receivable(Receivable $receivable): \Illuminate\Http\Response
     {
         $this->ensureFontDirectory();
 
@@ -141,7 +141,7 @@ class DocumentController extends Controller
         return $pdf->stream("piutang-{$receivable->invoice}.pdf");
     }
 
-    public function payable(Payable $payable)
+    public function payable(Payable $payable): \Illuminate\Http\Response
     {
         $this->ensureFontDirectory();
 

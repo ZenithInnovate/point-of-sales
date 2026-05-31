@@ -45,7 +45,7 @@ export default function BankAccounts({ bankAccounts = [] }) {
                 </p>
             </div>
 
-            <div className="max-w-3xl space-y-6">
+            <div className="w-full space-y-6">
                 <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
                     <div className="flex items-center justify-between border-b border-slate-200 p-4 dark:border-slate-800">
                         <h3 className="font-semibold text-slate-800 dark:text-white">

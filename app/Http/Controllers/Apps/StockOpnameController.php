@@ -199,7 +199,7 @@ class StockOpnameController extends Controller
 
                 $product = $item->product()->lockForUpdate()->first();
 
-                if (! $product) {
+                if (!$product) {
                     continue;
                 }
 
@@ -257,7 +257,7 @@ class StockOpnameController extends Controller
 
     private function ensureDraft(StockOpname $stockOpname): void
     {
-        if (! $stockOpname->isDraft()) {
+        if (!$stockOpname->isDraft()) {
             throw ValidationException::withMessages([
                 'stock_opname' => 'Sesi stock opname yang sudah final tidak dapat diubah.',
             ]);

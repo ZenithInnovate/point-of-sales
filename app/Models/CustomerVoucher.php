@@ -64,7 +64,7 @@ class CustomerVoucher extends Model
             return 'used';
         }
 
-        if (! $this->is_active) {
+        if (!$this->is_active) {
             return 'inactive';
         }
 

@@ -71,7 +71,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 ], $status);
             }
 
-            if (! in_array($status, [
+            if (!in_array($status, [
                 Response::HTTP_UNAUTHORIZED,
                 Response::HTTP_FORBIDDEN,
                 Response::HTTP_NOT_FOUND,

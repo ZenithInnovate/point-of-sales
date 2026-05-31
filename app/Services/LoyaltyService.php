@@ -124,7 +124,7 @@ class LoyaltyService
 
     public function ensureMembership(Customer $customer, bool $force = false): Customer
     {
-        if (! $customer->is_loyalty_member && ! $force) {
+        if (!$customer->is_loyalty_member && !$force) {
             return $customer;
         }
 
@@ -360,7 +360,7 @@ class LoyaltyService
     ): ?CustomerVoucher {
         $at ??= now();
 
-        if (! $customer || ! $voucher instanceof CustomerVoucher) {
+        if (!$customer || !$voucher instanceof CustomerVoucher) {
             return null;
         }
 
@@ -368,7 +368,7 @@ class LoyaltyService
             return null;
         }
 
-        if (! $voucher->is_active || $voucher->is_used) {
+        if (!$voucher->is_active || $voucher->is_used) {
             return null;
         }
 
@@ -428,7 +428,7 @@ class LoyaltyService
 
     private function calculateEarnPoints(?Customer $customer, int $eligibleSpend, array $settings): int
     {
-        if (! $customer?->is_loyalty_member || ! $settings['enable_earn']) {
+        if (!$customer?->is_loyalty_member || !$settings['enable_earn']) {
             return 0;
         }
 

@@ -68,7 +68,7 @@ class PayableController extends Controller
             'note' => ['nullable', 'string'],
         ]);
 
-        if (! $data['document_number']) {
+        if (!$data['document_number']) {
             $data['document_number'] = 'INV-'.Str::upper(Str::random(8));
         }
         $data['status'] = 'unpaid';
@@ -131,7 +131,7 @@ class PayableController extends Controller
             return $item;
         });
 
-        $agingSummary = $payables->groupBy('aging_bucket')->map(fn($group, $bucket) => [
+        $agingSummary = $payables->groupBy('aging_bucket')->map(fn ($group, $bucket): array => [
             'bucket' => $bucket,
             'count' => $group->count(),
             'total' => $group->sum('total'),

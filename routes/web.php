@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 // redirect to dashboard
-Route::get('/', fn() => redirect()->route('login'));
+Route::get('/', fn () => redirect()->route('login'));
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -47,8 +47,8 @@ Route::get('/', fn() => redirect()->route('login'));
 
 Route::get('/license', function () {
     $landlord = \App\Models\Tenant::find('admin');
-    $landlordUrl = $landlord 
-        ? (request()->secure() ? 'https://' : 'http://') . $landlord->domain . (request()->getPort() ? ':' . request()->getPort() : '')
+    $landlordUrl = $landlord
+        ? (request()->secure() ? 'https://' : 'http://').$landlord->domain.(request()->getPort() ? ':'.request()->getPort() : '')
         : '/';
 
     return Inertia::render('LicenseValidation', [
@@ -58,7 +58,7 @@ Route::get('/license', function () {
     ]);
 })->name('license.validation');
 
-Route::get('/dashboard/access', fn() => Inertia::render('Dashboard/Access'))->middleware(['auth', 'verified'])->name('dashboard.access');
+Route::get('/dashboard/access', fn () => Inertia::render('Dashboard/Access'))->middleware(['auth', 'verified'])->name('dashboard.access');
 
 // Public share routes (no login)
 Route::get('/share/transactions/{invoice}', [\App\Http\Controllers\DocumentController::class, 'publicInvoice'])
@@ -99,8 +99,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
             if (!app()->bound('tenant') || app('tenant')->id !== 'admin') {
                 abort(403, 'Akses ditolak. Fitur ini hanya tersedia di Tenant Pusat (Admin).');
             }
+
             return $next($request);
-        }
+        },
     ]], function (): void {
         Route::resource('tenants', TenantController::class)
             ->middlewareFor(['index', 'show'], 'permission:tenants-access')

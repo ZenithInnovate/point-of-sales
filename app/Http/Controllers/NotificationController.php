@@ -39,14 +39,12 @@ class NotificationController extends Controller
             return back();
         }
 
-        $payload = collect($productIds)->map(function ($productId) use ($request) {
-            return [
-                'user_id' => $request->user()->id,
-                'product_id' => $productId,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        });
+        $payload = collect($productIds)->map(fn ($productId): array => [
+            'user_id' => $request->user()->id,
+            'product_id' => $productId,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
 
         ProductNotificationRead::upsert(
             $payload->toArray(),

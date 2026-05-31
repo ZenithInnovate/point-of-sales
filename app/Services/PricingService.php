@@ -62,7 +62,7 @@ class PricingService
 
         return collect($products)
             ->filter(fn ($product): bool => $product instanceof Product)
-            ->mapWithKeys(fn(Product $product) => [$product->id => $this->calculateProductPrice($product, 1, $customer, $rules)]);
+            ->mapWithKeys(fn (Product $product): array => [$product->id => $this->calculateProductPrice($product, 1, $customer, $rules)]);
     }
 
     public function calculateProductPrice(
@@ -202,7 +202,7 @@ class PricingService
             }
 
             $cartProduct = $carts->firstWhere('id', $cartId)?->product;
-            if (! $cartProduct) {
+            if (!$cartProduct) {
                 continue;
             }
 
@@ -219,7 +219,7 @@ class PricingService
                     ['rule.id', 'asc'],
                 ])
                 ->first();
-            if (! $candidate) {
+            if (!$candidate) {
                 continue;
             }
             if ((int) $candidate['line_discount'] <= 0) {
@@ -281,7 +281,7 @@ class PricingService
 
         while (true) {
             $candidates = $rules
-                ->map(fn(PricingRule $rule) => $stage === 'bundle'
+                ->map(fn (PricingRule $rule): ?array => $stage === 'bundle'
                     ? $this->buildBundleCandidate($rule, $items, $remainingQuantities)
                     : $this->buildBuyGetCandidate($rule, $items, $remainingQuantities))
                 ->filter()
@@ -293,7 +293,7 @@ class PricingService
                 ->values();
 
             $candidate = $candidates->first();
-            if (! $candidate) {
+            if (!$candidate) {
                 break;
             }
 
@@ -458,7 +458,7 @@ class PricingService
                 break;
             }
 
-            if (! $matcher($item)) {
+            if (!$matcher($item)) {
                 continue;
             }
 
@@ -503,7 +503,7 @@ class PricingService
 
     private function calculateLineCandidate(PricingRule $rule, Product $product, int $quantity): ?array
     {
-        if (! $this->matchesTarget($rule, $product)) {
+        if (!$this->matchesTarget($rule, $product)) {
             return null;
         }
 
@@ -520,7 +520,7 @@ class PricingService
                 ])
                 ->first();
 
-            if (! $break) {
+            if (!$break) {
                 return null;
             }
 
@@ -571,7 +571,7 @@ class PricingService
 
     private function matchesMemberRule(PricingRule $rule, ?Customer $customer): bool
     {
-        if (! $customer || ! $customer->is_loyalty_member) {
+        if (!$customer || !$customer->is_loyalty_member) {
             return false;
         }
 

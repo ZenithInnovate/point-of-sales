@@ -48,7 +48,7 @@ class HandleInertiaRequests extends Middleware
                 ->orderByDesc('updated_at')
                 ->limit(10)
                 ->get(['id', 'title', 'stock', 'updated_at'])
-                ->map(fn($product) => [
+                ->map(fn ($product): array => [
                     'id' => $product->id,
                     'title' => $product->title,
                     'stock' => (int) $product->stock,
@@ -132,9 +132,9 @@ class HandleInertiaRequests extends Middleware
 
         if (Schema::hasTable('settings')) {
             $logo = \App\Models\Setting::get('store_logo');
-            if ($logo && ! str_starts_with((string) $logo, 'http') && ! str_starts_with((string) $logo, '/storage')) {
+            if ($logo && !str_starts_with((string) $logo, 'http') && !str_starts_with((string) $logo, '/storage')) {
                 $logo = app()->bound('tenant')
-                    ? asset('/storage/tenants/' . app('tenant')->storage_key . '/' . ltrim((string) $logo, '/'))
+                    ? asset('/storage/tenants/'.app('tenant')->storage_key.'/'.ltrim((string) $logo, '/'))
                     : asset('storage/'.ltrim((string) $logo, '/'));
             }
 

@@ -35,7 +35,7 @@ class CashierShiftService
 
         $shift = $query->first();
 
-        if (! $shift) {
+        if (!$shift) {
             throw ValidationException::withMessages([
                 'shift' => 'Shift kasir belum dibuka.',
             ]);
@@ -116,7 +116,7 @@ class CashierShiftService
         ?string $closeNotes = null,
         bool $forceClose = false
     ): CashierShift {
-        if (! $shift->isOpen()) {
+        if (!$shift->isOpen()) {
             throw ValidationException::withMessages([
                 'shift' => 'Shift yang sudah ditutup tidak dapat diubah.',
             ]);
@@ -125,7 +125,7 @@ class CashierShiftService
         return DB::transaction(function () use ($shift, $actor, $actualCash, $closeNotes, $forceClose) {
             $lockedShift = CashierShift::query()->lockForUpdate()->findOrFail($shift->id);
 
-            if (! $lockedShift->isOpen()) {
+            if (!$lockedShift->isOpen()) {
                 throw ValidationException::withMessages([
                     'shift' => 'Shift yang sudah ditutup tidak dapat diubah.',
                 ]);

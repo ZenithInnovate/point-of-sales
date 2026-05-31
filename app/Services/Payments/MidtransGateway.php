@@ -10,7 +10,7 @@ class MidtransGateway
 {
     public function createCharge(Transaction $transaction, array $config): array
     {
-        if (! ($config['enabled'] ?? false)) {
+        if (!($config['enabled'] ?? false)) {
             throw new PaymentGatewayException('Midtrans tidak aktif atau belum dikonfigurasi.');
         }
 

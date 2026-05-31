@@ -107,7 +107,7 @@ class CashierShiftController extends Controller
             abort(403);
         }
 
-        if ($forceClose && ! $confirmPasswordRequest->recentlyConfirmed()) {
+        if ($forceClose && !$confirmPasswordRequest->recentlyConfirmed()) {
             $request->session()->put('url.intended', $request->headers->get('referer') ?: route('cashier-shifts.show', $cashierShift));
             $request->session()->put('security.step_up_context', [
                 'route' => $request->route()?->getName(),

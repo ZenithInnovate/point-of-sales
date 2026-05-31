@@ -69,10 +69,10 @@ class PaymentWebhookTest extends TestCase
 
         $response->assertForbidden();
         $this->assertSame('pending', $transaction->fresh()->payment_status);
-        Log::shouldNotHaveReceived('info', fn($message) => $message === 'Midtrans Webhook Received');
-        Log::shouldHaveReceived('warning', fn($message, $context = []) => $message === 'Midtrans Webhook: Invalid signature'
-            && ! array_key_exists('received', $context)
-            && ! array_key_exists('expected', $context)
+        Log::shouldNotHaveReceived('info', fn ($message): bool => $message === 'Midtrans Webhook Received');
+        Log::shouldHaveReceived('warning', fn ($message, $context = []): bool => $message === 'Midtrans Webhook: Invalid signature'
+            && !array_key_exists('received', $context)
+            && !array_key_exists('expected', $context)
             && ($context['verification_result'] ?? null) === 'invalid');
     }
 
@@ -125,9 +125,9 @@ class PaymentWebhookTest extends TestCase
 
         $response->assertForbidden();
         $this->assertSame('pending', $transaction->fresh()->payment_status);
-        Log::shouldNotHaveReceived('info', fn($message) => $message === 'Xendit Webhook Received');
-        Log::shouldHaveReceived('warning', fn($message, $context = []) => $message === 'Xendit Webhook: Invalid callback token'
-            && ! array_key_exists('token', $context)
+        Log::shouldNotHaveReceived('info', fn ($message): bool => $message === 'Xendit Webhook Received');
+        Log::shouldHaveReceived('warning', fn ($message, $context = []): bool => $message === 'Xendit Webhook: Invalid callback token'
+            && !array_key_exists('token', $context)
             && ($context['verification_result'] ?? null) === 'invalid');
     }
 

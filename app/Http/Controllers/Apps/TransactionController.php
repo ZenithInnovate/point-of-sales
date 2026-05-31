@@ -88,7 +88,7 @@ class TransactionController extends Controller
 
             return [
                 ...$product->toArray(),
-                'pricing_badge' => $pricing && ! empty($pricing['pricing_rule']) ? [
+                'pricing_badge' => $pricing && !empty($pricing['pricing_rule']) ? [
                     'label' => $pricing['pricing_rule']['label'],
                     'promo_price' => $pricing['pricing_rule']['price_context']
                         ? $pricing['effective_unit_price']
@@ -114,7 +114,7 @@ class TransactionController extends Controller
         $defaultGateway = $paymentSetting?->default_gateway ?? 'cash';
         if (
             $defaultGateway !== 'cash'
-            && (! $paymentSetting || ! $paymentSetting->isGatewayReady($defaultGateway))
+            && (!$paymentSetting || !$paymentSetting->isGatewayReady($defaultGateway))
         ) {
             $defaultGateway = 'cash';
         }
@@ -210,7 +210,7 @@ class TransactionController extends Controller
         $product = Product::whereId($request->product_id)->first();
 
         // Jika produk tidak ditemukan, redirect dengan pesan error
-        if (! $product) {
+        if (!$product) {
             return redirect()->back()->with('error', 'Product not found.');
         }
 
@@ -261,6 +261,7 @@ class TransactionController extends Controller
 
             return back();
         }
+
         // Handle case where no cart is found (e.g., redirect with error message)
         return back()->withErrors(['message' => 'Cart not found']);
 
@@ -283,7 +284,7 @@ class TransactionController extends Controller
             ->where('cashier_id', auth()->user()->id)
             ->first();
 
-        if (! $cart) {
+        if (!$cart) {
             return back()->withErrors([
                 'message' => 'Cart item not found',
             ]);
@@ -475,7 +476,7 @@ class TransactionController extends Controller
         }
         $paymentSetting = null;
 
-        if ($isPayLater && ! $request->filled('due_date')) {
+        if ($isPayLater && !$request->filled('due_date')) {
             return redirect()
                 ->route('transactions.index')
                 ->with('error', 'Tanggal jatuh tempo wajib diisi untuk nota barang.');
@@ -484,7 +485,7 @@ class TransactionController extends Controller
         if ($paymentGateway) {
             $paymentSetting = PaymentSetting::first();
 
-            if (! $paymentSetting || ! $paymentSetting->isGatewayReady($paymentGateway)) {
+            if (!$paymentSetting || !$paymentSetting->isGatewayReady($paymentGateway)) {
                 return redirect()
                     ->route('transactions.index')
                     ->with('error', 'Gateway pembayaran belum dikonfigurasi.');
@@ -498,7 +499,7 @@ class TransactionController extends Controller
         }
 
         $invoice = 'TRX-'.Str::upper($random);
-        $isCashPayment = empty($paymentGateway) && ! $isPayLater;
+        $isCashPayment = empty($paymentGateway) && !$isPayLater;
         $manualDiscount = max(0, (int) $request->input('discount', 0));
         $shippingCost = max(0, (int) $request->input('shipping_cost', 0));
         $requestedRedeemPoints = max(0, (int) $request->input('redeem_points', 0));
@@ -687,7 +688,7 @@ class TransactionController extends Controller
             $query->with('details.salesReturnItems.salesReturn:id,status');
         }
 
-        if (! $request->user()->isSuperAdmin()) {
+        if (!$request->user()->isSuperAdmin()) {
             $query->where('cashier_id', $request->user()->id);
         }
 
@@ -716,11 +717,12 @@ class TransactionController extends Controller
 
                     if ($returnedQty < (int) $detail->qty) {
                         $allReturned = false;
+
                         break;
                     }
                 }
 
-                $canCreateSalesReturn = $transaction->details->isNotEmpty() && ! $allReturned;
+                $canCreateSalesReturn = $transaction->details->isNotEmpty() && !$allReturned;
             }
 
             return [
