@@ -28,16 +28,24 @@ function UserCard({ user, isSelected, onSelect, onDelete, canUpdate, canDelete }
 
     return (
         <div
-            className={`group rounded-2xl border-2 bg-white dark:bg-slate-900 ${
+            className={`group flex h-full flex-col rounded-lg border bg-white transition-all duration-200 hover:shadow-lg dark:bg-slate-900 ${
                 isSelected
-                    ? "border-primary-500 dark:border-primary-600"
-                    : "border-slate-200 dark:border-slate-800"
-            } overflow-hidden transition-all duration-200 hover:border-primary-300 hover:shadow-lg dark:hover:border-primary-700`}
+                    ? "border-primary-500 ring-2 ring-primary-500/20 dark:border-primary-600"
+                    : "border-slate-200 dark:border-slate-800 hover:border-primary-300 dark:hover:border-primary-700"
+            }`}
         >
-            {/* Header with checkbox */}
-            <div className="flex items-start justify-between p-4">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary-400 to-primary-600 text-lg font-bold text-white">
+            {/* Header: Checkbox + Avatar + Info */}
+            <div className="relative p-5 pb-3">
+                {/* Checkbox top-right */}
+                {canDelete && (
+                    <div className="absolute right-4 top-4">
+                        <Checkbox value={user.id} onChange={onSelect} checked={isSelected} />
+                    </div>
+                )}
+
+                <div className="flex flex-col items-center">
+                    {/* Avatar */}
+                    <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-primary-400 to-primary-600 text-xl font-bold text-white shadow-md ring-4 ring-primary-100 dark:ring-primary-900/30">
                         {avatarUrl ? (
                             <img
                                 src={avatarUrl}
@@ -48,26 +56,25 @@ function UserCard({ user, isSelected, onSelect, onDelete, canUpdate, canDelete }
                             initial
                         )}
                     </div>
-                    <div>
-                        <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            {user.name}
-                        </h3>
-                        <p className="flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400">
-                            <IconMail size={14} />
-                            {user.email}
-                        </p>
-                    </div>
+
+                    {/* Name & Email */}
+                    <h3 className="mt-3 w-full truncate text-center text-base font-semibold text-slate-800 dark:text-slate-200">
+                        {user.name}
+                    </h3>
+                    <p className="mt-0.5 flex max-w-full items-center gap-1 truncate text-xs text-slate-500 dark:text-slate-400">
+                        <IconMail size={12} className="shrink-0" />
+                        {user.email}
+                    </p>
                 </div>
-                {canDelete && <Checkbox value={user.id} onChange={onSelect} checked={isSelected} />}
             </div>
 
             {/* Roles */}
-            <div className="px-4 pb-3">
-                <div className="flex flex-wrap gap-1.5">
+            <div className="flex-1 px-4 pb-4">
+                <div className="flex flex-wrap justify-center gap-1.5">
                     {user.roles.map((role, index) => (
                         <span
                             key={index}
-                            className="inline-flex items-center gap-1 rounded-full bg-accent-100 px-2 py-0.5 text-xs font-medium text-accent-700 dark:bg-accent-900/50 dark:text-accent-400"
+                            className="inline-flex items-center gap-1 rounded-lg bg-accent-100 px-2.5 py-1 text-xs font-medium text-accent-700 dark:bg-accent-900/50 dark:text-accent-400"
                         >
                             <IconShield size={12} />
                             {role.name}
@@ -76,9 +83,9 @@ function UserCard({ user, isSelected, onSelect, onDelete, canUpdate, canDelete }
                 </div>
             </div>
 
-            {/* Actions */}
+            {/* Actions - always pinned to bottom */}
             {(canUpdate || canDelete) && (
-                <div className="flex border-t border-slate-100 dark:border-slate-800">
+                <div className="mt-auto flex border-t border-slate-100 dark:border-slate-800">
                     {canUpdate && (
                         <Link
                             href={route("users.edit", user.id)}
@@ -164,7 +171,8 @@ export default function Index() {
             <div className="mb-6">
                 <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+                        <h1 className="flex items-center gap-2 text-2xl font-bold text-slate-900 dark:text-white">
+                            <IconUser size={28} className="text-primary-500" />
                             Pengguna
                         </h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -229,17 +237,20 @@ export default function Index() {
             {users.data.length > 0 ? (
                 viewMode === "grid" ? (
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                        {users.data.map((user) => (
-                            <UserCard
-                                key={user.id}
-                                user={user}
-                                isSelected={data.selectedUser.includes(user.id.toString())}
-                                onSelect={setSelectedUser}
-                                onDelete={deleteData}
-                                canUpdate={canUpdateUsers}
-                                canDelete={canDeleteUsers}
-                            />
-                        ))}
+                        {users.data.map((user) => {
+                            const isSuperAdmin = user.roles?.some(r => r.name === 'super-admin');
+                            return (
+                                <UserCard
+                                    key={user.id}
+                                    user={user}
+                                    isSelected={data.selectedUser.includes(user.id.toString())}
+                                    onSelect={setSelectedUser}
+                                    onDelete={deleteData}
+                                    canUpdate={canUpdateUsers}
+                                    canDelete={canDeleteUsers && !isSuperAdmin}
+                                />
+                            );
+                        })}
                     </div>
                 ) : (
                     <Table.Card title={"Data Pengguna"}>
@@ -277,7 +288,7 @@ export default function Index() {
                                         key={user.id}
                                     >
                                         <Table.Td>
-                                            {canDeleteUsers && (
+                                            {canDeleteUsers && !user.roles?.some(r => r.name === 'super-admin') && (
                                                 <Checkbox
                                                     value={user.id}
                                                     onChange={setSelectedUser}
@@ -342,7 +353,7 @@ export default function Index() {
                                                         href={route("users.edit", user.id)}
                                                     />
                                                 )}
-                                                {canDeleteUsers && (
+                                                {canDeleteUsers && !user.roles?.some(r => r.name === 'super-admin') && (
                                                     <Button
                                                         type={"delete"}
                                                         icon={
@@ -366,8 +377,8 @@ export default function Index() {
                     </Table.Card>
                 )
             ) : (
-                <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-900">
-                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+                <div className="flex flex-col items-center justify-center rounded-lg border border-slate-200 bg-white py-16 dark:border-slate-800 dark:bg-slate-900">
+                    <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800">
                         <IconDatabaseOff size={32} className="text-slate-400" strokeWidth={1.5} />
                     </div>
                     <h3 className="mb-1 text-lg font-medium text-slate-800 dark:text-slate-200">
