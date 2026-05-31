@@ -1,10 +1,6 @@
 import React from "react";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
-import Button from "@/Components/Dashboard/Button";
-import Input from "@/Components/Dashboard/Input";
-import ListBox from "@/Components/Dashboard/ListBox";
-import Modal from "@/Components/Dashboard/Modal";
+import { Head, useForm, usePage, Link } from "@inertiajs/react";
 import Search from "@/Components/Dashboard/Search";
 import Pagination from "@/Components/Dashboard/Pagination";
 import { useAuthorization } from "@/Utils/authorization";
@@ -14,18 +10,17 @@ import {
     IconTrash,
     IconUserShield,
     IconPencilCog,
-    IconPencilCheck,
     IconShield,
 } from "@tabler/icons-react";
 
 // Role Card Component
 function RoleCard({ role, onEdit, onDelete, canUpdate, canDelete }) {
     return (
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white transition-all hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex h-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white transition-all hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
             {/* Header */}
             <div className="border-b border-slate-100 p-5 dark:border-slate-800">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 text-white">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-primary-400 to-primary-600 text-white">
                         <IconUserShield size={24} />
                     </div>
                     <div>
@@ -40,7 +35,7 @@ function RoleCard({ role, onEdit, onDelete, canUpdate, canDelete }) {
             </div>
 
             {/* Permissions */}
-            <div className="bg-slate-50 p-4 dark:bg-slate-800/50">
+            <div className="flex-1 bg-slate-50 p-4 dark:bg-slate-800/50">
                 <div className="scrollbar-thin flex max-h-24 flex-wrap gap-1.5 overflow-y-auto">
                     {role.permissions.slice(0, 8).map((permission, index) => (
                         <span
@@ -59,9 +54,9 @@ function RoleCard({ role, onEdit, onDelete, canUpdate, canDelete }) {
                 </div>
             </div>
 
-            {/* Actions */}
+            {/* Actions - always pinned to the bottom */}
             {(canUpdate || canDelete) && (
-                <div className="flex border-t border-slate-100 dark:border-slate-800">
+                <div className="mt-auto flex border-t border-slate-100 dark:border-slate-800">
                     {canUpdate && (
                         <button
                             onClick={onEdit}
@@ -90,63 +85,17 @@ function RoleCard({ role, onEdit, onDelete, canUpdate, canDelete }) {
 }
 
 export default function Index() {
-    const { roles, permissions, errors } = usePage().props;
+    const { roles, permissions } = usePage().props;
     const { can } = useAuthorization();
     const canCreateRoles = can("roles-create");
     const canUpdateRoles = can("roles-update");
     const canDeleteRoles = can("roles-delete");
 
-    const {
-        data,
-        setData,
-        transform,
-        post,
-        delete: destroy,
-    } = useForm({
-        id: "",
-        name: "",
-        selectedPermission: [],
-        isUpdate: false,
-        isOpen: false,
-    });
-
-    const setSelectedPermission = (value) => setData("selectedPermission", value);
-
-    transform((data) => ({
-        ...data,
-        selectedPermission: data.selectedPermission.map((permission) => permission.id),
-        _method: data.isUpdate === true ? "put" : "post",
-    }));
-
-    const saveRole = async (e) => {
-        e.preventDefault();
-        post(route("roles.store"), {
-            onSuccess: () => setData({ selectedPermission: [], name: "", isOpen: false }),
-        });
-    };
-
-    const updateRole = async (e) => {
-        e.preventDefault();
-        post(route("roles.update", data.id), {
-            onSuccess: () =>
-                setData({
-                    id: "",
-                    name: "",
-                    selectedPermission: [],
-                    isUpdate: false,
-                    isOpen: false,
-                }),
-        });
-    };
+    const { delete: destroy } = useForm({});
 
     const handleEdit = (role) => {
-        setData({
-            id: role.id,
-            selectedPermission: role.permissions,
-            name: role.name,
-            isUpdate: true,
-            isOpen: true,
-        });
+        // Navigate to edit page
+        window.location.href = route("roles.edit", role.id);
     };
 
     const handleDelete = (roleId) => {
@@ -172,69 +121,21 @@ export default function Index() {
                         </p>
                     </div>
                     {canCreateRoles && (
-                        <Button
-                            type={"button"}
-                            icon={<IconCirclePlus size={18} strokeWidth={1.5} />}
-                            className={
-                                "bg-primary-500 text-white shadow-lg shadow-primary-500/30 hover:bg-primary-600"
-                            }
-                            label={"Tambah Group"}
-                            onClick={() => setData("isOpen", true)}
-                        />
+                        <Link
+                            href={route("roles.create")}
+                            className="inline-flex items-center gap-2 rounded-lg bg-primary-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-primary-500/30 transition-all hover:bg-primary-600"
+                        >
+                            <IconCirclePlus size={18} strokeWidth={1.5} />
+                            <span>Tambah Group</span>
+                        </Link>
                     )}
                 </div>
             </div>
 
             {/* Search */}
-            <div className="mb-4 w-full sm:w-80">
+            <div className="mb-6 w-full sm:w-80">
                 <Search url={route("roles.index")} placeholder="Cari akses group..." />
             </div>
-
-            {/* Modal */}
-            <Modal
-                show={data.isOpen}
-                onClose={() =>
-                    setData({
-                        isOpen: false,
-                        id: "",
-                        name: "",
-                        selectedPermission: [],
-                        isUpdate: false,
-                    })
-                }
-                title={data.isUpdate ? "Ubah Akses Group" : "Tambah Akses Group"}
-                icon={<IconUserShield size={20} strokeWidth={1.5} />}
-            >
-                <form onSubmit={data.isUpdate ? updateRole : saveRole}>
-                    <div className="mb-4">
-                        <Input
-                            label={"Nama group"}
-                            type={"text"}
-                            placeholder={"Masukan nama group"}
-                            value={data.name}
-                            onChange={(e) => setData("name", e.target.value)}
-                            errors={errors.name}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <ListBox
-                            label={"Pilih hak akses"}
-                            data={permissions}
-                            selected={data.selectedPermission}
-                            setSelected={setSelectedPermission}
-                            errors={errors.selectedPermission}
-                        />
-                    </div>
-                    <Button
-                        type={"submit"}
-                        icon={<IconPencilCheck size={18} />}
-                        className={
-                            "w-full justify-center bg-primary-500 text-white hover:bg-primary-600"
-                        }
-                        label={"Simpan"}
-                    />
-                </form>
-            </Modal>
 
             {/* Content */}
             {roles.data.length > 0 ? (
@@ -261,17 +162,23 @@ export default function Index() {
                     <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
                         Tambahkan group akses pertama.
                     </p>
-                    <Button
-                        type={"button"}
-                        icon={<IconCirclePlus size={18} />}
-                        className={"bg-primary-500 text-white hover:bg-primary-600"}
-                        label={"Tambah Group"}
-                        onClick={() => setData("isOpen", true)}
-                    />
+                    {canCreateRoles && (
+                        <Link
+                            href={route("roles.create")}
+                            className="inline-flex items-center gap-2 rounded-lg bg-primary-500 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-600"
+                        >
+                            <IconCirclePlus size={18} />
+                            <span>Tambah Group</span>
+                        </Link>
+                    )}
                 </div>
             )}
 
-            {roles.last_page !== 1 && <Pagination links={roles.links} />}
+            {roles.last_page !== 1 && (
+                <div className="mt-6">
+                    <Pagination links={roles.links} />
+                </div>
+            )}
         </>
     );
 }

@@ -43,6 +43,22 @@ class RoleController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        // get all permission data
+        $permissions = Permission::query()
+            ->select('id', 'name')
+            ->orderBy('name')
+            ->get();
+
+        return Inertia::render('Dashboard/Roles/Create', [
+            'permissions' => $permissions,
+        ]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(RoleRequest $request): \Illuminate\Http\RedirectResponse
@@ -64,8 +80,29 @@ class RoleController extends Controller
             ],
         );
 
-        // render view
-        return back();
+        // redirect to index
+        return to_route('roles.index');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Role $role)
+    {
+        // get all permission data
+        $permissions = Permission::query()
+            ->select('id', 'name')
+            ->orderBy('name')
+            ->get();
+
+        // get current role permissions (only IDs)
+        $rolePermissions = $role->permissions()->pluck('id')->all();
+
+        return Inertia::render('Dashboard/Roles/Edit', [
+            'role' => $role,
+            'permissions' => $permissions,
+            'rolePermissions' => $rolePermissions,
+        ]);
     }
 
     /**
@@ -110,8 +147,8 @@ class RoleController extends Controller
             );
         }
 
-        // render view
-        return back();
+        // redirect to index
+        return to_route('roles.index');
     }
 
     /**

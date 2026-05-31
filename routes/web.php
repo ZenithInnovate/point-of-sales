@@ -69,9 +69,11 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified']], fu
     Route::get('/permissions', [PermissionController::class, 'index'])->middleware('permission:permissions-access')->name('permissions.index');
     // roles route
     Route::resource('/roles', RoleController::class)
-        ->except(['create', 'edit', 'show'])
+        ->except(['show'])
         ->middlewareFor('index', 'permission:roles-access')
+        ->middlewareFor('create', 'permission:roles-create')
         ->middlewareFor('store', ['permission:roles-create', 'step_up'])
+        ->middlewareFor('edit', 'permission:roles-update')
         ->middlewareFor('update', ['permission:roles-update', 'step_up'])
         ->middlewareFor('destroy', ['permission:roles-delete', 'step_up']);
     // users route
