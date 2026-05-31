@@ -337,6 +337,7 @@ class SampleDataSeeder extends Seeder
                 'category_id' => $category?->id,
                 'image' => $image ?? 'default.jpg',
                 'barcode' => $product['barcode'],
+                'sku' => 'SKU-' . $product['barcode'],
                 'title' => $product['title'],
                 'description' => $product['description'],
                 'buy_price' => $product['buy_price'],

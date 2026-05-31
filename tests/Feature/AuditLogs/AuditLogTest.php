@@ -88,7 +88,7 @@ class AuditLogTest extends TestCase
 
     public function test_product_crud_and_price_change_create_audit_logs(): void
     {
-        Storage::fake('local');
+        Storage::fake('public');
 
         $user = $this->createUserWithPermissions([
             'products-create',

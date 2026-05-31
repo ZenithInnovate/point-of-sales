@@ -262,7 +262,7 @@ class StockOpnameTest extends TestCase
 
     public function test_product_create_generates_initial_stock_mutation(): void
     {
-        Storage::fake('local');
+        Storage::fake('public');
 
         $user = $this->createUserWithPermissions(['products-create']);
         $category = Category::create([
