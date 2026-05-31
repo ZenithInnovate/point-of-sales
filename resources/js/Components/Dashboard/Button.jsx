@@ -33,8 +33,8 @@ export default function Button({ className, icon, label, type, href, added, url,
 
     const baseStyles =
         "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 active:scale-[0.98]";
-    const sizeStyles = "px-4 py-2.5 text-sm rounded-xl";
-    const smallStyles = "px-3 py-2 rounded-xl";
+    const sizeStyles = "px-4 py-2.5 text-sm rounded-lg";
+    const smallStyles = "px-3 py-2 rounded-lg";
 
     return (
         <>

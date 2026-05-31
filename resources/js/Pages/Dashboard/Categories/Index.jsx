@@ -10,7 +10,6 @@ import {
     IconLayoutGrid,
     IconList,
     IconCategory,
-    IconPhoto,
 } from "@tabler/icons-react";
 import Search from "@/Components/Dashboard/Search";
 import Table from "@/Components/Dashboard/Table";
@@ -20,45 +19,47 @@ import { useAuthorization } from "@/Utils/authorization";
 // Category Card for Grid View
 function CategoryCard({ category, canUpdate, canDelete }) {
     return (
-        <div className="group overflow-hidden rounded-lg border border-slate-200 bg-white transition-all duration-200 hover:border-slate-300 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700">
+        <div className="group relative overflow-hidden rounded-lg border border-slate-100 bg-white shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-1.5 hover:border-primary-500/20 hover:shadow-xl dark:border-slate-800 dark:bg-slate-900 dark:hover:border-primary-500/20">
             {/* Category Image */}
-            <div className="relative aspect-[3/2] overflow-hidden bg-slate-100 dark:bg-slate-800">
+            <div className="relative aspect-[3/2] overflow-hidden bg-slate-50 dark:bg-slate-800/50">
                 {category.image ? (
                     <img
                         src={category.image}
                         alt={category.name}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                         loading="lazy"
                     />
                 ) : (
-                    <div className="flex h-full w-full items-center justify-center">
+                    <div className="flex h-full w-full items-center justify-center bg-slate-50 dark:bg-slate-800/30">
                         <IconCategory
-                            size={48}
-                            className="text-slate-300 dark:text-slate-600"
-                            strokeWidth={1}
+                            size={40}
+                            className="text-slate-300 transition-colors duration-300 group-hover:text-primary-400 dark:text-slate-600"
+                            strokeWidth={1.5}
                         />
                     </div>
                 )}
 
-                {/* Action Buttons Overlay */}
+                {/* Action Buttons Overlay with Glassmorphism */}
                 {(canUpdate || canDelete) && (
-                    <div className="absolute inset-0 flex items-center justify-center gap-2 bg-slate-900/0 opacity-0 transition-all group-hover:bg-slate-900/40 group-hover:opacity-100">
+                    <div className="absolute inset-0 flex items-center justify-center gap-3 bg-slate-950/0 opacity-0 backdrop-blur-none transition-all duration-300 group-hover:bg-slate-950/40 group-hover:opacity-100 group-hover:backdrop-blur-sm">
                         {canUpdate && (
                             <Link
                                 href={route("categories.edit", category.id)}
-                                className="rounded-lg bg-white p-2.5 text-warning-600 shadow-lg transition-colors hover:bg-warning-50"
+                                className="flex h-10 w-10 items-center justify-center rounded-lg bg-white text-warning-600 shadow-lg transition-transform duration-200 hover:scale-110 hover:bg-warning-50 hover:text-warning-700"
+                                title="Edit Kategori"
                             >
-                                <IconPencilCog size={18} />
+                                <IconPencilCog size={18} strokeWidth={2} />
                             </Link>
                         )}
                         {canDelete && (
                             <Button
                                 type={"delete"}
-                                icon={<IconTrash size={18} />}
+                                icon={<IconTrash size={18} strokeWidth={2} />}
                                 className={
-                                    "rounded-lg bg-white p-2.5 text-danger-600 shadow-lg hover:bg-danger-50"
+                                    "flex h-10 w-10 items-center justify-center rounded-lg bg-white text-danger-600 shadow-lg transition-transform duration-200 hover:scale-110 hover:bg-danger-50 hover:text-danger-700"
                                 }
                                 url={route("categories.destroy", category.id)}
+                                title="Hapus Kategori"
                             />
                         )}
                     </div>
@@ -66,12 +67,12 @@ function CategoryCard({ category, canUpdate, canDelete }) {
             </div>
 
             {/* Category Info */}
-            <div className="p-4">
-                <h3 className="mb-1 text-base font-semibold text-slate-800 dark:text-slate-200">
+            <div className="p-5">
+                <h3 className="text-base font-bold text-slate-800 transition-colors duration-200 group-hover:text-primary-600 dark:text-slate-200 dark:group-hover:text-primary-400">
                     {category.name}
                 </h3>
                 {category.description && (
-                    <p className="line-clamp-2 text-sm text-slate-500 dark:text-slate-400">
+                    <p className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
                         {category.description}
                     </p>
                 )}
